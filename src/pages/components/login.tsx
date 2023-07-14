@@ -6,6 +6,7 @@ import {auth, db} from "../config/firbase_setting";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
 import React, {useEffect, useState} from "react";
+import logDev from "@/pages/config/log";
 
 
 
@@ -55,7 +56,7 @@ const Login: React.FC = () => {
             const querySnapshot = await getDocs(queryDate);
             if (querySnapshot.empty) {
                 // doc.data() will be undefined in this case
-                console.log("고유번호나 성명이 일치하지 않습니다.");
+                logDev("고유번호나 성명이 일치하지 않습니다.");
                 // const docRef = await addDoc(collection(db, "usersInfo"), {
                 //     uniquenumber: uniquenumber,
                 //     username: username,
@@ -65,15 +66,15 @@ const Login: React.FC = () => {
                 setFirebaseError("고유번호나 성명이 일치하지 않습니다.");
                 return;
             }else{
-                console.log("success!!!!!!");
+                logDev('UniqueNumber and UserName is correct !!!!!');
                 let phoneNumber = 0;
                 try{
                 const result = await signInWithEmailAndPassword(auth, email, password);
                 const idToken = await result.user.getIdToken();
                     if(idToken){
-                        console.log(idToken);
+                        logDev(idToken);
                         querySnapshot.forEach((doc) => {
-                            console.log(doc.id, " => ", doc.data());
+                            logDev(`${doc.id} => ${doc.data()} `);
                              phoneNumber = doc.data().phoneNumber;
                         });
                     }
@@ -86,8 +87,9 @@ const Login: React.FC = () => {
                     const confirmData = await signInWithPhoneNumber(auth, `+82${String(phoneNumber)}`, recaptchaVerifier);
                     setVerificationId(confirmData.verificationId);
                     setLoginStep(2);
-                    console.log('success phone number !!!!!');
-                    console.log(confirmData);
+                    logDev('success phone number !!!!!');
+                    logDev(confirmData);
+                    // console.log(confirmData);
 
                 }catch (e) {
                     console.log(e);
@@ -101,18 +103,19 @@ const Login: React.FC = () => {
 
     const [otp, setOtp] = useState('');
     const handleOtpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log('event handleOtpChange');
+        logDev('event handleOtpChange');
         setOtp(e.target.value);
     }
     const onVerifyOTP = async () => {
-        console.log('event onVerifyOTP');
+        logDev('event onVerifyOTP');
         try {
             const credential = PhoneAuthProvider.credential(verificationId, otp);
-            const result = await signInWithCredential(auth,credential);
-            console.log(result);
-            console.log('success OTP !!!!!');
-            const accessToken = await result.user.getIdToken();
-            console.log(accessToken);
+            await signInWithCredential(auth,credential);
+            //const result = await signInWithCredential(auth,credential);
+            // logDev(result);
+            // logDev('success OTP !!!!!');
+            // const accessToken = await result.user.getIdToken();
+            // logDev(accessToken);
         } catch (error) {
             // Handle errors here.
             console.log(error);
