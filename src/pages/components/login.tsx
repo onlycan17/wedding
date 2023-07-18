@@ -2,11 +2,15 @@ import { useForm, SubmitHandler, RegisterOptions } from 'react-hook-form';
 import {PhoneAuthProvider, RecaptchaVerifier, signInWithCredential, signInWithPhoneNumber} from "firebase/auth";
 import {signInWithEmailAndPassword} from "firebase/auth";
 import { collection, query, where, addDoc, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firestore';
-import {auth, db} from "../config/firbase_setting";
+import {auth, db} from "@/pages/config/firbase-setting";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
 import React, {useEffect, useState} from "react";
 import logDev from "@/pages/config/log";
+import {useRecoilState} from "recoil";
+import {loginUser, User} from "@/pages/common/state";
+import {UserImpl} from "@firebase/auth/internal";
+import {useRouter} from "next/router";
 
 
 
@@ -38,6 +42,13 @@ const schemaOtp = yup.object().shape({
 const Login: React.FC = () => {
     const [loginStep, setLoginStep] = useState<number>(1);
     const [verificationId, setVerificationId] = useState('');
+    const [userName, setUserName] = useState('');
+    const [uniqueNumber, setUniqueNumber] = useState('');
+    const [email, setEmail] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [token, setToken] = useState('');
+    const [user, setUser] = useRecoilState(loginUser);
+    const router = useRouter();
 
     const { register, handleSubmit, formState: { errors } } = useForm<FormFields>({
         resolver: yupResolver(schema),
@@ -76,6 +87,10 @@ const Login: React.FC = () => {
                         querySnapshot.forEach((doc) => {
                             logDev(`${doc.id} => ${doc.data()} `);
                              phoneNumber = doc.data().phoneNumber;
+                             setPhoneNumber(phoneNumber.toString());
+                             setUserName(doc.data().userName);
+                             setUniqueNumber(doc.data().uniqueNumber);
+                             setEmail(doc.data().email);
                         });
                     }
                 }catch (e) {
@@ -110,12 +125,21 @@ const Login: React.FC = () => {
         logDev('event onVerifyOTP');
         try {
             const credential = PhoneAuthProvider.credential(verificationId, otp);
-            await signInWithCredential(auth,credential);
-            //const result = await signInWithCredential(auth,credential);
-            // logDev(result);
-            // logDev('success OTP !!!!!');
-            // const accessToken = await result.user.getIdToken();
-            // logDev(accessToken);
+            const result = await signInWithCredential(auth,credential);
+            logDev(result);
+            logDev('success OTP !!!!!');
+            const accessToken = await result.user.getIdToken();
+
+            user!.email = email;
+            user!.phoneNumber = phoneNumber;
+            user!.uid = result.user.uid;
+            user!.token = accessToken;
+            user!.userName = userName;
+            user!.uniqueNumber = uniqueNumber;
+
+            setUser(user);
+            logDev(accessToken);
+            router.push('/home');
         } catch (error) {
             // Handle errors here.
             console.log(error);
