@@ -84,11 +84,15 @@ const Header: React.FC = () => {
         <div id="header" className={menuActive ? 'open' : ''}>
             <div className="bottom">
                 <div className="inner">
+                    <h1 className={"logo"}>
+                        <Link href="/">logo</Link>
+                    </h1>
                     <div id="cms-gnb">
                         <ul>
                             {['짝궁찾기', '매칭관리', '결혼예배학교', '상담실', '공지사항', '마이페이지'].map((title, index) => (
                                 // eslint-disable-next-line react/jsx-key
                                 <li
+                                    key={index}
                                     className={`menu${index + 1} ${activeIndex === index ? 'on' : ''}`}
                                     onMouseOver={handleMouseOver(index)}
                                     onMouseLeave={handleMouseLeave()}
@@ -99,13 +103,18 @@ const Header: React.FC = () => {
                                     <ul style={{height: submenuHeight ? `${submenuHeight}px` : ''}}>
                                         {submenuLists[index].map((subMenu, idx) => (
                                             <li key={idx} className="font_reset">
-                                                <Link id={`menu-${index}-${idx}`} href={`${subMenu.link}`}>{subMenu.title}</Link>
+                                                <Link id={`menu-${index}-${idx}`}
+                                                      href={`${subMenu.link}`}>{subMenu.title}</Link>
                                             </li>
                                         ))}
                                     </ul>
                                 </li>
                             ))}
                         </ul>
+                    </div>
+                    <div id={"right_menu"}>
+                        <Link href={"#"}>Login</Link>
+                        <Link href={"#"}>Join</Link>
                     </div>
                 </div>
             </div>

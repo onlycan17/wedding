@@ -209,7 +209,9 @@ input::-ms-clear {display: none;}
 input:disabled,
 [disabled],
 input[disabled],
+input:not[type='submit'],
 input:read-only,
+input[type='text'],
 input[readonly] {background-color:#f1f1f1 !important; color:#6c6d73; border-color:#cccccc !important;}
 input.disabled {background-color:#f1f1f1 !important; color:#6c6d73; border-color:#ccc !important;}
 
@@ -1127,11 +1129,11 @@ select::-ms-expand {
   float: right;
 }
 
-/*.select-sty {*/
-/*    padding-right: 13%;*/
-/*    color: #bcbcbc;*/
-/*    background: url(../images/arrow03.svg) no-repeat right 14px center;*/
-/*}*/
+.select-sty {
+    padding-right: 13%;
+    color: #bcbcbc;
+    /*background: url(../images/arrow03.svg) no-repeat right 14px center;*/
+}
 .inp-wrap_flex {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1141,16 +1143,16 @@ select::-ms-expand {
   justify-content: space-between;
 }
 
-/*.inp-check {*/
-/*    display: inline-block;*/
-/*    width: 22px;*/
-/*    height: 22px;*/
-/*    position: relative;*/
-/*    border: 0;*/
-/*    border-radius: 50%;*/
-/*    background: #BCBCBC url(../images/check01.svg) no-repeat center/14px;*/
-/*    cursor: pointer;*/
-/*}*/
+.inp-check {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    position: relative;
+    border: 0;
+    border-radius: 50%;
+    /*background: #BCBCBC url(../images/icon/check01.svg) no-repeat center/14px;*/
+    cursor: pointer;
+}
 
 .inp-check:checked {
   background-color: #51B5FD;
@@ -1561,7 +1563,7 @@ button{
 
 
 .section_wrap.section6 {   border-top:1px solid #ddd;
-  height: 500px;
+  height: 422px;
   width:100%;
   min-width:1540px;
   margin: 0 ;
@@ -1572,23 +1574,23 @@ button{
 .sns {width:230px; display:flex}
 .sns  a {flex:1}
 
-/*.foot_wrap .foot_item {*/
-/*    color:#4D5053; padding-top:20px; font-family: 'Jost';font-weight: 400;font-size: 22px;*/
-/*    line-height: 150%; letter-spacing: 1%;}*/
+.foot_wrap .foot_item {
+    color:#4D5053; padding-top:20px; font-family: 'Jost';font-weight: 400;font-size: 22px;
+    line-height: 150%; letter-spacing: normal;}
 .foot_wrap .foot_item.foot_left {padding-right:100px; }
 
-/*#footer .foot_item h2.foot_logo {*/
-/*    width: 142px;*/
-/*    height: 72px;*/
-/*    text-indent: -9999px;*/
-/*    background: url("/images/common/logo.svg") no-repeat 0 0;*/
-/*    display: block;*/
-/*}*/
+#footer .foot_item h2.foot_logo {
+    width: 142px;
+    height: 72px;
+    text-indent: -9999px;
+    background: url("../images/common/logo.svg") no-repeat 0 0;
+    display: block;
+}
 
 #footer .foot_item h2.tit {color:#292F36; padding-top:10px;  font-family: 'DM Serif Display', sans-serif; font-weight: 400;font-size: 25px;
   line-height: 125%;}
-/*#footer .foot_item p.foot_txt {color:#232527;   font-family: 'Noto Sans', sans-serif;  font-weight: 400;font-size: 22px;*/
-/*    line-height: 150%;;letter-spacing: 1%;}*/
+#footer .foot_item p.foot_txt {color:#232527;   font-family: 'Noto Sans', sans-serif;  font-weight: 400;font-size: 22px;
+    line-height: 150%;letter-spacing: normal;}
 
 
 
@@ -1598,16 +1600,16 @@ button{
   min-width:1540px;
   margin: 0 ;
 }
-/*.foot_copyright {color:#4D5053; font-family: 'Jost';font-weight: 400;font-size: 22px;*/
-/*    line-height: 150%; letter-spacing: 1%;}*/
+.foot_copyright {color:#4D5053; font-family: 'Jost';font-weight: 400;font-size: 22px;
+    line-height: 150%; letter-spacing: normal;}
 
 
 
 
 
-/*.scrollup{width:40px; height:40px; text-indent:-9999px;opacity:0.3;*/
-/*    position:fixed; bottom:50px; right:5%; display:none;*/
-/*    background: url('/js/plugin/ScrollTop/icon_top.png') no-repeat;	}*/
+.scrollup{width:40px; height:40px; text-indent:-9999px;opacity:0.3;
+    position:fixed; bottom:50px; right:5%; display:none;
+    background: url('../../public/main/icon_top.png') no-repeat;	}
 
 
 
@@ -1801,21 +1803,22 @@ h4.sub_tit4 {
 
 .inp, .select-sty {
   display: block;
-  padding: 12px 14px;
-  border: 2px solid #BCBCBC;
+  padding: 20px 10px 20px 10px;
+  border: 1px solid #EFEFEF;
   border-radius: 5px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 400;
-  line-height: 24px;
-  letter-spacing: -0.5px;
+  line-height: 22.5px;
+  gap: 10px;
+  height: 38px;
 }
 
 .inp-txt {
   padding-bottom: 5.6%;
 }
-.inp-txt input::placeholder {
+.inp-txt, .inp::placeholder {
   color: #9c9c9c;
-  font-size:16px;
+  font-size:15px;
 }
 .inp-txt .txt-label {
   display: block;
@@ -1833,6 +1836,8 @@ h4.sub_tit4 {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
 }
 .form_info {padding:10px 0}
 

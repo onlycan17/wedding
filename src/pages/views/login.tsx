@@ -10,7 +10,8 @@ import logDev from "@/pages/config/log";
 import {useRecoilState} from "recoil";
 import {loginUser} from "@/pages/common/state";
 import {useRouter} from "next/router";
-
+import styles from '../../styles/css/login.module.css';
+import Cookies from "js-cookie";
 
 type FormFields = {
     uniquenumber: string;
@@ -41,11 +42,12 @@ const Login: React.FC = () => {
     const [getUser, setUser] = useRecoilState(loginUser);
     const [loginStep, setLoginStep] = useState<number>(1);
     const [verificationId, setVerificationId] = useState('');
-    const [userName, setUserName] = useState('');
-    const [uniqueNumber, setUniqueNumber] = useState('');
-    const [getEmail, setEmail] = useState<string | null>('');
+    const [userName, setUserName] = useState(Cookies.get('userName') ?? '');
+    const [uniqueNumber, setUniqueNumber] = useState(Cookies.get('uniqueNumber') ?? '');
+    const [getEmail, setEmail] = useState<string | null>(Cookies.get('email') ?? null);
     const [phoneNumber, setPhoneNumber] = useState('');
     const router = useRouter();
+    const [selected, setSelected] = useState(false);
 
     const {register, handleSubmit, formState: {errors}} = useForm<FormFields>({
         resolver: yupResolver(schema),
@@ -53,6 +55,7 @@ const Login: React.FC = () => {
     let recaptchaVerifier: RecaptchaVerifier;
     useEffect(() => {
         recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container');
+
     }, []);
     const [firebaseError, setFirebaseError] = React.useState<string | null>(null);
     const onSubmit: SubmitHandler<FormFields> = async ({uniquenumber, username, email, password}) => {
@@ -155,41 +158,71 @@ const Login: React.FC = () => {
         }
     };
 
-    return (
-        <div>
-            {loginStep === 1 ?
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <div>
-                        <label>고유번호(아이디)</label>
-                        <input type="text" {...register("uniquenumber")} placeholder={""}/>
-                        {errors.uniquenumber && <span>{errors.uniquenumber.message}</span>}
-                    </div>
-                    <div>
-                        <label>이름(본명)</label>
-                        <input type="text" {...register("username")} />
-                        {errors.username && <span>{errors.username.message}</span>}
-                    </div>
-                    <div>
-                        <label>Email</label>
-                        <input type="email" {...register("email")} />
-                        {errors.username && <span>{errors.username.message}</span>}
-                    </div>
-                    <div>
-                        <label>비밀번호</label>
-                        <input type="password" {...register("password")} />
-                        {errors.password && <span>{errors.password.message}</span>}
-                    </div>
-                    {firebaseError && <div>Error: {firebaseError}</div>}
-                    <div id={"recaptcha-container"}></div>
-                    <input type="submit"/>
-                </form>
-                :
-                <div>
-                    <input type="text" placeholder="인증번호를 입력하세요." id={"otp"} value={otp} onChange={handleOtpChange}/>
-                    <button onClick={onVerifyOTP}>인증번호 확인</button>
-                    {firebaseError && <div>Error: {firebaseError}</div>}
-                </div>
+    const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSelected(event.target.checked);
+        if(event.target.checked){
+            if (typeof uniqueNumber === "string") {
+                Cookies.set('uniqueNumber', uniqueNumber);
             }
+            if (typeof userName === "string") {
+                Cookies.set('userName', userName);
+            }
+            if (getEmail != null) {
+                Cookies.set('email', getEmail);
+            }
+        }
+    };
+
+    return (
+        <div className={"sub_wrap"}>
+            <h2 className={"sub_tit"}>로그인</h2>
+            <div className={`${styles.login_body} pt50`}>
+                <div className={styles.login_cont}>
+                    <div role={"group"} className={"fieldset_area2 phone_area"}>
+                        {loginStep === 1 ?
+                            <form className={styles.login_tb} onSubmit={handleSubmit(onSubmit)}>
+                                <div className={"inp-wrap"}>
+                                    <label className={styles.input_label}>고유번호(아이디)</label>
+                                    <input className={"inp"} type="text" {...register("uniquenumber")}
+                                           placeholder={"고유번호를 입력해주세요"} />
+                                    {errors.uniquenumber && <span className={"imp_red"}>{errors.uniquenumber.message}</span>}
+                                </div>
+                                <div className={"inp-wrap"}>
+                                    <label className={styles.input_label}>이름(본명)</label>
+                                    <input className={"inp"} type="text" {...register("username")} placeholder={"이름(본명)을 입력하세요"} />
+                                    {errors.username && <span className={"imp_red"}>{errors.username.message}</span>}
+                                </div>
+                                <div className={"inp-wrap"}>
+                                    <label className={styles.input_label}>Email</label>
+                                    <input className={"inp"} type="email" {...register("email")} placeholder={"이메일을 입력하세요"} />
+                                    {errors.username && <span className={"imp_red"}>{errors.username.message}</span>}
+                                </div>
+                                <div className={"inp-wrap"}>
+                                    <label className={styles.input_label}>비밀번호</label>
+                                    <input className={"inp"} type="password" {...register("password")} placeholder={"비밀번호를 입력하세요"} />
+                                    {errors.password && <span className={"imp_red"}>{errors.password.message}</span>}
+                                </div>
+                                <div>
+                                    <input className={styles.login_radio} type="checkbox" id="agree" checked={selected} onChange={handleRadioChange}  />
+                                    <label className={styles.radio_label} htmlFor="login">로그인</label>
+                                </div>
+                                {firebaseError && <div className={"imp_red"}>Error: {firebaseError}</div>}
+                                <div id={"recaptcha-container"}></div>
+                                <div className={styles.login_div_btn}>
+                                    <input className={styles.login_btn} type="submit" value={"로그인"}/>
+                                </div>
+                            </form>
+                            :
+                            <div>
+                                <input type="text" placeholder="인증번호를 입력하세요." id={"otp"} value={otp}
+                                       onChange={handleOtpChange}/>
+                                <button onClick={onVerifyOTP}>인증번호 확인</button>
+                                {firebaseError && <div className={"imp_red"}>Error: {firebaseError}</div>}
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };

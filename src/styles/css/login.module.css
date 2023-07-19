@@ -1,0 +1,93 @@
+@charset "utf-8";
+
+
+.nbr-txt-style {
+    font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+}
+.eng-txt-style {
+    font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+}
+.txt-point-red {
+    color: #db1111;
+    font-weight: 500;
+}
+.txt-point-blue {
+    color: #1295e0;
+}
+.txt-point-blue-b {
+    color: #114b98;
+}
+
+.invisible_inline {
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    border: 0;
+    clip: rect(1px, 1px, 1px, 1px);
+    -webkit-clip-path: inset(50%);
+    clip-path: inset(50%);
+}
+
+.ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.login_body {
+    background: #eee;
+    padding-bottom: 30px;
+}
+
+.login_cont {
+    margin: 0 auto;
+    max-width: 600px;
+    min-height: 400px;
+    padding: 35px 65px;
+    background: #fff;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.login_tb {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.input_label {
+    font-size: 18px;
+    color: #333;
+    font-weight: normal;
+    margin-bottom: 10px;
+}
+
+
+.login_btn {
+    width: 320px;
+    height: 50px;
+    background: #B1C695;
+    border-radius: 26px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    border: 0px solid #B1C695;
+}
+
+.login_div_btn {
+    width: 100%;
+    margin-top: 30px;
+    text-align: center;
+}
+
+.login_radio {
+    width: 14px;
+    height: 14px;
+    margin-right: 5px;
+}
+
+.radio_label{
+    font-size: 14px;
+    color: #AAAAAA;
+}
+
