@@ -1,17 +1,15 @@
-import { useForm, SubmitHandler, RegisterOptions } from 'react-hook-form';
+import {useForm, SubmitHandler} from 'react-hook-form';
 import {PhoneAuthProvider, RecaptchaVerifier, signInWithCredential, signInWithPhoneNumber} from "firebase/auth";
 import {signInWithEmailAndPassword} from "firebase/auth";
-import { collection, query, where, addDoc, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firestore';
+import {collection, query, where, getDocs} from 'firebase/firestore';
 import {auth, db} from "@/pages/config/firbase-setting";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
 import React, {useEffect, useState} from "react";
 import logDev from "@/pages/config/log";
 import {useRecoilState} from "recoil";
-import {loginUser, User} from "@/pages/common/state";
-import {UserImpl} from "@firebase/auth/internal";
+import {loginUser} from "@/pages/common/state";
 import {useRouter} from "next/router";
-
 
 
 type FormFields = {
@@ -40,17 +38,16 @@ const schemaOtp = yup.object().shape({
 
 
 const Login: React.FC = () => {
+    const [getUser, setUser] = useRecoilState(loginUser);
     const [loginStep, setLoginStep] = useState<number>(1);
     const [verificationId, setVerificationId] = useState('');
     const [userName, setUserName] = useState('');
     const [uniqueNumber, setUniqueNumber] = useState('');
-    const [email, setEmail] = useState('');
+    const [getEmail, setEmail] = useState<string | null>('');
     const [phoneNumber, setPhoneNumber] = useState('');
-    const [token, setToken] = useState('');
-    const [user, setUser] = useRecoilState(loginUser);
     const router = useRouter();
 
-    const { register, handleSubmit, formState: { errors } } = useForm<FormFields>({
+    const {register, handleSubmit, formState: {errors}} = useForm<FormFields>({
         resolver: yupResolver(schema),
     });
     let recaptchaVerifier: RecaptchaVerifier;
@@ -58,63 +55,70 @@ const Login: React.FC = () => {
         recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container');
     }, []);
     const [firebaseError, setFirebaseError] = React.useState<string | null>(null);
-        const onSubmit: SubmitHandler<FormFields> = async ({ uniquenumber, username,email, password }) => {
-            const queryDate = query(
-                collection(db, "userInfo"),
-                where("uniqueNumber", "==", uniquenumber ),
-                where("userName", "==", username ),
-            );
-            const querySnapshot = await getDocs(queryDate);
-            if (querySnapshot.empty) {
-                // doc.data() will be undefined in this case
-                logDev("고유번호나 성명이 일치하지 않습니다.");
-                // const docRef = await addDoc(collection(db, "usersInfo"), {
-                //     uniquenumber: uniquenumber,
-                //     username: username,
-                //     password: password
-                // });
-                // console.log("Document written with ID: ", docRef.id);
-                setFirebaseError("고유번호나 성명이 일치하지 않습니다.");
-                return;
-            }else{
-                logDev('UniqueNumber and UserName is correct !!!!!');
-                let phoneNumber = 0;
-                try{
+    const onSubmit: SubmitHandler<FormFields> = async ({uniquenumber, username, email, password}) => {
+        const queryDate = query(
+            collection(db, "userInfo"),
+            where("uniqueNumber", "==", uniquenumber),
+            where("userName", "==", username),
+        );
+        const querySnapshot = await getDocs(queryDate);
+        if (querySnapshot.empty) {
+            // doc.data() will be undefined in this case
+            logDev("고유번호나 성명이 일치하지 않습니다.");
+            // const docRef = await addDoc(collection(db, "usersInfo"), {
+            //     uniquenumber: uniquenumber,
+            //     username: username,
+            //     password: password
+            // });
+            // console.log("Document written with ID: ", docRef.id);
+            setFirebaseError("고유번호나 성명이 일치하지 않습니다.");
+            return;
+        } else {
+            logDev('UniqueNumber and UserName is correct !!!!!');
+            let phoneNumber = 0;
+            try {
                 const result = await signInWithEmailAndPassword(auth, email, password);
                 const idToken = await result.user.getIdToken();
-                    if(idToken){
-                        logDev(idToken);
-                        querySnapshot.forEach((doc) => {
-                            logDev(`${doc.id} => ${doc.data()} `);
-                             phoneNumber = doc.data().phoneNumber;
-                             setPhoneNumber(phoneNumber.toString());
-                             setUserName(doc.data().userName);
-                             setUniqueNumber(doc.data().uniqueNumber);
-                             setEmail(doc.data().email);
-                        });
-                    }
-                }catch (e) {
-                    console.log(e);
-                    setFirebaseError('Email 또는 비밀번호가 일치하지 않습니다.');
-                    return;
+                if (idToken) {
+                    logDev('success idToken !!!!!');
+                    logDev(idToken);
+                    querySnapshot.forEach((doc) => {
+                        logDev(`${doc.id} => ${doc.data()} `);
+                        logDev('phoneNumber : ' + doc.data().phoneNumber);
+                        logDev('userName : ' + doc.data().userName);
+                        logDev('uniqueNumber : ' + doc.data().uniqueNumber);
+                        logDev('doc email : ' + doc.data().email);
+                        logDev('email : ' + email);
+                        logDev('email// : ' + result.user.email);
+                        phoneNumber = doc.data().phoneNumber;
+                        setPhoneNumber(phoneNumber.toString());
+                        setUserName(doc.data().userName);
+                        setUniqueNumber(doc.data().uniqueNumber);
+                        setEmail(result.user.email);
+                    });
                 }
-                try{
-                    const confirmData = await signInWithPhoneNumber(auth, `+82${String(phoneNumber)}`, recaptchaVerifier);
-                    setVerificationId(confirmData.verificationId);
-                    setLoginStep(2);
-                    logDev('success phone number !!!!!');
-                    logDev(confirmData);
-                    // console.log(confirmData);
+            } catch (e) {
+                console.log(e);
+                setFirebaseError('Email 또는 비밀번호가 일치하지 않습니다.');
+                return;
+            }
+            try {
+                const confirmData = await signInWithPhoneNumber(auth, `+82${String(phoneNumber)}`, recaptchaVerifier);
+                setVerificationId(confirmData.verificationId);
+                setLoginStep(2);
+                logDev('success phone number !!!!!');
+                logDev(confirmData);
+                // console.log(confirmData);
 
-                }catch (e) {
-                    console.log(e);
-                    setFirebaseError('인증번호 전송에 실패하였습니다.');
-                    return;
-                }
-
+            } catch (e) {
+                console.log(e);
+                setFirebaseError('인증번호 전송에 실패하였습니다.');
+                return;
             }
 
-        };
+        }
+
+    };
 
     const [otp, setOtp] = useState('');
     const handleOtpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -125,21 +129,25 @@ const Login: React.FC = () => {
         logDev('event onVerifyOTP');
         try {
             const credential = PhoneAuthProvider.credential(verificationId, otp);
-            const result = await signInWithCredential(auth,credential);
+            const result = await signInWithCredential(auth, credential);
             logDev(result);
             logDev('success OTP !!!!!');
             const accessToken = await result.user.getIdToken();
 
-            user!.email = email;
-            user!.phoneNumber = phoneNumber;
-            user!.uid = result.user.uid;
-            user!.token = accessToken;
-            user!.userName = userName;
-            user!.uniqueNumber = uniqueNumber;
+            logDev('result user email : ' + getEmail);
+            if (getUser) {
+                getUser.email = getEmail;
+                getUser.phoneNumber = phoneNumber;
+                getUser.uid = result.user.uid;
+                getUser.token = accessToken;
+                getUser.userName = userName;
+                getUser.uniqueNumber = uniqueNumber;
+                setUser(getUser);
+            }
 
-            setUser(user);
             logDev(accessToken);
-            router.push('/home');
+
+            await router.push('/main');
         } catch (error) {
             // Handle errors here.
             console.log(error);
@@ -153,7 +161,7 @@ const Login: React.FC = () => {
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div>
                         <label>고유번호(아이디)</label>
-                        <input type="text" {...register("uniquenumber")} placeholder={""} />
+                        <input type="text" {...register("uniquenumber")} placeholder={""}/>
                         {errors.uniquenumber && <span>{errors.uniquenumber.message}</span>}
                     </div>
                     <div>
@@ -173,11 +181,11 @@ const Login: React.FC = () => {
                     </div>
                     {firebaseError && <div>Error: {firebaseError}</div>}
                     <div id={"recaptcha-container"}></div>
-                    <input type="submit" />
+                    <input type="submit"/>
                 </form>
                 :
                 <div>
-                    <input type="text" placeholder="인증번호를 입력하세요." id={"otp"} value={otp} onChange={handleOtpChange} />
+                    <input type="text" placeholder="인증번호를 입력하세요." id={"otp"} value={otp} onChange={handleOtpChange}/>
                     <button onClick={onVerifyOTP}>인증번호 확인</button>
                     {firebaseError && <div>Error: {firebaseError}</div>}
                 </div>

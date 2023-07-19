@@ -1,0 +1,44 @@
+@charset "utf-8";
+
+
+.nbr-txt-style {
+    font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+}
+.eng-txt-style {
+    font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+}
+.txt-point-red {
+    color: #db1111;
+    font-weight: 500;
+}
+.txt-point-blue {
+    color: #1295e0;
+}
+.txt-point-blue-b {
+    color: #114b98;
+}
+
+.invisible_inline {
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    border: 0;
+    clip: rect(1px, 1px, 1px, 1px);
+    -webkit-clip-path: inset(50%);
+    clip-path: inset(50%);
+}
+
+.ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+
+#header .bottom h1.logo > Link{
+    width: 142px;
+    height: 72px;
+    text-indent: -9999px;
+    background: url(../../images/common/logo.svg) no-repeat center;
+    display: block;
+}

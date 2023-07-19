@@ -6,14 +6,14 @@ import { useEffect, ComponentType } from 'react';
 interface IProps {
 
 }
-const withAuth  = (Component: ComponentType<IProps>) => {
+const WithAuth  = (Component: ComponentType<IProps>) => {
     return function ProtectedRoute(props: IProps) {
         const user = useRecoilValue(loginUser);
         const router = useRouter();
 
         useEffect(() => {
             if (!user) {
-                router.push('/login'); // Or wherever your login route is
+                router.push('/index'); // Or wherever your login route is
             }
         }, [user]);
 
@@ -21,4 +21,4 @@ const withAuth  = (Component: ComponentType<IProps>) => {
     };
 };
 
-export default withAuth;
+export default WithAuth;
