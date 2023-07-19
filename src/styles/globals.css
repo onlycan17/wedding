@@ -1283,10 +1283,10 @@ input[type="date" ] {
 #cms-gnb > ul > li.curr > a {color:#A2BB81}
 #cms-gnb > ul > li.on > a:after,
 #cms-gnb > ul > li.curr > a:after {width:100%; height:3px; background-color:#A2BB81; content:""; position:absolute; bottom:-23px; left:0;}
-/*
+
 #cms-gnb > ul > li.on ul,
 #cms-gnb > ul > li.curr ul {background-color:#f6f6f6;}
-*/
+
 
 
 
