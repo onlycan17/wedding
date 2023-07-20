@@ -91,3 +91,17 @@
     color: #AAAAAA;
 }
 
+.login_bottom_link {
+    width: 100%;
+    font-size: 14px;
+    color: #1295e0;
+    font-weight: 400;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+}
+
+.login_bottom_detail{
+    margin-right: 10px;
+}

@@ -2,43 +2,33 @@
 import {initializeApp, getApps} from "firebase/app";
 import {getAuth} from "firebase/auth";
 import {getFirestore} from "@firebase/firestore";
-
-
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-// const firebaseConfig = {
-//   apiKey: "AIzaSyAy18Sd-pssScKd8BMRhYFv8KaWwqQqcww",
-//   authDomain: "provicewedding.firebaseapp.com",
-//   projectId: "provicewedding",
-//   storageBucket: "provicewedding.appspot.com",
-//   messagingSenderId: "382155878703",
-//   appId: "1:382155878703:web:2549e0a280f8ad550771da",
-//   measurementId: "G-DWLPKL0YZX"
-// };
+import logDev from "@/pages/config/log";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCMzzIlKhKz_lPVGli-NUEg4c40kYEyUik",
-  authDomain: "weddingmanagement-52f64.firebaseapp.com",
-  projectId: "weddingmanagement-52f64",
-  storageBucket: "weddingmanagement-52f64.appspot.com",
-  messagingSenderId: "122531482608",
-  appId: "1:122531482608:web:2ffa4afb728bfef4b42b35",
-  measurementId: "G-KW8RDEPTHP"
+  apiKey: process.env.NEXT_PUBLIC_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
+  databaseURL: process.env.NEXT_PUBLIC_DATABASE_URL,
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_PROJECT_ID,
+  messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID
 };
-
 
 let app;
 // Initialize Firebase
-if(!getApps().length){
+try {
   app = initializeApp(firebaseConfig);
-}else{
+} catch (error) {
+  logDev(error);
   app = getApps()[0];
 }
 
+logDev(app);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// const analytics = getAnalytics(app);
 
 
 export {auth, db};
