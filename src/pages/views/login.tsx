@@ -1,14 +1,14 @@
+import {auth, db} from "@/pages/config/firbase-setting";
 import {useForm, SubmitHandler} from 'react-hook-form';
 import {PhoneAuthProvider, RecaptchaVerifier, signInWithCredential, signInWithPhoneNumber} from "firebase/auth";
 import {signInWithEmailAndPassword} from "firebase/auth";
 import {collection, query, where, getDocs} from 'firebase/firestore';
-import {auth, db} from "@/pages/config/firbase-setting";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
 import React, {useEffect, useState} from "react";
 import logDev from "@/pages/config/log";
 import {useRecoilState} from "recoil";
-import {loginUser} from "@/pages/common/state";
+import {userState} from "@/pages/common/state";
 import {useRouter} from "next/router";
 import styles from '../../styles/css/login.module.css';
 import Cookies from "js-cookie";
@@ -43,7 +43,8 @@ const TIMEOUT_SECONDS = 60;
 
 const Login: React.FC = () => {
     const [timeRemaining, setTimeRemaining] = useState(TIMEOUT_SECONDS);
-    const [getUser, setUser] = useRecoilState(loginUser);
+    const [user, setUser] = useRecoilState(userState);
+    const [isReadOnly, setIsReadOnly] = useState(true);
     const [verificationId, setVerificationId] = useState('');
     const [userName, setUserName] = useState(Cookies.get('userName') ?? '');
     const [uniqueNumber, setUniqueNumber] = useState(Cookies.get('uniqueNumber') ?? '');
@@ -52,21 +53,24 @@ const Login: React.FC = () => {
     const router = useRouter();
     const [selected, setSelected] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [firebaseError, setFirebaseError] = React.useState<string | null>(null);
+    const [recaptchaVerifier, setRecaptchaVerifier] = useState<RecaptchaVerifier | null>(null);
 
     const {register, handleSubmit, formState: {errors}} = useForm<FormFields>({
         resolver: yupResolver(schema),
     });
-    let recaptchaVerifier: RecaptchaVerifier;
+    // let recaptchaVerifier: RecaptchaVerifier | null = null;
     useEffect(() => {
+        logDev(`Login useEffect user: ${user}`);
+        if (user != null) {
+            router.replace('/views/main');
+        }
         if (timeRemaining > 0) {
             const timerId = setTimeout(() => setTimeRemaining(timeRemaining - 1), 1000);
             return () => clearTimeout(timerId);
         }
         setTimeRemaining(TIMEOUT_SECONDS);
-        recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container');
-
     }, []);
-    const [firebaseError, setFirebaseError] = React.useState<string | null>(null);
     const onSubmit: SubmitHandler<FormFields> = async ({uniquenumber, username, email, password}) => {
         const queryDate = query(
             collection(db, "userInfo"),
@@ -101,10 +105,11 @@ const Login: React.FC = () => {
                         logDev('doc email : ' + doc.data().email);
                         logDev('email : ' + email);
                         logDev('email// : ' + result.user.email);
-                        setPhoneNumber(phoneNumber.toString());
+                        setPhoneNumber(doc.data().phoneNumber);
                         setUserName(doc.data().userName);
                         setUniqueNumber(doc.data().uniqueNumber);
                         setEmail(result.user.email);
+                        openModal();
                     });
                 }
             } catch (e) {
@@ -112,21 +117,6 @@ const Login: React.FC = () => {
                 setFirebaseError('Email 또는 비밀번호가 일치하지 않습니다.');
                 return;
             }
-            try {
-                const confirmData = await signInWithPhoneNumber(auth, `+82${String(phoneNumber)}`, recaptchaVerifier);
-                setVerificationId(confirmData.verificationId);
-                // setLoginStep(2);
-                setIsModalOpen(true);
-                logDev('success phone number !!!!!');
-                logDev(confirmData);
-                // console.log(confirmData);
-                openModal();
-            } catch (e) {
-                console.log(e);
-                setFirebaseError('인증번호 전송에 실패하였습니다.');
-                return;
-            }
-
         }
 
     };
@@ -139,6 +129,8 @@ const Login: React.FC = () => {
     const onVerifyOTP = async () => {
         logDev('event onVerifyOTP');
         try {
+            logDev(`otp : ${otp}`);
+            logDev(`verificationId : ${verificationId}`);
             const credential = PhoneAuthProvider.credential(verificationId, otp);
             const result = await signInWithCredential(auth, credential);
             logDev(result);
@@ -146,21 +138,22 @@ const Login: React.FC = () => {
             const accessToken = await result.user.getIdToken();
 
             logDev('result user email : ' + getEmail);
-            if (getUser) {
-                getUser.email = getEmail;
-                getUser.phoneNumber = phoneNumber;
-                getUser.uid = result.user.uid;
-                getUser.token = accessToken;
-                getUser.userName = userName;
-                getUser.uniqueNumber = uniqueNumber;
-                setUser(getUser);
-                setIsModalOpen(false);
-                closeModal();
+            const userInfo = {
+               email: getEmail,
+                phoneNumber: phoneNumber,
+                uid: result.user.uid,
+                token: accessToken,
+                userName: userName,
+                uniqueNumber: uniqueNumber,
             }
+
+            setUser(userInfo);
+            setIsModalOpen(false);
+            closeModal();
 
             logDev(accessToken);
 
-            await router.push('/main');
+            await router.push('/views/main');
         } catch (error) {
             // Handle errors here.
             console.log(error);
@@ -182,8 +175,44 @@ const Login: React.FC = () => {
             }
         }
     };
-    const openModal = () => setIsModalOpen(true);
+    const openModal = async () => {
+        setIsModalOpen(true);
+    };
     const closeModal = () => setIsModalOpen(false);
+
+    const handleRequestNumber = async () => {
+        try {
+            const rec = new RecaptchaVerifier(auth, 'sign-in-button', {
+                'size': 'invisible',
+                'callback': (response: any) => {
+                    // reCAPTCHA solved, allow signInWithPhoneNumber.
+                    logDev('recaptchaVerifier callback !!!!!');
+                    console.log(response);
+                    //onVerifyOTP();
+                }
+            });
+            //setRecaptchaVerifier();
+            logDev('phoneNumber verifier!!!!!');
+            logDev(rec);
+            if (rec == null) {
+                setFirebaseError('인증번호 전송에 실패하였습니다. 관리자에게 문의하세요.');
+                return;
+            }
+
+            // console.log(confirmData);
+            logDev(`phoneNumber : +82${phoneNumber}`);
+
+            const confirmData = await signInWithPhoneNumber(auth, `+82${String(phoneNumber)}`, rec);
+            setVerificationId(confirmData.verificationId);
+            // setLoginStep(2);
+            logDev('success phone number !!!!!');
+            logDev(confirmData);
+            setIsReadOnly(false);
+        } catch (e) {
+            logDev('error phone number !!!!!');
+            logDev(e);
+        }
+    }
 
     return (
         <div className={`${styles.login_body} pt50`}>
@@ -222,7 +251,6 @@ const Login: React.FC = () => {
                             <label className={styles.radio_label} htmlFor="login">로그인</label>
                         </div>
                         {firebaseError && <div className={"imp_red"}>Error: {firebaseError}</div>}
-                        <div id={"recaptcha-container"}></div>
                         <div className={styles.login_div_btn}>
                             <input className={styles.login_btn} type="submit" value={"로그인"}/>
                         </div>
@@ -300,7 +328,7 @@ const Login: React.FC = () => {
                         }}>
                             {`0${phoneNumber}`}
                         </label>
-                        <button style={{
+                        <button id={"recaptcha-container"} style={{
                             width: '160px',
                             height: '48px',
                             borderRadius: '5px',
@@ -310,7 +338,7 @@ const Login: React.FC = () => {
                             fontWeight: '600',
                             lineHeight: '22.5px',
                             letterSpacing: '2%',
-                        }}>
+                        }} onClick={handleRequestNumber}>
                             인증번호받기
                         </button>
                     </div>
@@ -323,13 +351,14 @@ const Login: React.FC = () => {
                             padding: '20px 10px 20px 10px',
                             gap: '10px',
                         }}
+                        readOnly={isReadOnly}
                         type="text" placeholder="인증번호를 입력하세요." id={"otp"} value={otp}
-                           onChange={handleOtpChange}/>
+                        onChange={handleOtpChange}/>
                     <div style={{
                         width: '100%',
                         display: 'flex',
                         flexDirection: 'row',
-                        justifyContent:'right'
+                        justifyContent: 'right'
                     }}>
                         <label style={{
                             fontSize: '16px',
@@ -366,7 +395,7 @@ const Login: React.FC = () => {
                             인증번호가 오지 않을경우 입력하신 정보를 확인하여주세요
                         </label>
                     </div>
-                    <button style={{
+                    <button id={"sign-in-button"} style={{
                         width: '320px',
                         height: '52px',
                         background: '#A2BB81',

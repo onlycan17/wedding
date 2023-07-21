@@ -14,13 +14,13 @@ export const userState = atom<User | null>({
     default: null,
 });
 
-export const loginUser = selector<User | null>({
-    key: `loginUser_${v1()}`,
-    get: ({get}) => {
-        return get(userState);
-    },
-    set: ({set}, newValue) => {
-        set(userState, newValue);
-    },
-});
+// export const loginUser = selector<User | null>({
+//     key: `loginUser_${v1()}`,
+//     get: ({get}) => {
+//         return get(userState);
+//     },
+//     set: ({set}, newValue) => {
+//         set(userState, newValue);
+//     },
+// });
 

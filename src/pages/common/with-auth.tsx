@@ -1,19 +1,24 @@
-import { useRecoilValue } from 'recoil';
-import { loginUser } from '../common/state';
+import {useRecoilValue} from 'recoil';
+import {userState} from '../common/state';
 import { useRouter } from 'next/router';
 import { useEffect, ComponentType } from 'react';
+import logDev from "@/pages/config/log";
 
 interface IProps {
 
 }
 const WithAuth  = (Component: ComponentType<IProps>) => {
     return function ProtectedRoute(props: IProps) {
-        const user = useRecoilValue(loginUser);
+        // const user = useRecoilValue(loginUser);
+        const user = useRecoilValue(userState);
         const router = useRouter();
 
         useEffect(() => {
-            if (!user) {
-                router.push('/index'); // Or wherever your login route is
+            // logDev(`WithAuth user: ${JSON.stringify(user)}`);
+            logDev(`WithAuth user: ${user}`);
+            if (user == null) {
+                router.replace('/views/login'); // Or wherever your login route is
+                return;
             }
         }, [user]);
 

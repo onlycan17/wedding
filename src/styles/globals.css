@@ -3627,7 +3627,7 @@ input[type="date" ] {
     left: 0;
 }
 
-/*#header .bottom h1.logo a {width:142px; height:72px; text-indent:-9999px; background:url("/images/common/logo.svg") no-repeat center; display:block;}*/
+#header .bottom h1.logo a {width:142px; height:72px; text-indent:-9999px; background:url("../images/common/logo.svg") no-repeat center; display:block; background-size: contain}
 #header .bottom > .inner {
     height: 100%;
     padding: 0 170px 0 145px;
@@ -4382,6 +4382,7 @@ button {
     height: 72px;
     text-indent: -9999px;
     background: url("../images/common/logo.svg") no-repeat 0 0;
+    background-size: contain;
     display: block;
 }
 

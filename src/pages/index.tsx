@@ -1,15 +1,15 @@
 import Login from "@/pages/views/login";
-import React from "react";
-import Header from "@/pages/components/header";
-import Footer from "@/pages/components/footer";
+import {useRecoilValue} from "recoil";
+import {userState} from "@/pages/common/state";
+import Main from "@/pages/views/main";
+import logDev from "@/pages/config/log";
 
 export default function Home() {
-
+    const user = useRecoilValue(userState);
+    logDev(`Home user: ${user}`);
     return (
         <div>
-            <Header/>
-                <Login/>
-            <Footer/>
+            {user ? <Main/> : <Login/>  }
         </div>
     )
 }

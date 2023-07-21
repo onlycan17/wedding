@@ -1,5 +1,6 @@
-import {useState, useEffect, MouseEvent, FocusEvent} from "react";
+import {useState, MouseEvent, FocusEvent, useEffect} from "react";
 import Link from 'next/link';
+import logDev from "@/pages/config/log";
 
 type SubmenuList = {
     seq: number;
@@ -22,11 +23,14 @@ const Header: React.FC = () => {
     const [submenuListSix, setSubmenuListSix] = useState<SubmenuList[]>([]);
 
     useEffect(() => {
-        const cmsGnb = document.getElementById("cms-gnb");
-        if (cmsGnb) {
-            const ulElement = cmsGnb.querySelector("ul");
-            if (ulElement) {
-                setSubmenuHeight(ulElement.offsetHeight - 105);
+        logDev(`typeof window: ${typeof window}`);
+        if (typeof window !== 'undefined') {
+            const cmsGnb = document.getElementById("cms-gnb");
+            if (cmsGnb) {
+                const ulElement = cmsGnb.querySelector("ul");
+                if (ulElement) {
+                    setSubmenuHeight(ulElement.offsetHeight - 105);
+                }
             }
         }
         setSubmenuListOne([
@@ -100,9 +104,9 @@ const Header: React.FC = () => {
                                     <Link href="#" onFocus={handleFocus(index)}>
                                         {title}
                                     </Link>
-                                    <ul style={{height: submenuHeight ? `${submenuHeight}px` : ''}}>
+                                    <ul key={`ul_${index}`} style={{height: submenuHeight ? `${submenuHeight}px` : 'auto'}}>
                                         {submenuLists[index].map((subMenu, idx) => (
-                                            <li key={idx} className="font_reset">
+                                            <li key={`${index}_${idx}`} className="font_reset">
                                                 <Link id={`menu-${index}-${idx}`}
                                                       href={`${subMenu.link}`}>{subMenu.title}</Link>
                                             </li>

@@ -56,7 +56,9 @@ const Modal: FC<ModalProps> = ({isOpen, handleClose, children}) => {
                         borderRadius: '26px',
                         fontSize: '14px',
                         color: '#FFFFFF',
-                    }}>
+                    }}
+                            onClick={handleClose}
+                    >
                         취소
                     </button>
                 </div>
