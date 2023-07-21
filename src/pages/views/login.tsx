@@ -60,6 +60,7 @@ const Login: React.FC = () => {
         resolver: yupResolver(schema),
     });
     // let recaptchaVerifier: RecaptchaVerifier | null = null;
+    logDev(`Login user: ${user}`);
     useEffect(() => {
         logDev(`Login useEffect user: ${user}`);
         if (user != null) {
@@ -136,18 +137,19 @@ const Login: React.FC = () => {
             logDev(result);
             logDev('success OTP !!!!!');
             const accessToken = await result.user.getIdToken();
+            localStorage.setItem('token', accessToken);
 
-            logDev('result user email : ' + getEmail);
-            const userInfo = {
-               email: getEmail,
-                phoneNumber: phoneNumber,
-                uid: result.user.uid,
-                token: accessToken,
-                userName: userName,
-                uniqueNumber: uniqueNumber,
-            }
+            //logDev('result user email : ' + getEmail);
+            // const userInfo = {
+            //    email: getEmail,
+            //     phoneNumber: phoneNumber,
+            //     uid: result.user.uid,
+            //     token: accessToken,
+            //     userName: userName,
+            //     uniqueNumber: uniqueNumber,
+            // }
 
-            setUser(userInfo);
+            //setUser(userInfo);
             setIsModalOpen(false);
             closeModal();
 
