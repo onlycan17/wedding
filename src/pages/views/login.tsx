@@ -54,7 +54,6 @@ const Login: React.FC = () => {
     const [selected, setSelected] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [firebaseError, setFirebaseError] = React.useState<string | null>(null);
-    const [recaptchaVerifier, setRecaptchaVerifier] = useState<RecaptchaVerifier | null>(null);
 
     const {register, handleSubmit, formState: {errors}} = useForm<FormFields>({
         resolver: yupResolver(schema),

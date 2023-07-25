@@ -1,8 +1,10 @@
-import {useRecoilValue} from 'recoil';
-import {userState} from '../common/state';
+import {useRecoilState, useRecoilValue} from 'recoil';
+import {User, userState} from '../common/state';
 import { useRouter } from 'next/router';
 import { useEffect, ComponentType } from 'react';
 import logDev from "@/pages/config/log";
+import {onAuthStateChanged} from "@firebase/auth";
+import {auth} from "@/pages/config/firbase-setting";
 
 interface IProps {
 
@@ -10,17 +12,33 @@ interface IProps {
 const WithAuth  = (Component: ComponentType<IProps>) => {
     return function ProtectedRoute(props: IProps) {
         // const user = useRecoilValue(loginUser);
-        const user = useRecoilValue(userState);
+        const [recoilUser, setRecoilUser] = useRecoilState<User | null>(userState);
         const router = useRouter();
 
         useEffect(() => {
             // logDev(`WithAuth user: ${JSON.stringify(user)}`);
-            logDev(`WithAuth user: ${user}`);
-            if (user == null) {
+            const token = localStorage.getItem('token');
+            if (token) {
+                onAuthStateChanged(auth, (user) => {
+                   if(user){
+                       const currentUser: User = {
+                            uid: user.uid,
+                           token: token,
+                            email: user.email,
+                            userName: user.displayName,
+                           phoneNumber: user.phoneNumber,
+                           uniqueNumber: user.uid,
+                       }
+                       setRecoilUser(currentUser);
+                   }else{
+                       setRecoilUser(null);
+                   }
+                });
+            }else{
                 router.replace('/views/login'); // Or wherever your login route is
                 return;
             }
-        }, [user]);
+        }, [recoilUser]);
 
         return <Component {...props} />;
     };
