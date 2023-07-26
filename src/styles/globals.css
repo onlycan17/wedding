@@ -95,7 +95,12 @@ textarea {margin: 0; font-family: inherit; font-size: 1em; line-height: 1.15;} /
 
 button,
 input {overflow: visible;} /* edge */
-
+input::placeholder{
+    color: #999;
+    font-size: 14px;
+    font-weight: 400;
+    font-family: 'Noto Sans KR', sans-serif;
+}
 button,
 select {text-transform: none;} /*  Edge, Firefox 및 IE에서 텍스트 변형의 상속을 제거. */
 
@@ -1623,7 +1628,7 @@ button{
 
 
 .section_wrap.section6 {   border-top:1px solid #ddd;
-    height: 500px;
+    height: 400px;
     width:100%;
     min-width:1540px;
     margin: 0 ;
@@ -1655,11 +1660,13 @@ button{
 
 
 
-.section_wrap.section7 {   border-top:1px solid #ddd;
-    height: 80px;
+.section_wrap.section7 {
+    border-top:1px solid #ddd;
+    height: 120px;
     width:100%;
     min-width:1540px;
     margin: 0 ;
+    padding: 0 ;
 }
 .foot_copyright {color:#4D5053; font-family: 'Jost';font-weight: 400;font-size: 22px;
     line-height: 150%; letter-spacing: normal;}

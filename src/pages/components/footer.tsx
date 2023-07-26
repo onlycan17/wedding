@@ -1,8 +1,26 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Link from "next/link";
 import Image from "next/image";
 
 const Footer: React.FC = () => {
+    const [isVisible, setIsVisible] = useState(false);
+
+    const checkScrollTop = () => {
+        if (!isVisible && window.pageYOffset > 100){
+            setIsVisible(true);
+        } else if (isVisible && window.pageYOffset <= 100){
+            setIsVisible(false);
+        }
+    };
+
+    const scrollToTop = () => {
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    };
+
+    useEffect(() => {
+        window.addEventListener('scroll', checkScrollTop);
+        return () => window.removeEventListener('scroll', checkScrollTop);
+    }, []);
     return (
         <div>
             <div className="section_wrap  section6">
@@ -35,7 +53,7 @@ const Footer: React.FC = () => {
                 </div>
             </div>
             <div className="section_wrap  section7">
-                <div className={"footer_info"}>
+                <div className={"footer_info mb20"}>
                     <div className={""}>
                         <Link href={""}>개인정보처리방침</Link>
                         <Link href={""}>이용약관</Link>
@@ -43,7 +61,7 @@ const Footer: React.FC = () => {
                     </div>
                 </div>
                 <div className="inner">
-                    <a href="#" className="scrollup">Scroll</a>
+                    <Link style={{display : isVisible ? 'block' : 'none'}} href="#" className="scrollup" onClick={scrollToTop}>Scroll</Link>
                     <div className="foot_copyright a-c">
                         <p className={"footer_font"}>Copyright ⓒ JJagKKung consulting service. all rights reserved.</p>
                     </div>

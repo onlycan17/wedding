@@ -35,10 +35,6 @@ const schema = yup.object().shape({
         .required('패스워드는 필수 입력 입니다.'),
 });
 
-const schemaOtp = yup.object().shape({
-    otp: yup.string().required('인증번호는 필수 입력 입니다.'),
-} as any);
-
 const TIMEOUT_SECONDS = 60;
 
 const Login: React.FC = () => {
