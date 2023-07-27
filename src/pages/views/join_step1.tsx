@@ -1,9 +1,11 @@
-import React, {ChangeEvent, useEffect, useState} from "react";
-import Link from "next/link";
+import React, {ChangeEvent, useEffect, useState, useRef} from "react";
 import {useForm, SubmitHandler} from 'react-hook-form';
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
 import logDev from "@/pages/config/log";
+import {auth, db} from "@/pages/config/firbase-setting";
+import {ConfirmationResult, RecaptchaVerifier, signInWithPhoneNumber} from "firebase/auth";
+import {doc, setDoc} from "@firebase/firestore";
 
 
 type FormFields = {
@@ -23,16 +25,21 @@ const schema = yup.object().shape({
     birthMonth: yup.string().required('월은 필수 입력 입니다.'),
     birthDay: yup.string().required('일은 필수 입력 입니다.'),
     phoneFirst: yup.string().required('휴대폰 번호는 필수 입력 입니다.'),
-    phoneSecond: yup.string().required('휴대폰 번호는 필수 입력 입니다.'),
-    phoneThird: yup.string().required('휴대폰 번호는 필수 입력 입니다.'),
-    verifyCode: yup.string().required('인증번호는 필수 입력 입니다.'),
+    phoneSecond: yup.string().required('휴대폰 번호는 필수 입력 입니다.').test('isNumber', '숫자만 입력 가능합니다.', (value) => /^d+$/.test(value)),
+    phoneThird: yup.string().required('휴대폰 번호는 필수 입력 입니다.').test('isNumber', '숫자만 입력 가능합니다.', (value) => /^d+$/.test(value)),
+    verifyCode: yup.string().required('인증번호는 필수 입력 입니다.').test('isNumber', '숫자만 입력 가능합니다.', (value) => /^d+$/.test(value)),
 });
 
 const Join_step1: React.FC = () => {
-    const [agree1, setAgree1] = useState(false);
-    const [agree2, setAgree2] = useState(false);
-    const [agree3, setAgree3] = useState(false);
-    const [allAgree, setAllAgree] = useState(false);
+    const agree1Ref = useRef<HTMLInputElement | null>(null);
+    const agree2Ref = useRef<HTMLInputElement | null>(null);
+    const agree3Ref = useRef<HTMLInputElement | null>(null);
+    const agreeAllRef = useRef<HTMLInputElement | null>(null);
+
+    const [agree1, setAgree1] = useState<boolean>(false);
+    const [agree2, setAgree2] = useState<boolean>(false);
+    const [agree3, setAgree3] = useState<boolean>(false);
+    const [allAgree, setAllAgree] = useState<boolean>(false);
     const [agreeCnt, setAgreeCnt] = useState(0);
     const [birthYear, setBirthYear] = useState<number>(new Date().getFullYear());
     const [birthMonth, setBirthMonth] = useState<number>(new Date().getMonth() + 1);
@@ -42,36 +49,40 @@ const Join_step1: React.FC = () => {
     const [proviName, setProviName] = useState('');
     const [sex, setSex] = useState('male');
     const [verifyCode, setVerifyCode] = useState('');
+    const [confirmationResult, setConfirmationResult] = useState<null | ConfirmationResult>(null);
+    const [verifyMessage, setVerifyMessage] = useState('수신된 인증번호는 10분동안 유효합니다.');
 
+    const [isConfirm, setIsConfirm] = useState(false);
 
 
     const [phoneNumber, setPhoneNumber] = useState({
-        first: '010',
-        secont: '',
+        first: '10',
+        second: '',
         third: ''
     });
 
-    const {register, handleSubmit, formState: {errors}} = useForm<FormFields>({
+    const {register, getValues, handleSubmit, formState: {errors}} = useForm<FormFields>({
         resolver: yupResolver(schema),
     });
+
 
     useEffect(() => {
         handleSexChange;
         logDev(`agreeCnt: ${agreeCnt} / allAgree: ${allAgree}`);
         if (agreeCnt === 3) {
             logDev('agreeCnt === 3')
-            setAllAgree(true);
+            agreeAllRef.current!.checked = true;
             setAgree1(true);
             setAgree2(true);
             setAgree3(true);
         } else {
             logDev('agreeCnt !== 3')
-            setAllAgree(false);
+            agreeAllRef.current!.checked = false;
             setAgree1(false);
             setAgree2(false);
             setAgree3(false);
         }
-    }, [agreeCnt, allAgree, agree1, agree2, agree3]);
+    }, [agreeCnt, allAgree, confirmationResult, verifyCode, phoneNumber, verifyMessage]);
 
     const onSubmit: SubmitHandler<FormFields> = async ({
                                                            userName,
@@ -81,31 +92,28 @@ const Join_step1: React.FC = () => {
                                                            phoneFirst,
                                                            phoneSecond,
                                                            phoneThird,
-                                                           verifyCode
+                                                           verifyCode,
                                                        }) => {
-        console.log({
-            userName,
-            proviName,
-            birthYear,
-            birthMonth,
-            birthDay,
-            phoneFirst,
-            phoneSecond,
-            phoneThird,
-            verifyCode
+        logDev('onSubmit---------');
+        if (!agree1 || !agree2) {
+            alert('필수 약관에 동의해주세요.');
+            return;
+        }
+        // const query = await getDoc(doc(db, "userInfo", "test"));
+        await setDoc(doc(db, "userInfo","test"), {
+            userName: userName,
+            proviName: proviName,
+            birthYear: birthYear,
+            birthMonth: birthMonth,
+            birthDay: birthDay,
+            phoneNumFirst: phoneFirst,
+            phoneNumSecond: phoneSecond,
+            phoneNumThird: phoneThird,
+            agree1: agree1,
+            agree2: agree2,
+            agree3: agree3,
         });
     };
-    const handleBirthChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        const {name, value} = event.target;
-
-        if (name === 'birthYear') {
-            setBirthYear(Number(value));
-        } else if (name === 'birthMonth') {
-            setBirthMonth(Number(value));
-        } else if (name === 'birthDay') {
-            setBirthDay(Number(value));
-        }
-    }
 
 
     const handleSexChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -125,12 +133,49 @@ const Join_step1: React.FC = () => {
         });
     }
 
-    const handleVerifyCodeChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const {value} = event.target;
-        setVerifyCode(value);
-    }
-    const handlePhoneNumberChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleVerifyCodeChange = async () => {
+        logDev('handleVerifyCodeChange~~~~');
+        const appVerifier = new RecaptchaVerifier(auth, 'verify-button', {
+            'size': 'invisible'
+        });
 
+        const data = getValues();
+        const numberString = '+82' + data.phoneFirst + data.phoneSecond + data.phoneThird;
+
+        logDev(numberString);
+
+        signInWithPhoneNumber(auth, numberString, appVerifier)
+            .then((confirmationResult) => {
+                // SMS sent. Prompt user to type the code from the message, then sign the
+                // user in with confirmationResult.confirm(code).
+                setConfirmationResult(confirmationResult);
+            }).catch((error) => {
+            // Error; SMS not sent
+            console.error('SMS not sent', error);
+        });
+    }
+    const handleVerifyCodeConfirm = async () => {
+        logDev('handleVerifyCodeConfirm~~~~');
+        const data = getValues();
+        logDev(data.verifyCode);
+        if (confirmationResult !== null) {
+            try {
+                confirmationResult.confirm(data.verifyCode).then((result) => {
+                    logDev('User signed in successfully.');
+                    const user = result.user;
+                    console.log(user);
+                    setVerifyMessage('인증되었습니다.');
+                    setIsConfirm(true);
+                }).catch((error) => {
+                    console.error('SMS not sent', error);
+                });
+            } catch (e) {
+                console.log(e);
+                setVerifyMessage('인증번호가 일치하지 않습니다.');
+            }
+        } else {
+            setVerifyMessage('인증번호가 일치하지 않습니다.');
+        }
     }
 
 
@@ -153,22 +198,34 @@ const Join_step1: React.FC = () => {
 
     const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
         logDev('handleCheck!!!!!');
-        const {name, checked} = event.target;
+        const {name, checked,} = event.target;
         logDev(`${name}, ${checked}`);
 
-            if (name === 'agree1') {
-                setAgreeCnt(checked ? agreeCnt + 1 : agreeCnt - 1);
-            }
-            if (name === 'agree2') {
-                setAgreeCnt(checked ? agreeCnt + 1 : agreeCnt - 1);
-            }
-            if (name === 'agree3') {
-                setAgreeCnt(checked ? agreeCnt + 1 : agreeCnt - 1);
-            }
-            if (name === 'allAgree') {
-                setAgreeCnt(checked ? 3 : 0);
-            }
+        if (name === 'agree1') {
+            setAgreeCnt(checked ? agreeCnt + 1 : agreeCnt - 1);
+            setAgree1(checked);
+        }
+        if (name === 'agree2') {
+            setAgreeCnt(checked ? agreeCnt + 1 : agreeCnt - 1);
+            setAgree2(checked);
+        }
+        if (name === 'agree3') {
+            setAgreeCnt(checked ? agreeCnt + 1 : agreeCnt - 1);
+            setAgree3(checked);
+        }
+        if (name === 'allAgree') {
+            setAgreeCnt(checked ? 3 : 0);
+            setAllAgree(checked);
+            agree1Ref.current!.checked = checked;
+            agree2Ref.current!.checked = checked;
+            agree3Ref.current!.checked = checked;
+
+            setAgree1(checked);
+            setAgree2(checked);
+            setAgree3(checked);
+        }
     }
+
 
     return (
         <div>
@@ -211,7 +268,6 @@ const Join_step1: React.FC = () => {
                                                 className="inp w400px "
                                                 placeholder="이름"
                                                 id="realName"
-                                                value={userName}
                                                 {...register('userName')}
                                             />
                                         </div>
@@ -227,7 +283,6 @@ const Join_step1: React.FC = () => {
                                                 className="inp w400px "
                                                 placeholder="이름"
                                                 id="proviedName"
-                                                value={proviName}
                                             />
                                         </div>
                                     </td>
@@ -237,12 +292,6 @@ const Join_step1: React.FC = () => {
                                     <th scope="col">
                                         생년월일
                                         <em className="mark">(필수입력)</em>
-                                        {errors.birthYear &&
-                                            <span className={"imp_red"}>{errors.birthYear.message}</span>}
-                                        {errors.birthMonth &&
-                                            <span className={"imp_red"}>{errors.birthMonth.message}</span>}
-                                        {errors.birthDay &&
-                                            <span className={"imp_red"}>{errors.birthDay.message}</span>}
                                     </th>
                                     <td scope="col">
                                         <div className="inp-wrap  ">
@@ -320,26 +369,27 @@ const Join_step1: React.FC = () => {
                                 <tr>
                                     <th scope="col">
                                         휴대폰 <em className="mark">(필수입력)</em>
-                                        {errors.phoneFirst &&
-                                            <span className={"imp_red"}>{errors.phoneFirst.message}</span>}
-                                        {errors.phoneSecond &&
-                                            <span className={"imp_red"}>{errors.phoneSecond.message}</span>}
-                                        {errors.phoneThird &&
-                                            <span className={"imp_red"}>{errors.phoneThird.message}</span>}
+                                        {!errors.phoneThird && <span
+                                            className={"imp_red font-size-12"}>{errors.phoneSecond?.message}</span>}
+                                        {!errors.phoneSecond && <span
+                                            className={"imp_red font-size-12"}>{errors.phoneThird?.message}</span>}
+                                        {errors.phoneThird && errors.phoneSecond ? <span
+                                            className={"imp_red font-size-12"}>{errors.phoneSecond?.message}</span> : null}
                                     </th>
 
 
                                     <td scope="col" colSpan={3}>
                                         <div className="form-wrap tel">
 											<span>
-												<select id="hpSeqNo" value="" title="통신사 번호를 선택해 주세요."
-                                                        className="w110px" {...register('phoneFirst')}>
-													<option value="010">010</option>
-													<option value="011">011</option>
-													<option value="016">016</option>
-													<option value="017">017</option>
-													<option value="018">018</option>
-													<option value="019">019</option>
+												<select id="hpSeqNo" value={phoneNumber.first} title="통신사 번호를 선택해 주세요."
+                                                        className="w110px" {...register('phoneFirst')}
+                                                        disabled={isConfirm}>
+													<option value="10">010</option>
+													<option value="11">011</option>
+													<option value="16">016</option>
+													<option value="17">017</option>
+													<option value="18">018</option>
+													<option value="19">019</option>
 												</select>
 											</span>
                                             <em className="dash">-</em>
@@ -347,29 +397,41 @@ const Join_step1: React.FC = () => {
 
                                             <span><input type="text" className="input-text a-l"
                                                          id="hpBurNo"
-                                                         value="" maxLength={4} placeholder="입력"
+                                                         maxLength={4} placeholder="입력"
                                                          title="휴대전화번호에서 중간번호를 입력해 주세요."
                                                          {...register('phoneSecond')}
+                                                         disabled={isConfirm}
                                             /></span>
                                             <em className="dash">-</em>
 
                                             <span><input type="text" className="input-text a-l" id="hpNo"
-                                                         value="" maxLength={4} placeholder="입력"
+                                                         maxLength={4} placeholder="입력"
                                                          title="휴대전화번호에서 마지막 번호를 입력해 주세요."
                                                          {...register('phoneThird')}
+                                                         disabled={isConfirm}
                                             /></span>
 
 
-                                            <span><Link href="#"
-                                                        className="button medium w150px  navy ml20">인증번호받기</Link></span>
+                                            <span>
+                                                <button type={"button"}
+                                                        className="button medium w150px  navy ml20"
+                                                        onClick={handleVerifyCodeChange}>인증번호받기</button>
+                                            </span>
                                         </div>
 
                                         <div className="form-wrap ">
-
-                                        <span><input type="text" className="input-text a-l mt10"
-                                                     maxLength={4} title=""
-                                                     placeholder="인증번호" {...register('verifyCode')} /> </span>
-                                            <label className={"imp_blue mt25 ml10"}>수신된 인증번호는 10분동안 유효합니다.</label>
+                                            <span>
+                                                <input type="text" className="input-text a-l mt10"
+                                                       maxLength={6} title=""
+                                                       placeholder="인증번호" {...register('verifyCode')}
+                                                       disabled={isConfirm}
+                                                />
+                                            </span>
+                                            <button type={"button"} id={"verify-button"}
+                                                    className="button medium w10px btnBG_gray mt10 ml10"
+                                                    onClick={handleVerifyCodeConfirm}>인증번호 확인
+                                            </button>
+                                            <label className={"imp_blue mt25 ml10"}>{verifyMessage}</label>
                                         </div>
 
                                         <div>
@@ -392,7 +454,8 @@ const Join_step1: React.FC = () => {
                         <div>
                             <div className="agree-area ">
 									<span className="bg-chk">
-										<input type="checkbox" id="agree1" name="agree1" checked={agree1 ? true : false}  onChange={handleCheck} /><label
+										<input type="checkbox" id="agree1" name="agree1" ref={agree1Ref}
+                                               onChange={handleCheck}/><label
                                         htmlFor="agree1">[필수] 이용약관동의 </label>
 									</span>
                             </div>
@@ -427,7 +490,8 @@ const Join_step1: React.FC = () => {
                         <div className="mt50">
                             <div className="agree-area ">
 									<span className="bg-chk">
-										<input type="checkbox" id="agree2" name="agree2" checked={agree2 ? true : false}  onChange={handleCheck} /><label htmlFor="agree2">[필수] 개인정보처리방침 동의 </label>
+										<input type="checkbox" id="agree2" name="agree2" ref={agree2Ref}
+                                               onChange={handleCheck}/><label htmlFor="agree2">[필수] 개인정보처리방침 동의 </label>
 									</span>
                             </div>
 
@@ -461,12 +525,12 @@ const Join_step1: React.FC = () => {
                         <div className="mt50">
                             <div className="agree-area ">
 									<span className="bg-chk">
-										<input type="checkbox" id="agree3" name="agree3" checked={agree3 ? true : false}  onChange={handleCheck} /><label htmlFor="agree3">[선택] 마케팅 활용 동의   </label>
+										<input type="checkbox" id="agree3" name="agree3" ref={agree3Ref}
+                                               onChange={handleCheck}/><label htmlFor="agree3">[선택] 마케팅 활용 동의   </label>
 									</span>
                             </div>
 
                             <div className="border-box v2 round mt10">
-
                                 <div className="box-cont scroll-y">
                                     <div className="terms-area">
                                         <p>
@@ -491,12 +555,13 @@ const Join_step1: React.FC = () => {
                         {/*// <!-- 마케팅 활용 동의  끝 -->*/}
                         <div className="agree-area_all  mt40">
 								<span className="bg-chk">
-									<input type="checkbox" id="allAgree" name="allAgree" checked={allAgree ? true : false}  onChange={handleCheck} /><label
-                                    htmlFor="allAgree">위의 전체약관에 동의합니다. </label>
+									<input type="checkbox" id="allAgree" name="allAgree" ref={agreeAllRef}
+                                           onChange={handleCheck}/>
+                                    <label htmlFor="allAgree">위의 전체약관에 동의합니다. </label>
 								</span>
                         </div>
                         <div className="button-group a-c mt200">
-                            <Link href="" className="button extra border radius30" type={"submit"} >다음단계</Link>
+                            <input type={"submit"} className="button extra border radius30" value={"다음단계"}/>
                         </div>
                     </div>
                 </form>
