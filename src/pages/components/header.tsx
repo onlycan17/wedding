@@ -1,6 +1,8 @@
 import {useState, MouseEvent, FocusEvent, useEffect} from "react";
 import Link from 'next/link';
 import logDev from "@/pages/config/log";
+import {dataMenu} from "@/pages/data/menu";
+import {submenuListOne, submenuListTwo,submenuListThree, submenuListFour, submenuListFive, submenuListSix, submenuListSeven} from "@/pages/data/sub-menu";
 
 type SubmenuList = {
     seq: number;
@@ -14,13 +16,6 @@ const Header: React.FC = () => {
     const [menuActive, setMenuActive] = useState<boolean>(false);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const [submenuHeight, setSubmenuHeight] = useState<number | null>(null);
-    const [subMenuList, setSubMenuList] = useState<SubmenuList[]>([]);
-    const [submenuListOne, setSubmenuListOne] = useState<SubmenuList[]>([]);
-    const [submenuListTwo, setSubmenuListTwo] = useState<SubmenuList[]>([]);
-    const [submenuListThree, setSubmenuListThree] = useState<SubmenuList[]>([]);
-    const [submenuListFour, setSubmenuListFour] = useState<SubmenuList[]>([]);
-    const [submenuListFive, setSubmenuListFive] = useState<SubmenuList[]>([]);
-    const [submenuListSix, setSubmenuListSix] = useState<SubmenuList[]>([]);
 
     useEffect(() => {
         logDev(`typeof window: ${typeof window}`);
@@ -33,39 +28,6 @@ const Header: React.FC = () => {
                 }
             }
         }
-        setSubmenuListOne([
-            {seq: 1, title: '짝꿍찾기', link: '/views/matching',},
-            {seq: 2, title: '진행현황', link: '#',},
-            {seq: 3, title: '-전체현황', link: '/views/matching',},
-            {seq: 4, title: '-현재현황', link: '/views/matching',},
-        ]);
-        setSubmenuListTwo([
-            {seq: 1, title: '채팅신청', link: '/views/matching',},
-            {seq: 2, title: '화상신청', link: '/views/matching',},
-            {seq: 3, title: '만남신청', link: '/views/matching',},
-            {seq: 4, title: '면담신청', link: '/views/matching',},
-        ]);
-        setSubmenuListThree([
-            {seq: 1, title: '간증', link: '/views/matching',},
-            {seq: 2, title: '사전교육', link: '/views/matching',},
-            {seq: 3, title: '결혼예배학교', link: '/views/matching',},
-            {seq: 4, title: '생방송', link: '/views/matching',},
-        ]);
-        setSubmenuListFour([
-            {seq: 1, title: '예식상담', link: '/views/matching',},
-        ]);
-        setSubmenuListFive([
-            {seq: 1, title: '공지', link: '/views/matching',},
-            {seq: 2, title: '자유게시판', link: '/views/matching',},
-            {seq: 3, title: '질문과답변', link: '/views/matching',},
-        ]);
-        setSubmenuListSix([
-            {seq: 1, title: '기본정보', link: '/views/matching',},
-            {seq: 2, title: '개인프로필', link: '/views/matching',},
-            {seq: 3, title: '매칭이력', link: '/views/matching',},
-            {seq: 4, title: '서약서결과', link: '/views/matching',},
-            {seq: 5, title: '질문현황', link: '/views/matching',},
-        ]);
     }, []);
 
     const handleMouseOver = (index: number) => (_event: MouseEvent) => {
@@ -83,7 +45,7 @@ const Header: React.FC = () => {
         setActiveIndex(index);
     }
 
-    const submenuLists = [submenuListOne, submenuListTwo, submenuListThree, submenuListFour, submenuListFive, submenuListSix];
+    const submenuLists = [submenuListOne, submenuListTwo, submenuListThree, submenuListFour, submenuListFive, submenuListSix, submenuListSeven];
     return (
         <div id="header" className={menuActive ? 'open' : ''}>
             <div className="bottom">
@@ -93,7 +55,7 @@ const Header: React.FC = () => {
                     </h1>
                     <div id="cms-gnb">
                         <ul>
-                            {['짝궁찾기', '매칭관리', '결혼예배학교', '상담실', '공지사항', '마이페이지'].map((title, index) => (
+                            {dataMenu.map((menu, index) => (
                                 // eslint-disable-next-line react/jsx-key
                                 <li
                                     key={index}
@@ -102,7 +64,7 @@ const Header: React.FC = () => {
                                     onMouseLeave={handleMouseLeave()}
                                 >
                                     <Link href="#" onFocus={handleFocus(index)}>
-                                        {title}
+                                        {menu.title}
                                     </Link>
                                     <ul key={`ul_${index}`} style={{height: submenuHeight ? `${submenuHeight}px` : 'auto'}}>
                                         {submenuLists[index].map((subMenu, idx) => (

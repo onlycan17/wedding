@@ -32,7 +32,7 @@ const schema = yup.object().shape({
         .matches(/\d+/, '최소 하나 이상의 숫자가 필요 합니다.')
         .matches(/[!@#$%^&*(),.?":{}|<>]/, '최소 하나 이상의 특수문자가 필요 합니다.')
         .min(8, '최소 8자리이상의 비밀번호를 입력해주세요.')
-        .required('패스워드는 필수 입력 입니다.'),
+        .required('비밀번호는 필수 입력 입니다.'),
 });
 
 const TIMEOUT_SECONDS = 60;
@@ -255,7 +255,7 @@ const Login: React.FC = () => {
                     </form>
                     <div className={styles.login_bottom_link}>
                         <div className={styles.login_bottom_detail}>
-                            <Link href={"/views/register"}>회원가입</Link>
+                            <Link href={"/views/join_step1"}>회원가입</Link>
                         </div>
                         <div className={styles.login_bottom_detail}>
                             <Link href={"views/findpassword"}>비밀번호 찾기</Link>

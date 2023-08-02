@@ -1,12 +1,13 @@
 import React, {ChangeEvent, useEffect, useState, useRef} from "react";
-import {useForm, SubmitHandler} from 'react-hook-form';
+import {SubmitHandler, useForm} from 'react-hook-form';
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
 import logDev from "@/pages/config/log";
 import {auth, db} from "@/pages/config/firbase-setting";
 import {ConfirmationResult, RecaptchaVerifier, signInWithPhoneNumber} from "firebase/auth";
 import {doc, setDoc} from "@firebase/firestore";
-
+import {collection, getDocs, query, where} from "firebase/firestore";
+import {useRouter} from "next/router";
 
 type FormFields = {
     userName: string;
@@ -31,6 +32,8 @@ const schema = yup.object().shape({
 });
 
 const Join_step1: React.FC = () => {
+    const router = useRouter();
+
     const agree1Ref = useRef<HTMLInputElement | null>(null);
     const agree2Ref = useRef<HTMLInputElement | null>(null);
     const agree3Ref = useRef<HTMLInputElement | null>(null);
@@ -52,6 +55,8 @@ const Join_step1: React.FC = () => {
     const [confirmationResult, setConfirmationResult] = useState<null | ConfirmationResult>(null);
     const [verifyMessage, setVerifyMessage] = useState('수신된 인증번호는 10분동안 유효합니다.');
 
+    const [uid, setUid] = useState<string>('');
+
     const [isConfirm, setIsConfirm] = useState(false);
 
 
@@ -61,13 +66,13 @@ const Join_step1: React.FC = () => {
         third: ''
     });
 
-    const {register, getValues, handleSubmit, formState: {errors}} = useForm<FormFields>({
+    const {register, getValues,handleSubmit, formState: {errors}} = useForm<FormFields>({
         resolver: yupResolver(schema),
     });
 
 
     useEffect(() => {
-        handleSexChange;
+        //handleSexChange;
         logDev(`agreeCnt: ${agreeCnt} / allAgree: ${allAgree}`);
         if (agreeCnt === 3) {
             logDev('agreeCnt === 3')
@@ -82,25 +87,35 @@ const Join_step1: React.FC = () => {
             setAgree2(false);
             setAgree3(false);
         }
-    }, [agreeCnt, allAgree, confirmationResult, verifyCode, phoneNumber, verifyMessage]);
+    }, [agree1,agree2,agree3,agreeCnt, allAgree, confirmationResult, verifyCode, phoneNumber, verifyMessage, uid]);
 
-    const onSubmit: SubmitHandler<FormFields> = async ({
-                                                           userName,
-                                                           birthDay,
-                                                           birthYear,
-                                                           birthMonth,
-                                                           phoneFirst,
-                                                           phoneSecond,
-                                                           phoneThird,
-                                                           verifyCode,
-                                                       }) => {
+    const onSubmit : SubmitHandler<FormFields>  = async ({userName,birthYear,birthMonth,birthDay,verifyCode,phoneFirst,phoneSecond,phoneThird}) => {
         logDev('onSubmit---------');
-        if (!agree1 || !agree2) {
+
+        if (agree1Ref.current?.checked !== true || agree2Ref.current?.checked !== true) {
             alert('필수 약관에 동의해주세요.');
             return;
         }
         // const query = await getDoc(doc(db, "userInfo", "test"));
-        await setDoc(doc(db, "userInfo","test"), {
+        const queryDate = query(
+            collection(db, "userInfo"),
+            where("phoneNumFirst", "==", phoneFirst),
+            where("phoneNumSecond", "==", phoneSecond),
+            where("phoneNumThird", "==", phoneThird),
+            where("birthYear", "==", birthYear),
+            where("birthMonth", "==", birthMonth),
+            where("birthDay", "==", birthDay),
+        );
+        const querySnapshot = await getDocs(queryDate);
+
+        if(!querySnapshot.empty){
+            alert('이미 가입된 회원입니다.');
+            await router.push('/views/login');
+          return;
+        }
+
+        await setDoc(doc(db, "membershipApplication",uid), {
+            year: new Date().getFullYear(),
             userName: userName,
             proviName: proviName,
             birthYear: birthYear,
@@ -109,10 +124,12 @@ const Join_step1: React.FC = () => {
             phoneNumFirst: phoneFirst,
             phoneNumSecond: phoneSecond,
             phoneNumThird: phoneThird,
-            agree1: agree1,
-            agree2: agree2,
-            agree3: agree3,
+            agree1: agree1Ref.current?.checked,
+            agree2: agree2Ref.current?.checked,
+            agree3: agree3Ref.current?.checked,
         });
+        localStorage.setItem('memberId', uid);
+        await router.push('/views/join_step2');
     };
 
 
@@ -122,7 +139,7 @@ const Join_step1: React.FC = () => {
     }
 
     const handleCertificationClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
-        event.preventDefault();
+        //event.preventDefault();
 
         console.log({
             userName,
@@ -163,7 +180,8 @@ const Join_step1: React.FC = () => {
                 confirmationResult.confirm(data.verifyCode).then((result) => {
                     logDev('User signed in successfully.');
                     const user = result.user;
-                    console.log(user);
+                    logDev(user);
+                    setUid(user.uid);
                     setVerifyMessage('인증되었습니다.');
                     setIsConfirm(true);
                 }).catch((error) => {
@@ -302,7 +320,6 @@ const Join_step1: React.FC = () => {
                         id="birthYear"
                         title="년도  선택"
                         className="w110px"
-                        value={birthYear}
                         {...register('birthYear')}
                     >
                       <option value="">년도</option>
@@ -319,7 +336,6 @@ const Join_step1: React.FC = () => {
                         id="birthMonth"
                         title="월  선택"
                         className="w110px"
-                        value={birthMonth}
                         {...register('birthMonth')}
                     >
                       <option value="">월</option>
@@ -336,7 +352,6 @@ const Join_step1: React.FC = () => {
                         id="birthDay"
                         title="일  선택"
                         className=" w110px"
-                        value={birthDay}
                         {...register('birthDay')}
                     >
                       <option value="">일</option>
@@ -415,7 +430,7 @@ const Join_step1: React.FC = () => {
                                             <span>
                                                 <button type={"button"}
                                                         className="button medium w150px  navy ml20"
-                                                        onClick={handleVerifyCodeChange}>인증번호받기</button>
+                                                        onClick={handleVerifyCodeChange} disabled={isConfirm}>인증번호받기</button>
                                             </span>
                                         </div>
 
@@ -429,7 +444,7 @@ const Join_step1: React.FC = () => {
                                             </span>
                                             <button type={"button"} id={"verify-button"}
                                                     className="button medium w10px btnBG_gray mt10 ml10"
-                                                    onClick={handleVerifyCodeConfirm}>인증번호 확인
+                                                    onClick={handleVerifyCodeConfirm} disabled={isConfirm}>인증번호 확인
                                             </button>
                                             <label className={"imp_blue mt25 ml10"}>{verifyMessage}</label>
                                         </div>
@@ -561,7 +576,7 @@ const Join_step1: React.FC = () => {
 								</span>
                         </div>
                         <div className="button-group a-c mt200">
-                            <input type={"submit"} className="button extra border radius30" value={"다음단계"}/>
+                            <button type={"submit"} className="button extra border radius30" >다음단계</button>
                         </div>
                     </div>
                 </form>
