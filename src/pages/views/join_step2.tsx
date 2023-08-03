@@ -10,7 +10,7 @@ import {auth, db} from "@/pages/config/firbase-setting";
 import {collection, getDocs, query, updateDoc, where} from "firebase/firestore";
 import logDev from "@/pages/config/log";
 import {useRouter} from "next/router";
-import {signInWithEmailAndPassword} from "firebase/auth";
+import {createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
 import {doc} from "@firebase/firestore";
 
 type FormFields = {
@@ -69,24 +69,32 @@ const Join_step2: React.FC = () => {
             setSelectedError("지역, 교회, 부서를 선택해주세요.");
             return;
         }
-        const result = await signInWithEmailAndPassword(auth, email, password);
-        if (result.user.email) {
-            alert("이미 가입된 이메일 입니다.");
-            return;
-        } else {
-            const memberId = localStorage.getItem('memberId');
-            if (memberId) {
-                const memberRef = doc(db, "membershipAppication", memberId);
+        try{
+            const result = await signInWithEmailAndPassword(auth, email, password);
+            if (result.user.email) {
+                alert("이미 가입된 이메일 입니다.");
+                return;
+            }
+        } catch (e) {
+            logDev(`error : ${e}`);
+
+            const userCredential = await createUserWithEmailAndPassword(auth,email, password);
+            logDev(`createUser : ${userCredential}`);
+            if(userCredential.user){
+                const memberId = localStorage.getItem('memberId');
+                // localStorage.setItem('memberId', memberId);
+                const memberRef = doc(db, "membershipApplication", memberId!);
                 await updateDoc(memberRef, {
+                    emailMemberId: userCredential.user.uid,
                     email: email,
-                    password: password,
                     region: selectedRegion,
                     church: selectedChurch,
                     department: selectedDepartment,
                 });
+                localStorage.setItem('joinstep', '2');
+                router.push('/views/join_step3');
             }
         }
-        router.push('/views/join_step3');
     }
 
     return (

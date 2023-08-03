@@ -129,6 +129,7 @@ const Join_step1: React.FC = () => {
             agree3: agree3Ref.current?.checked,
         });
         localStorage.setItem('memberId', uid);
+        localStorage.setItem('joinStep', '1');
         await router.push('/views/join_step2');
     };
 
