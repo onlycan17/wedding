@@ -46,7 +46,7 @@ const Join_step2: React.FC = () => {
     useEffect(() => {
         const memberId = localStorage.getItem('memberId');
         if (memberId === null || memberId === undefined || memberId === "") {
-            router.push('/views/join_step1');
+            router.push('/service/join_step1');
             return;
         }
     }, [recentChurch]);
@@ -92,7 +92,7 @@ const Join_step2: React.FC = () => {
                     department: selectedDepartment,
                 });
                 localStorage.setItem('joinstep', '2');
-                router.push('/views/join_step3');
+                await router.push('/service/join_step3');
             }
         }
     }

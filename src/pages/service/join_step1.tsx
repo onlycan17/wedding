@@ -53,7 +53,8 @@ const Join_step1: React.FC = () => {
     const [sex, setSex] = useState('male');
     const [verifyCode, setVerifyCode] = useState('');
     const [confirmationResult, setConfirmationResult] = useState<null | ConfirmationResult>(null);
-    const [verifyMessage, setVerifyMessage] = useState('수신된 인증번호는 10분동안 유효합니다.');
+    const [verifyButton, setVerifyButton] = useState(false);
+    const [verifyMessage, setVerifyMessage] = useState('');
 
     const [uid, setUid] = useState<string>('');
 
@@ -66,7 +67,7 @@ const Join_step1: React.FC = () => {
         third: ''
     });
 
-    const {register, getValues,handleSubmit, formState: {errors}} = useForm<FormFields>({
+    const {register, getValues, handleSubmit, formState: {errors}} = useForm<FormFields>({
         resolver: yupResolver(schema),
     });
 
@@ -87,9 +88,21 @@ const Join_step1: React.FC = () => {
             setAgree2(false);
             setAgree3(false);
         }
-    }, [agree1,agree2,agree3,agreeCnt, allAgree, confirmationResult, verifyCode, phoneNumber, verifyMessage, uid]);
+        if(verifyButton){
+            setVerifyMessage('수신된 인증번호는 10분동안 유효합니다.');
+        }
+    }, [agree1, agree2, agree3, agreeCnt, allAgree, confirmationResult, verifyCode, verifyButton, phoneNumber, verifyMessage, uid]);
 
-    const onSubmit : SubmitHandler<FormFields>  = async ({userName,birthYear,birthMonth,birthDay,verifyCode,phoneFirst,phoneSecond,phoneThird}) => {
+    const onSubmit: SubmitHandler<FormFields> = async ({
+                                                           userName,
+                                                           birthYear,
+                                                           birthMonth,
+                                                           birthDay,
+                                                           verifyCode,
+                                                           phoneFirst,
+                                                           phoneSecond,
+                                                           phoneThird
+                                                       }) => {
         logDev('onSubmit---------');
 
         if (agree1Ref.current?.checked !== true || agree2Ref.current?.checked !== true) {
@@ -98,7 +111,7 @@ const Join_step1: React.FC = () => {
         }
         // const query = await getDoc(doc(db, "userInfo", "test"));
         const queryDate = query(
-            collection(db, "userInfo"),
+            collection(db, "membershipApplication"),
             where("phoneNumFirst", "==", phoneFirst),
             where("phoneNumSecond", "==", phoneSecond),
             where("phoneNumThird", "==", phoneThird),
@@ -108,13 +121,13 @@ const Join_step1: React.FC = () => {
         );
         const querySnapshot = await getDocs(queryDate);
 
-        if(!querySnapshot.empty){
+        if (!querySnapshot.empty) {
             alert('이미 가입된 회원입니다.');
-            await router.push('/views/login');
-          return;
+            await router.push('/service/login');
+            return;
         }
 
-        await setDoc(doc(db, "membershipApplication",uid), {
+        await setDoc(doc(db, "membershipApplication", uid), {
             year: new Date().getFullYear(),
             userName: userName,
             proviName: proviName,
@@ -130,7 +143,7 @@ const Join_step1: React.FC = () => {
         });
         localStorage.setItem('memberId', uid);
         localStorage.setItem('joinStep', '1');
-        await router.push('/views/join_step2');
+        await router.push('/service/join_step2');
     };
 
 
@@ -139,25 +152,17 @@ const Join_step1: React.FC = () => {
         setSex(value);
     }
 
-    const handleCertificationClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
-        //event.preventDefault();
-
-        console.log({
-            userName,
-            birthYear,
-            birthMonth,
-            birthDay,
-            phoneNumber,
-        });
-    }
-
     const handleVerifyCodeChange = async () => {
         logDev('handleVerifyCodeChange~~~~');
         const appVerifier = new RecaptchaVerifier(auth, 'verify-button', {
             'size': 'invisible'
         });
-
         const data = getValues();
+        if (data.phoneFirst === '' || data.phoneSecond === '' || data.phoneThird === '') {
+            alert('휴대폰 번호를 입력해주세요.');
+            return;
+        }
+        setVerifyButton(true);
         const numberString = '+82' + data.phoneFirst + data.phoneSecond + data.phoneThird;
 
         logDev(numberString);
@@ -183,6 +188,7 @@ const Join_step1: React.FC = () => {
                     const user = result.user;
                     logDev(user);
                     setUid(user.uid);
+                    setVerifyButton(false);
                     setVerifyMessage('인증되었습니다.');
                     setIsConfirm(true);
                 }).catch((error) => {
@@ -431,7 +437,8 @@ const Join_step1: React.FC = () => {
                                             <span>
                                                 <button type={"button"}
                                                         className="button medium w150px  navy ml20"
-                                                        onClick={handleVerifyCodeChange} disabled={isConfirm}>인증번호받기</button>
+                                                        onClick={handleVerifyCodeChange}
+                                                        disabled={isConfirm}>인증번호받기</button>
                                             </span>
                                         </div>
 
@@ -577,7 +584,7 @@ const Join_step1: React.FC = () => {
 								</span>
                         </div>
                         <div className="button-group a-c mt200">
-                            <button type={"submit"} className="button extra border radius30" >다음단계</button>
+                            <button type={"submit"} className="button extra border radius30">다음단계</button>
                         </div>
                     </div>
                 </form>

@@ -35,7 +35,7 @@ const WithAuth  = (Component: ComponentType<IProps>) => {
                    }
                 });
             }else{
-                router.replace('/views/login'); // Or wherever your login route is
+                router.replace('/service/login'); // Or wherever your login route is
                 return;
             }
         }, [recoilUser]);

@@ -59,7 +59,7 @@ const Login: React.FC = () => {
     useEffect(() => {
         logDev(`Login useEffect user: ${user}`);
         if (user != null) {
-            router.replace('/views/main');
+            router.replace('/service/main');
         }
         if (timeRemaining > 0) {
             const timerId = setTimeout(() => setTimeRemaining(timeRemaining - 1), 1000);
@@ -150,7 +150,7 @@ const Login: React.FC = () => {
 
             logDev(accessToken);
 
-            await router.push('/views/main');
+            await router.push('/service/main');
         } catch (error) {
             // Handle errors here.
             console.log(error);
@@ -255,7 +255,7 @@ const Login: React.FC = () => {
                     </form>
                     <div className={styles.login_bottom_link}>
                         <div className={styles.login_bottom_detail}>
-                            <Link href={"/views/join_step1"}>회원가입</Link>
+                            <Link href={"/service/join_step1"}>회원가입</Link>
                         </div>
                         <div className={styles.login_bottom_detail}>
                             <Link href={"views/findpassword"}>비밀번호 찾기</Link>

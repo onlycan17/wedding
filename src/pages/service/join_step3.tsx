@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useEffect, useState} from "react";
 import Link from "next/link";
-import styleModule from '@/pages/views/join_step3.module.css';
+import styleModule from '@/pages/service/join_step3.module.css';
 import * as yup from "yup";
 import {useRouter} from "next/router";
 import {SubmitHandler, useForm} from "react-hook-form";
@@ -55,9 +55,10 @@ const Join_step3: React.FC = () => {
             payTime: timeRef.current!.value,
             userStatusName: '신청',
             userStatus: 'new',
+            createDate: Date.now().toString(),
         });
-
-        router.push('/join_step4');
+        localStorage.setItem('joinStep', '3');
+        await router.push('/service/join_step4');
         }
     const handleRadioChange = () => {
         logDev(`handleRadioChange: ${checkPayType}`);

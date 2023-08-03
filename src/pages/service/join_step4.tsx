@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useState} from "react";
 import Link from "next/link";
-import styleModule from '@/pages/views/join_step3.module.css';
+import styleModule from '@/pages/service/join_step3.module.css';
 
 const Join_step4: React.FC = () => {
     return (
