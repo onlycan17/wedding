@@ -4,11 +4,6 @@ import logDev from "@/pages/config/log";
 import {dataMenu} from "@/pages/data/menu";
 import {submenuListOne, submenuListTwo,submenuListThree, submenuListFour, submenuListFive, submenuListSix, submenuListSeven} from "@/pages/data/sub-menu";
 
-type SubmenuList = {
-    seq: number;
-    title: string;
-    link: string;
-}
 
 const Header: React.FC = () => {
 

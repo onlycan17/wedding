@@ -2,7 +2,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
 @import url('https://fonts.cdnfonts.com/css/jost');
 @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');
-
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 /* ableu reset */
 /* Document

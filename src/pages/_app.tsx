@@ -8,6 +8,8 @@ import {QueryClient, QueryClientProvider} from "react-query";
 import * as process from "process";
 import {ReactQueryDevtools} from "react-query/devtools";
 import {useRouter} from "next/router";
+import AdminSidemenu from "@/pages/components/admin-sidemenu";
+import AdminHeader from "@/pages/components/admin-header";
 
 const queryClient = new QueryClient();
 
@@ -17,10 +19,22 @@ export default function App({Component, pageProps}: AppProps) {
     return (
         <QueryClientProvider client={queryClient}>
             <RecoilRoot>
-                {!isAdmin && <Header/>}
-                <Component {...pageProps} />
-                { process.env.NODE_ENV === 'development' &&( <ReactQueryDevtools initialIsOpen={false} />) }
-                {!isAdmin && <Footer/>}
+                {isAdmin && <div style={{height:'100vh'}} className={'w-full bg-gray-300'}>
+                    <AdminHeader/>
+                    <div className={'w-full h-full flex flex-row'}>
+                        <AdminSidemenu/>
+                        <Component {...pageProps} />
+                    </div>
+                </div>
+                }
+                {!isAdmin &&
+                    <div>
+                        <Header/>
+                        <Component {...pageProps} />
+                        {process.env.NODE_ENV === 'development' && (<ReactQueryDevtools initialIsOpen={false}/>)}
+                        <Footer/>
+                    </div>
+                }
             </RecoilRoot>
         </QueryClientProvider>
     )
