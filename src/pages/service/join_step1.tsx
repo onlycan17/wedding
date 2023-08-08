@@ -26,9 +26,9 @@ const schema = yup.object().shape({
     birthMonth: yup.string().required('월은 필수 입력 입니다.'),
     birthDay: yup.string().required('일은 필수 입력 입니다.'),
     phoneFirst: yup.string().required('휴대폰 번호는 필수 입력 입니다.'),
-    phoneSecond: yup.string().required('휴대폰 번호는 필수 입력 입니다.').test('isNumber', '숫자만 입력 가능합니다.', (value) => /^d+$/.test(value)),
-    phoneThird: yup.string().required('휴대폰 번호는 필수 입력 입니다.').test('isNumber', '숫자만 입력 가능합니다.', (value) => /^d+$/.test(value)),
-    verifyCode: yup.string().required('인증번호는 필수 입력 입니다.').test('isNumber', '숫자만 입력 가능합니다.', (value) => /^d+$/.test(value)),
+    phoneSecond: yup.string().required('휴대폰 번호는 필수 입력 입니다.').test('isNumber', '숫자만 입력 가능합니다.', (value) => /^[0-9]+$/.test(value)),
+    phoneThird: yup.string().required('휴대폰 번호는 필수 입력 입니다.').test('isNumber', '숫자만 입력 가능합니다.', (value) => /^[0-9]+$/.test(value)),
+    verifyCode: yup.string().required('인증번호는 필수 입력 입니다.').test('isNumber', '숫자만 입력 가능합니다.', (value) => /^[0-9]+$/.test(value)),
 });
 
 const Join_step1: React.FC = () => {
@@ -48,7 +48,7 @@ const Join_step1: React.FC = () => {
     const [birthMonth, setBirthMonth] = useState<number>(new Date().getMonth() + 1);
     const [birthDay, setBirthDay] = useState<number>(new Date().getDate());
 
-    const [userName, setUserName] = useState('');
+    // const [userName, setUserName] = useState('');
     const [proviName, setProviName] = useState('');
     const [sex, setSex] = useState('male');
     const [verifyCode, setVerifyCode] = useState('');
@@ -91,7 +91,7 @@ const Join_step1: React.FC = () => {
         if(verifyButton){
             setVerifyMessage('수신된 인증번호는 10분동안 유효합니다.');
         }
-    }, [agree1, agree2, agree3, agreeCnt, allAgree, confirmationResult, verifyCode, verifyButton, phoneNumber, verifyMessage, uid]);
+    }, [proviName,agree1, agree2, agree3, agreeCnt, allAgree, confirmationResult, verifyCode, verifyButton, phoneNumber, verifyMessage, uid]);
 
     const onSubmit: SubmitHandler<FormFields> = async ({
                                                            userName,
@@ -107,6 +107,10 @@ const Join_step1: React.FC = () => {
 
         if (agree1Ref.current?.checked !== true || agree2Ref.current?.checked !== true) {
             alert('필수 약관에 동의해주세요.');
+            return;
+        }
+        if(isConfirm === false){
+            setVerifyMessage('휴대폰 인증을 해주세요.');
             return;
         }
         // const query = await getDoc(doc(db, "userInfo", "test"));
@@ -292,7 +296,7 @@ const Join_step1: React.FC = () => {
                                                 type="text"
                                                 className="inp w400px "
                                                 placeholder="이름"
-                                                id="realName"
+                                                id="userName"
                                                 {...register('userName')}
                                             />
                                         </div>
@@ -306,7 +310,7 @@ const Join_step1: React.FC = () => {
                                             <input
                                                 type="text"
                                                 className="inp w400px "
-                                                placeholder="이름"
+                                                placeholder=""
                                                 id="proviedName"
                                             />
                                         </div>
@@ -418,7 +422,7 @@ const Join_step1: React.FC = () => {
 
 
                                             <span><input type="text" className="input-text a-l"
-                                                         id="hpBurNo"
+                                                         id="phoneSecond"
                                                          maxLength={4} placeholder="입력"
                                                          title="휴대전화번호에서 중간번호를 입력해 주세요."
                                                          {...register('phoneSecond')}
@@ -426,7 +430,7 @@ const Join_step1: React.FC = () => {
                                             /></span>
                                             <em className="dash">-</em>
 
-                                            <span><input type="text" className="input-text a-l" id="hpNo"
+                                            <span><input type="text" className="input-text a-l" id="phoneThird"
                                                          maxLength={4} placeholder="입력"
                                                          title="휴대전화번호에서 마지막 번호를 입력해 주세요."
                                                          {...register('phoneThird')}

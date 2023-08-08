@@ -1,4 +1,5 @@
 import React from "react";
+import WithAuthAdmin from "@/pages/common/with-auth-admin";
 
 const Home : React.FC = () => {
   return (
@@ -8,4 +9,4 @@ const Home : React.FC = () => {
     );
 }
 
-export default Home;
+export default WithAuthAdmin(Home);

@@ -1133,7 +1133,7 @@ input:disabled {
 
 select {
     width: 100%;
-    background: #fff url(../images/icon/arrw_bottom16.png) 40px  center/12px no-repeat;
+    background: #fff url(../images/icon/arrw_bottom16.png) no-repeat 98% 50%;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -1947,6 +1947,16 @@ h1.logo > a {
     display: block;
 }
 
+div.admin-logo {
+    width: 56px;
+    height: 70px;
+    text-indent: -9999px;
+    background-size: contain;
+    background: url(../images/common/admin_logo.svg) no-repeat center;
+    display: block;
+}
+
+
 .modal_phone_number {
     display: flex;
     flex-direction: column;
@@ -2111,12 +2121,10 @@ h3.sub_tit.icon_img {
     background:#eee;
     padding-bottom: 30px
 }
-.login_cont {
-    margin:0 auto;
-    max-width:1200px;
-    min-height:400px;
-    padding:35px 65px;
-    background:#fff;
-    border-radius:10px;
-    margin-bottom:30px
+
+
+.admin-content{
+    width: 88.6vw;
+    height: 86vh;
+    background-color: #ffffff;
 }

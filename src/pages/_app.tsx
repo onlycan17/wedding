@@ -16,18 +16,22 @@ const queryClient = new QueryClient();
 export default function App({Component, pageProps}: AppProps) {
     const router = useRouter();
     const isAdmin = router.pathname.startsWith('/admin');
+    const isManager = router.pathname.startsWith('/manager');
     return (
         <QueryClientProvider client={queryClient}>
             <RecoilRoot>
-                {isAdmin && <div style={{height:'100vh'}} className={'w-full bg-gray-300'}>
+                {
+                    isManager && <Component {...pageProps} />
+                }
+                {isAdmin && <div style={{height:'100vh'}} className={'w-full bg-gray-200'}>
                     <AdminHeader/>
-                    <div className={'w-full h-full flex flex-row'}>
+                    <div className={'flex flex-row'}>
                         <AdminSidemenu/>
                         <Component {...pageProps} />
                     </div>
                 </div>
                 }
-                {!isAdmin &&
+                {(!isAdmin && !isManager) &&
                     <div>
                         <Header/>
                         <Component {...pageProps} />

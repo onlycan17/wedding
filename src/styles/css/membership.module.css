@@ -1,0 +1,19 @@
+.selectBox{
+    border-bottom-color: #cccccc;
+    border-bottom: solid;
+    border-bottom-width: 1px;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-radius: 0;
+    color: #cccccc;
+    margin-right: 20px;
+    padding: 3px;
+}
+
+
+.inputBox{
+    border: 1px solid #cccccc;
+    padding: 16px;
+    font-size: 14px;
+}

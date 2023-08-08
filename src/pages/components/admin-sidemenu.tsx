@@ -1,41 +1,37 @@
 import Link from "next/link";
+import {color} from "ansi-fragments";
 
 const AdminSidemenu : React.FC = () => {
 
     return (
-        <div id="admin-sidemenu" className={"h-full bg-amber-50 w-60 scroll-auto mr-3 mt-0.5"}>
+        <div id="admin-sidemenu" style={{backgroundColor : '#695B4C', border : '1px solid #FFDAB6', height:'87vh'}} className={"w-60 scroll-auto mt-0.5"}>
             <div className={"pd15"}>
-                <div className="mb30">
-                    <h1 className={"logo"}>
-                        <Link href="/">logo</Link>
-                    </h1>
-                </div>
-                <div className="">
+                <div>
                     <ul>
-                        <li>
+                        <li className={'pt-2'}>
                             <Link href="/admin/home">
-                                    <span>Home</span>
+                                    <span className={'color-white'}>Home</span>
                             </Link>
                         </li>
-                        <li>
+                        <li className={'pt-2'}>
                             <Link href="/admin/membership-management">
-                                    <span>회원가입요청관리</span>
+                                    <span className={'color-white'}>회원가입요청관리</span>
                             </Link>
                         </li>
-                        <li>
+                        <li className={'pt-2'}>
                             <Link href="/admin/user-management">
-                                    <span>회원관리</span>
+                                    <span className={'color-white'}>회원관리</span>
                             </Link>
                         </li>
-                        <li>
+                        <li className={'pt-2'}>
                             <Link href="/admin/notice">
-                                    <span>Notice</span>
+                                    <span className={'color-white'}>Notice</span>
                             </Link>
                         </li>
-                        <li>
+                        <li className={'pt-2'}>
 
                             <Link href="/admin/setting">
-                                    <span>Setting</span>
+                                    <span className={'color-white'}>Setting</span>
                             </Link>
                         </li>
                     </ul>

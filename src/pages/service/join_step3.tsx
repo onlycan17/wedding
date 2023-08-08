@@ -55,7 +55,7 @@ const Join_step3: React.FC = () => {
             payTime: timeRef.current!.value,
             userStatusName: '신청',
             userStatus: 'new',
-            createDate: Date.now().toString(),
+            createDate: Date.now(),
         });
         localStorage.setItem('joinStep', '3');
         await router.push('/service/join_step4');

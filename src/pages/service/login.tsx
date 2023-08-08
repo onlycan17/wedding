@@ -1,6 +1,12 @@
 import {auth, db} from "@/pages/config/firbase-setting";
 import {useForm, SubmitHandler} from 'react-hook-form';
-import {PhoneAuthProvider, RecaptchaVerifier, signInWithCredential, signInWithPhoneNumber} from "firebase/auth";
+import {
+    PhoneAuthProvider,
+    RecaptchaVerifier,
+    setPersistence,
+    signInWithCredential,
+    signInWithPhoneNumber
+} from "firebase/auth";
 import {signInWithEmailAndPassword} from "firebase/auth";
 import {collection, query, where, getDocs} from 'firebase/firestore';
 import * as yup from "yup";
@@ -14,6 +20,8 @@ import styles from '../../styles/css/login.module.css';
 import Cookies from "js-cookie";
 import Link from "next/link";
 import Modal from "@/pages/common/modal";
+
+
 
 type FormFields = {
     uniquenumber: string;
@@ -131,25 +139,9 @@ const Login: React.FC = () => {
             const result = await signInWithCredential(auth, credential);
             logDev(result);
             logDev('success OTP !!!!!');
-            const accessToken = await result.user.getIdToken();
-            localStorage.setItem('token', accessToken);
 
-            //logDev('result user email : ' + getEmail);
-            // const userInfo = {
-            //    email: getEmail,
-            //     phoneNumber: phoneNumber,
-            //     uid: result.user.uid,
-            //     token: accessToken,
-            //     userName: userName,
-            //     uniqueNumber: uniqueNumber,
-            // }
-
-            //setUser(userInfo);
             setIsModalOpen(false);
             closeModal();
-
-            logDev(accessToken);
-
             await router.push('/service/main');
         } catch (error) {
             // Handle errors here.

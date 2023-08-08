@@ -6,10 +6,18 @@ export interface User {
     uniqueNumber: string | null;
     email: string | null;
     phoneNumber: string | null;
-    token: string | null;
     uid: string | null;
 }
+
+export interface AdminUser {
+    email: string | null;
+}
 export const userState = atom<User | null>({
+    key: `userState_${v1()}`,
+    default: null,
+});
+
+export const userStateAdmin = atom<AdminUser | null>({
     key: `userState_${v1()}`,
     default: null,
 });
