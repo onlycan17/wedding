@@ -91,7 +91,7 @@ const Join_step2: React.FC = () => {
                     church: selectedChurch,
                     department: selectedDepartment,
                 });
-                localStorage.setItem('joinstep', '2');
+                localStorage.setItem('joinStep', '2');
                 await router.push('/service/join_step3');
             }
         }

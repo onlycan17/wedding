@@ -8,6 +8,8 @@ import {ConfirmationResult, RecaptchaVerifier, signInWithPhoneNumber} from "fire
 import {doc, setDoc} from "@firebase/firestore";
 import {collection, getDocs, query, where} from "firebase/firestore";
 import {useRouter} from "next/router";
+import generateYears from "@/pages/common/function/generate-year";
+import generateNumbers from "@/pages/common/function/generate-number";
 
 type FormFields = {
     userName: string;
@@ -91,7 +93,7 @@ const Join_step1: React.FC = () => {
         if(verifyButton){
             setVerifyMessage('수신된 인증번호는 10분동안 유효합니다.');
         }
-    }, [proviName,agree1, agree2, agree3, agreeCnt, allAgree, confirmationResult, verifyCode, verifyButton, phoneNumber, verifyMessage, uid]);
+    }, [sex,proviName,agree1, agree2, agree3, agreeCnt, allAgree, confirmationResult, verifyCode, verifyButton, phoneNumber, verifyMessage, uid]);
 
     const onSubmit: SubmitHandler<FormFields> = async ({
                                                            userName,
@@ -132,7 +134,7 @@ const Join_step1: React.FC = () => {
         }
 
         await setDoc(doc(db, "membershipApplication", uid), {
-            year: new Date().getFullYear(),
+            year: new Date().getFullYear().toString(),
             userName: userName,
             proviName: proviName,
             birthYear: birthYear,
@@ -141,6 +143,7 @@ const Join_step1: React.FC = () => {
             phoneNumFirst: phoneFirst,
             phoneNumSecond: phoneSecond,
             phoneNumThird: phoneThird,
+            sex: sex,
             agree1: agree1Ref.current?.checked,
             agree2: agree2Ref.current?.checked,
             agree3: agree3Ref.current?.checked,
@@ -206,21 +209,6 @@ const Join_step1: React.FC = () => {
             setVerifyMessage('인증번호가 일치하지 않습니다.');
         }
     }
-
-
-    function generateYears(startYear: number) {
-        const currentYear = new Date().getFullYear();
-        let years = [];
-        while (startYear <= currentYear) {
-            years.push(startYear++);
-        }
-        return years;
-    }
-
-    function generateNumbers(n: number) {
-        return Array.from({length: n}, (_, i) => i + 1);
-    }
-
     const years = generateYears(1950);
     const months = generateNumbers(12);
     const days = generateNumbers(31);

@@ -9,6 +9,7 @@
     color: #cccccc;
     margin-right: 20px;
     padding: 3px;
+    margin-bottom: 5px;
 }
 
 
@@ -16,4 +17,48 @@
     border: 1px solid #cccccc;
     padding: 16px;
     font-size: 14px;
+    line-height: 17.36px;
+    width: 320px;
+    height: 40px;
+}
+
+.labelSearch{
+    font-size: 14px;
+    font-weight: bold;
+    margin-right: 60px;
+    line-height: 17.36px;
+    color: #a2bb81;
+}
+
+.selectBoxRow{
+    border-bottom-color: #cccccc;
+    border-bottom: solid;
+    border-bottom-width: 1px;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-radius: 0;
+    color: #cccccc;
+    margin-right: 20px;
+    padding: 3px;
+    margin-bottom: 5px;
+    width: 120px;
+    height: 40px;
+}
+
+.inputBoxPhone{
+    border: 1px solid #cccccc;
+    padding: 16px;
+    font-size: 14px;
+    line-height: 17.36px;
+    width: 100px;
+    height: 40px;
+}
+
+.btnSearch{
+    width: 150px;
+    height: 40px;
+    background-color: #a2bb81;
+    border-radius: 50px;
+    color: #FCFFF9;
 }
