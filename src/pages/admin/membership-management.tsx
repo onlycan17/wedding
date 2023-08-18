@@ -13,11 +13,9 @@ import {ChurchCode, dataChurch} from "@/pages/data/church";
 import {dataDepartment} from "@/pages/data/department";
 import generateYears from "@/pages/common/function/generate-year";
 import generateNumbers from "@/pages/common/function/generate-number";
-import logDev from "@/pages/config/log";
 import selectChurchUnique from "@/pages/common/function/select-church-unique";
 import getRandomFiveDigitNumber from "@/pages/common/function/getRandomNumber";
-import { getFunctions, connectFunctionsEmulator } from "firebase/functions";
-import { getApp } from "firebase/app";
+
 
 type Membership = {
     id: string,
@@ -461,7 +459,7 @@ const MembershipManagement: React.FC = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className={'flex flex-col  w100pc'}>
+                            <div className={'flex flex-col  w-full'}>
                                 <div className={'w-full flex-col justify-between items-center mt-3'}>
                                     <label
                                         className={styles.labelSearch}>이&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;름</label>
@@ -526,7 +524,7 @@ const MembershipManagement: React.FC = () => {
                                            onChange={handleInputChange} value={searchPhoneThird} />
                                 </div>
                             </div>
-                            <div className={'flex flex-col  w100pc items-center'}>
+                            <div className={'flex flex-col  w60pc items-center'}>
                                 <button type={'submit'} className={styles.btnSearch}>검색</button>
                             </div>
                         </div>
