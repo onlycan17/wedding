@@ -20,12 +20,15 @@ import {sendSms} from "../../src/pages/config/sendMessage";
 // });
 
 export const sendFireFunctionSms = onRequest(async (request, response) => {
-  logger.info("Hello logs!", {structuredData: true});
+  logger.info("TEST LOG", {structuredData: true});
+  console.log(`param data....${request.body}`);
+
   const options = {
-    to: "010-2735-4302",
-    from: "010-0000-0000",
-    text: "테스트 메시지",
+    from: "01051613620",
+    to: request.body.phoneNum,
+    text: request.body.message,
   };
   const result = await sendSms(options);
+  console.log(`result....${result}`);
   response.send(result);
 });

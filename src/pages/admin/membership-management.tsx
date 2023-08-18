@@ -16,7 +16,8 @@ import generateNumbers from "@/pages/common/function/generate-number";
 import logDev from "@/pages/config/log";
 import selectChurchUnique from "@/pages/common/function/select-church-unique";
 import getRandomFiveDigitNumber from "@/pages/common/function/getRandomNumber";
-
+import { getFunctions, connectFunctionsEmulator } from "firebase/functions";
+import { getApp } from "firebase/app";
 
 type Membership = {
     id: string,
@@ -316,30 +317,58 @@ const MembershipManagement: React.FC = () => {
     }
 
     const handleMemberComplete = async () => {
-        for (const id of selectedPostIds) {
-            logDev(`id: ${id}`);
+        const updatePromises = selectedPostIds.map(async (id) => {
             const memberRef = doc(db, "membershipApplication", id);
-            await updateDoc(memberRef, {
-                status: 'complete',
-                statusName: '회원가입 승인',
-            });
             const member = await getDoc(memberRef);
-            const unqieNumber = selectChurchUnique(member.data()!.church) + getRandomFiveDigitNumber();
+            const memberData = member.data()!;
+            console.log(`memberData: ${JSON.stringify(memberData)}`);
+            const unqieNumber = selectChurchUnique(memberData.church) + getRandomFiveDigitNumber();
+            await Promise.all([
+                updateDoc(memberRef, {
+                    status: 'complete',
+                    statusName: '회원가입 승인',
+                }),
+                setDoc(doc(db, "userInfo", id), {
+                    year: new Date().getFullYear().toString(),
+                    userNumber: unqieNumber,
+                    email: memberData.email,
+                    region: memberData.region,
+                    church: memberData.church,
+                    department: memberData.department,
+                    userName: memberData.userName,
+                    proviName: memberData.proviName,
+                    birthYear: memberData.birthYear,
+                    birthMonth: memberData.birthMonth,
+                    birthDay: memberData.birthDay,
+                    phoneNumFirst: memberData.phoneNumFirst,
+                    phoneNumSecond: memberData.phoneNumSecond,
+                    phoneNumThird: memberData.phoneNumThird,
+                    sex: memberData.sex,
+                    applyDate: memberData.createDate,
+                    createDate: new Date().toLocaleString(),
+                }),
+            ]);
+        });
+            await Promise.all(updatePromises);
 
-            await setDoc(doc(db, "userInfo", id), {
-                year: new Date().getFullYear().toString(),
-                userNumber: unqieNumber,
-                userName: member.data()!.userName,
-                proviName: member.data()!.proviName,
-                birthYear: member.data()!.birthYear,
-                birthMonth: member.data()!.birthMonth,
-                birthDay: member.data()!.birthDay,
-                phoneNumFirst: member.data()!.phoneFirst,
-                phoneNumSecond: member.data()!.phoneSecond,
-                phoneNumThird: member.data()!.phoneThird,
-                sex: member.data()!.sex,
+            const messagePromises = selectedPostIds.map(async (id) => {
+                const memberRef = doc(db, "membershipApplication", id);
+                const member = await getDoc(memberRef);
+                const memberData = member.data()!;
+                console.log(`memberData: ${JSON.stringify(memberData)}`);
+                const unqieNumber = selectChurchUnique(memberData.church) + getRandomFiveDigitNumber();
+                const res = await fetch('/api/sendMessage', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        phoneNum: '0'+memberData?.phoneNumFirst + memberData?.phoneNumSecond + memberData?.phoneNumThird,
+                        message: `회원가입이 승인되었습니다. 회원번호는 ${unqieNumber} 입니다.`,
+                    }),
+                });
             });
-        }
+            await Promise.all(messagePromises);
 
     }
     const handleMemberReject = async () => {
@@ -354,7 +383,7 @@ const MembershipManagement: React.FC = () => {
     const months = generateNumbers(12);
     const days = generateNumbers(31);
     return (
-        <div className={'flex justify-center items-center w-full h-full mt-0.5 bg-gray-200'}>
+        <div className={'flex justify-center items-center w-full mt-0.5 bg-gray-200'}>
             <div className={'admin-content bg-white shadow-2xl'}>
                 <div className={'w-full p-10'}>
                     <h1 className={'text-3xl font-bold text-left'}>회원가입요청관리</h1>
@@ -513,10 +542,10 @@ const MembershipManagement: React.FC = () => {
                             <th>부서</th>
                             <th>이름</th>
                             <th>연락처</th>
-                            <th>입금형태</th>
                             <th>입금자</th>
                             <th>입금날짜</th>
                             <th>입금시간</th>
+                            <th>입금형태</th>
                             <th>상태</th>
                         </tr>
                         </thead>
@@ -531,10 +560,10 @@ const MembershipManagement: React.FC = () => {
                                     <td>{item.department}</td>
                                     <td>{item.userName}</td>
                                     <td>0{item.phoneFirst}-{item.phoneSecond}-{item.phoneThird}</td>
-                                    <td>{item.payType === 'payFinish' ? '입금완료' : '입급예정'}</td>
                                     <td>{item.payer}</td>
                                     <td>{item.payDate}</td>
                                     <td>{item.payTime}</td>
+                                    <td>{item.payType === 'payFinish' ? '입금완료' : '입급예정'}</td>
                                     <td>{item.userStatusName}</td>
                                 </tr>
                             )) : <tr>
@@ -544,10 +573,10 @@ const MembershipManagement: React.FC = () => {
                         </tbody>
                     </table>
                 </div>
-                <div className={'w-full flex justify-center items-center p-10'}>
-                    <button type={'button'} onClick={handleMemberComplete}>회원가입 승인</button>
-                    <button type={'button'} onClick={handleMemberReject}>거절</button>
-                    <button type={'button'} onClick={handleMemberDelete}>삭제</button>
+                <div className={'w-full flex justify-end items-center p-10 h-20'}>
+                    <button type={'button'} className={styles.bottomButton} onClick={handleMemberComplete}>회원가입 승인</button>
+                    <button type={'button'} className={styles.bottomButton} onClick={handleMemberReject}>승인 거절</button>
+                    <button type={'button'} className={styles.bottomButton} onClick={handleMemberDelete}>삭제</button>
                 </div>
             </div>
         </div>
