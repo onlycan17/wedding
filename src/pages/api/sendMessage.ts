@@ -16,7 +16,7 @@ export default async (req : NextApiRequest, res: NextApiResponse) => {
             },)
         });
         const result = await response.text();
-        res.status(200).json({statusCode: 200, message: result});
+        res.status(200).json({statusCode: 200, message: 'success'});
     }catch (e) {
         console.log(`Error occurred while sending message: ${e}`);
         console.log(e);

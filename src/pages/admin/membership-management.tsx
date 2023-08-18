@@ -325,8 +325,8 @@ const MembershipManagement: React.FC = () => {
             const unqieNumber = selectChurchUnique(memberData.church) + getRandomFiveDigitNumber();
             await Promise.all([
                 updateDoc(memberRef, {
-                    status: 'complete',
-                    statusName: '회원가입 승인',
+                    userStatus: 'complete',
+                    userStatusName: '회원가입 승인',
                 }),
                 setDoc(doc(db, "userInfo", id), {
                     year: new Date().getFullYear().toString(),
@@ -369,7 +369,8 @@ const MembershipManagement: React.FC = () => {
                 });
             });
             await Promise.all(messagePromises);
-
+            alert('회원가입 승인이 완료되었습니다.');
+            window.location.reload();
     }
     const handleMemberReject = async () => {
 

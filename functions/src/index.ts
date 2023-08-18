@@ -10,6 +10,7 @@
 import {onRequest} from "firebase-functions/v2/https";
 import * as logger from "firebase-functions/logger";
 import {sendSms} from "../../src/pages/config/sendMessage";
+import logDev from "../../src/pages/config/log";
 
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
@@ -29,6 +30,6 @@ export const sendFireFunctionSms = onRequest(async (request, response) => {
     text: request.body.message,
   };
   const result = await sendSms(options);
-  console.log(`result....${result}`);
+  logDev(`result....${result}`);
   response.send(result);
 });
