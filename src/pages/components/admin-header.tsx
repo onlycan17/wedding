@@ -23,7 +23,7 @@ const AdminHeader: React.FC = () => {
     }
     return (
         <div className={'h-28 w-full bg-white shadow-sm shadow-gray-400 z-10 flex flex-row justify-between'}>
-            <div style={{backgroundColor:'#695B4C', border : '1px solid #FFDAB6', width:'214px'}} className={'flex justify-center items-center'}>
+            <div style={{backgroundColor:'#695B4C', border : '1px solid #FFDAB6'}} className={'w-48 flex justify-center items-center'}>
                 <div className="admin-logo"></div>
             </div>
             <div className={'h-full flex justify-end items-end mr-3 pb-3'}>

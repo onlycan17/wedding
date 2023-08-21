@@ -325,6 +325,7 @@ const MembershipManagement: React.FC = () => {
                 updateDoc(memberRef, {
                     userStatus: 'complete',
                     userStatusName: '회원가입 승인',
+                    applyDate: Date.now(),
                 }),
                 setDoc(doc(db, "userInfo", id), {
                     year: new Date().getFullYear().toString(),
@@ -342,31 +343,22 @@ const MembershipManagement: React.FC = () => {
                     phoneNumSecond: memberData.phoneNumSecond,
                     phoneNumThird: memberData.phoneNumThird,
                     sex: memberData.sex,
-                    applyDate: memberData.createDate,
-                    createDate: new Date().toLocaleString(),
+                    createDate: Date.now(),
                 }),
             ]);
+            await fetch('/api/sendMessage', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    phoneNum: '0'+memberData?.phoneNumFirst + memberData?.phoneNumSecond + memberData?.phoneNumThird,
+                    message: `회원가입이 승인되었습니다. 회원번호는 ${unqieNumber} 입니다.`,
+                }),
+            });
         });
             await Promise.all(updatePromises);
 
-            const messagePromises = selectedPostIds.map(async (id) => {
-                const memberRef = doc(db, "membershipApplication", id);
-                const member = await getDoc(memberRef);
-                const memberData = member.data()!;
-                console.log(`memberData: ${JSON.stringify(memberData)}`);
-                const unqieNumber = selectChurchUnique(memberData.church) + getRandomFiveDigitNumber();
-                const res = await fetch('/api/sendMessage', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        phoneNum: '0'+memberData?.phoneNumFirst + memberData?.phoneNumSecond + memberData?.phoneNumThird,
-                        message: `회원가입이 승인되었습니다. 회원번호는 ${unqieNumber} 입니다.`,
-                    }),
-                });
-            });
-            await Promise.all(messagePromises);
             alert('회원가입 승인이 완료되었습니다.');
             window.location.reload();
     }

@@ -9,8 +9,8 @@
 
 import {onRequest} from "firebase-functions/v2/https";
 import * as logger from "firebase-functions/logger";
-import {sendSms} from "../../src/pages/config/sendMessage";
-import logDev from "../../src/pages/config/log";
+// import {sendSms} from "../../src/pages/config/sendMessage";
+// import logDev from "../../src/pages/config/log";
 
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
@@ -22,14 +22,5 @@ import logDev from "../../src/pages/config/log";
 
 export const sendFireFunctionSms = onRequest(async (request, response) => {
   logger.info("TEST LOG", {structuredData: true});
-  console.log(`param data....${request.body}`);
-
-  const options = {
-    from: "01051613620",
-    to: request.body.phoneNum,
-    text: request.body.message,
-  };
-  const result = await sendSms(options);
-  logDev(`result....${result}`);
-  response.send(result);
+  response.send("Hello from Firebase!");
 });

@@ -19,17 +19,18 @@ const WithAuth = (Component: ComponentType<IProps>) => {
         useEffect(() => {
             // logDev(`WithAuth user: ${JSON.stringify(user)}`);
             onAuthStateChanged(auth, (user) => {
+                console.log(user);
                 if (user) {
-                    const currentUser: User = {
-                        uid: user.uid,
-                        email: user.email,
-                        userName: user.displayName,
-                        phoneNumber: user.phoneNumber,
-                        uniqueNumber: user.uid,
-                    };
-                    setRecoilUser(currentUser);
+                    // const currentUser: User = {
+                    //     uid: user.uid,
+                    //     email: user.email,
+                    //     userName: user.displayName,
+                    //     phoneNumber: user.phoneNumber,
+                    //     userNumber: user.userNumber,
+                    // };
+                    // setRecoilUser(currentUser);
                 } else {
-                    setRecoilUser(null);
+                    // setRecoilUser(null);
                     router.push('/service/login'); // Or wherever your login route is
                 }
             });

@@ -1,7 +1,6 @@
 import * as process from "process";
 import makeSignature from "./make-signature";
 import axios from "axios";
-import logDev from "@/pages/config/log";
 
 export interface SendSmsOptions {
     to: string; // 수신자 번호
@@ -23,7 +22,7 @@ export const sendSms = async (options: SendSmsOptions) => {
         accessKey: process.env.NEXT_PUBLIC_SMS_ACCESS_KEY + '',
         secretKey: process.env.NEXT_PUBLIC_SMS_SECRET + ''
     });
-    logDev(`signature : ${signature}`);
+    // logDev(`signature : ${signature}`);
     // const headers = new Headers({
     //     'Content-Type': 'application/json; charset=utf-8',
     //     'x-ncp-apigw-timestamp': timestamp,
@@ -36,7 +35,7 @@ export const sendSms = async (options: SendSmsOptions) => {
         'x-ncp-iam-access-key': process.env.NEXT_PUBLIC_SMS_ACCESS_KEY + '', // 여기서 'your_auth_key' 부분을 실제 인증 키로 대체하세요.
         'x-ncp-apigw-signature-v2': signature,
     }
-    logDev(`text : ${text}`);
+    // logDev(`text : ${text}`);
     // 요청 본문 설정
     const body = {
         type: 'SMS',
@@ -64,7 +63,8 @@ export const sendSms = async (options: SendSmsOptions) => {
     //     headers: headers,
     //     body: JSON.stringify(body),
     // });
-    logDev('--------------Response---------------------');
-    logDev(response);
-    logDev('-----------------------------------');
+    // logDev('--------------Response---------------------');
+    // logDev(response);
+    // logDev('-----------------------------------');
+    return response;
 };

@@ -67,7 +67,7 @@ const Login: React.FC = () => {
     useEffect(() => {
         logDev(`Login useEffect user: ${user}`);
         if (user != null) {
-            router.replace('/service/main');
+            router.push('/service/main');
         }
         if (timeRemaining > 0) {
             const timerId = setTimeout(() => setTimeRemaining(timeRemaining - 1), 1000);
@@ -78,20 +78,13 @@ const Login: React.FC = () => {
     const onSubmit: SubmitHandler<FormFields> = async ({uniquenumber, username, email, password}) => {
         const queryDate = query(
             collection(db, "userInfo"),
-            where("uniqueNumber", "==", uniquenumber),
+            where("userNumber", "==", uniquenumber),
             where("userName", "==", username),
+            where("email", "==", email),
         );
         const querySnapshot = await getDocs(queryDate);
         if (querySnapshot.empty) {
-            // doc.data() will be undefined in this case
-            logDev("고유번호나 성명이 일치하지 않습니다.");
-            // const docRef = await addDoc(collection(db, "usersInfo"), {
-            //     uniquenumber: uniquenumber,
-            //     username: username,
-            //     password: password
-            // });
-            // console.log("Document written with ID: ", docRef.id);
-            setFirebaseError("고유번호나 성명이 일치하지 않습니다.");
+            setFirebaseError("고유번호나 성명, 이메일이 일치하지 않습니다.");
             return;
         } else {
             logDev('UniqueNumber and UserName is correct !!!!!');
@@ -103,15 +96,15 @@ const Login: React.FC = () => {
                     logDev(idToken);
                     querySnapshot.forEach((doc) => {
                         logDev(`${doc.id} => ${doc.data()} `);
-                        logDev('phoneNumber : ' + doc.data().phoneNumber);
+                        logDev('phoneNumber : ' + doc.data().phoneNumFirst + doc.data().phoneNumSecond + doc.data().phoneNumThird);
                         logDev('userName : ' + doc.data().userName);
-                        logDev('uniqueNumber : ' + doc.data().uniqueNumber);
+                        logDev('uniqueNumber : ' + doc.data().userNumber);
                         logDev('doc email : ' + doc.data().email);
                         logDev('email : ' + email);
                         logDev('email// : ' + result.user.email);
-                        setPhoneNumber(doc.data().phoneNumber);
+                        setPhoneNumber(doc.data().phoneNumFirst + doc.data().phoneNumSecond + doc.data().phoneNumThird);
                         setUserName(doc.data().userName);
-                        setUniqueNumber(doc.data().uniqueNumber);
+                        setUniqueNumber(doc.data().userNumber);
                         setEmail(result.user.email);
                         openModal();
                     });
@@ -243,7 +236,7 @@ const Login: React.FC = () => {
                         <div className={styles.login_div_btn}>
                             <input className={styles.login_btn} type="submit" value={"로그인"}/>
                         </div>
-                        {firebaseError && <div className={"imp_red"}>Error: {firebaseError}</div>}
+                        {/*{firebaseError && <div className={"imp_red"}>Error: {firebaseError}</div>}*/}
                     </form>
                     <div className={styles.login_bottom_link}>
                         <div className={styles.login_bottom_detail}>
@@ -339,6 +332,7 @@ const Login: React.FC = () => {
                             border: '1px solid #BFBFBF',
                             padding: '20px 10px 20px 10px',
                             gap: '10px',
+                            marginBottom: '20px'
                         }}
                         readOnly={isReadOnly}
                         type="text" placeholder="인증번호를 입력하세요." id={"otp"} value={otp}
@@ -358,10 +352,10 @@ const Login: React.FC = () => {
                             marginBottom: '2px',
                             color: '#389BE8',
                         }}>
-                            {timeRemaining > 0 ? `유효시간 : ${timeRemaining}` : '시간초과'}
+                            {/*{timeRemaining > 0 ? `유효시간 : ${timeRemaining}` : '시간초과'}*/}
                         </label>
                     </div>
-                    <div style={{
+                    { !isReadOnly && <div style={{
                         textAlign: 'left',
                     }}>
                         <label style={{
@@ -383,7 +377,7 @@ const Login: React.FC = () => {
                         }}>
                             인증번호가 오지 않을경우 입력하신 정보를 확인하여주세요
                         </label>
-                    </div>
+                    </div>}
                     <button id={"sign-in-button"} style={{
                         width: '320px',
                         height: '52px',

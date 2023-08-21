@@ -4,8 +4,8 @@ import {color} from "ansi-fragments";
 const AdminSidemenu : React.FC = () => {
 
     return (
-        <div id="admin-sidemenu" style={{backgroundColor : '#695B4C', border : '1px solid #FFDAB6', height:'87vh'}} className={"w-60 scroll-auto mt-0.5"}>
-            <div className={"pd15"}>
+        <div id="admin-sidemenu" style={{backgroundColor : '#695B4C', border : '1px solid #FFDAB6', height:'87vh'}} className={"w-64 scroll-auto mt-0.5"}>
+            <div className={"w-full pd15"}>
                 <div>
                     <ul>
                         <li className={'pt-2'}>

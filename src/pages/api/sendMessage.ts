@@ -1,22 +1,19 @@
 import {NextApiRequest, NextApiResponse} from "next";
+import {sendSms} from "@/pages/config/sendMessage";
 
 export default async (req : NextApiRequest, res: NextApiResponse) => {
     try{
         console.log(`param data....${req.body.phoneNum}`);
         console.log(`param data....${req.body.message}`);
-        const firebaseFunction ='http://127.0.0.1:5001/weddingmanagement-52f64/us-central1/sendFireFunctionSms';
-        const response = await fetch(firebaseFunction, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              phoneNum: req.body.phoneNum,
-                message: req.body.message
-            },)
-        });
-        const result = await response.text();
-        res.status(200).json({statusCode: 200, message: 'success'});
+        const options = {
+            from: "01051613620",
+            to: req.body.phoneNum,
+            text: req.body.message,
+        };
+        const result = await sendSms(options);
+        // logDev(`result....${result}`);
+        // res.status(200).json({statusCode: 200, message: 'success'});
+        res.send(result);
     }catch (e) {
         console.log(`Error occurred while sending message: ${e}`);
         console.log(e);

@@ -3,7 +3,7 @@ import {v1} from 'uuid';
 
 export interface User {
     userName: string | null;
-    uniqueNumber: string | null;
+    userNumber: string | null;
     email: string | null;
     phoneNumber: string | null;
     uid: string | null;

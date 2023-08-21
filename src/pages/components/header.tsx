@@ -3,6 +3,10 @@ import Link from 'next/link';
 import logDev from "@/pages/config/log";
 import {dataMenu} from "@/pages/data/menu";
 import {submenuListOne, submenuListTwo,submenuListThree, submenuListFour, submenuListFive, submenuListSix, submenuListSeven} from "@/pages/data/sub-menu";
+import {onAuthStateChanged} from "@firebase/auth";
+import {auth, db} from "@/pages/config/firbase-setting";
+import {useRouter} from "next/router";
+import {collection, getDocs, query, where} from "firebase/firestore";
 
 
 const Header: React.FC = () => {
@@ -11,6 +15,9 @@ const Header: React.FC = () => {
     const [menuActive, setMenuActive] = useState<boolean>(false);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const [submenuHeight, setSubmenuHeight] = useState<number | null>(null);
+    const [isLogin, setIsLogin] = useState<boolean>(false);
+    const router = useRouter();
+    const [userName, setUserName] = useState<string | undefined>('');
 
     useEffect(() => {
         logDev(`typeof window: ${typeof window}`);
@@ -23,6 +30,32 @@ const Header: React.FC = () => {
                 }
             }
         }
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                setIsLogin(true);
+                console.log(`user: ${JSON.stringify(user)}`);
+                 const firstNum = user.phoneNumber?.slice(3, 5);
+                 const secondNum = user.phoneNumber?.slice(5, 9);
+                 const thirdNum = user.phoneNumber?.slice(9, 13);
+                 console.log(`firstNum: ${firstNum}`);
+                 console.log(`secondNum: ${secondNum}`);
+                 console.log(`thirdNum: ${thirdNum}`);
+                const queryDate = query(
+                    collection(db, "userInfo"),
+                    where("phoneNumFirst", "==", firstNum),
+                    where("phoneNumSecond", "==", secondNum),
+                    where("phoneNumThird", "==", thirdNum),
+
+                );
+                const querySnapshot = await getDocs(queryDate);
+                querySnapshot.forEach((doc) => {
+                    console.log(doc.id, " => ", doc.data());
+                   setUserName(doc.data().userName);
+                });
+            } else {
+                setIsLogin(false);
+            }
+        });
     }, []);
 
     const handleMouseOver = (index: number) => (_event: MouseEvent) => {
@@ -38,6 +71,12 @@ const Header: React.FC = () => {
     const handleFocus = (index: number) => (_event: FocusEvent) => {
         setMenuActive(true);
         setActiveIndex(index);
+    }
+
+    const handleLogout = async () => {
+        console.log('logout');
+        await auth.signOut();
+        await router.push('/service/login');
     }
 
     const submenuLists = [submenuListOne, submenuListTwo, submenuListThree, submenuListFour, submenuListFive, submenuListSix, submenuListSeven];
@@ -73,10 +112,14 @@ const Header: React.FC = () => {
                             ))}
                         </ul>
                     </div>
-                    <div id={"right_menu"}>
-                        <Link href={"#"}>Login</Link>
-                        <Link href={"#"}>Join</Link>
+                    {isLogin ? <div id={"right_menu"}>
+                        <Link href={"/service/mypage"}>{userName}님</Link>
+                        <Link href={"#"} onClick={handleLogout}>로그아웃</Link>
+                    </div>:<div id={"right_menu"}>
+                        <Link href={"/service/login"}>Login</Link>
+                        <Link href={"/service/joinStep1"}>Join</Link>
                     </div>
+                    }
                 </div>
             </div>
         </div>
