@@ -31,7 +31,7 @@ const Header: React.FC = () => {
             }
         }
         onAuthStateChanged(auth, async (user) => {
-            if (user) {
+            if (user?.phoneNumber) {
                 setIsLogin(true);
                 console.log(`user: ${JSON.stringify(user)}`);
                  const firstNum = user.phoneNumber?.slice(3, 5);

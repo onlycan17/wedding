@@ -3,7 +3,6 @@ import {useForm, SubmitHandler} from 'react-hook-form';
 import {
     PhoneAuthProvider,
     RecaptchaVerifier,
-    setPersistence,
     signInWithCredential,
     signInWithPhoneNumber
 } from "firebase/auth";
@@ -53,6 +52,7 @@ const Login: React.FC = () => {
     const [userName, setUserName] = useState(Cookies.get('userName') ?? '');
     const [uniqueNumber, setUniqueNumber] = useState(Cookies.get('uniqueNumber') ?? '');
     const [getEmail, setEmail] = useState<string | null>(Cookies.get('email') ?? null);
+    const [visualPhoneNumber, setVisualPhoneNumber] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const router = useRouter();
     const [selected, setSelected] = useState(false);
@@ -95,6 +95,7 @@ const Login: React.FC = () => {
                     logDev('success idToken !!!!!');
                     logDev(idToken);
                     querySnapshot.forEach((doc) => {
+                        const secondNum = doc.data().phoneNumSecond +'';
                         logDev(`${doc.id} => ${doc.data()} `);
                         logDev('phoneNumber : ' + doc.data().phoneNumFirst + doc.data().phoneNumSecond + doc.data().phoneNumThird);
                         logDev('userName : ' + doc.data().userName);
@@ -102,7 +103,8 @@ const Login: React.FC = () => {
                         logDev('doc email : ' + doc.data().email);
                         logDev('email : ' + email);
                         logDev('email// : ' + result.user.email);
-                        setPhoneNumber(doc.data().phoneNumFirst + doc.data().phoneNumSecond + doc.data().phoneNumThird);
+                        setVisualPhoneNumber(`${doc.data().phoneNumFirst}-${secondNum.slice(0,1)}***-${doc.data().phoneNumThird}`);
+                        setPhoneNumber(`${doc.data().phoneNumFirst}${secondNum}${doc.data().phoneNumThird}`);
                         setUserName(doc.data().userName);
                         setUniqueNumber(doc.data().userNumber);
                         setEmail(result.user.email);
@@ -243,7 +245,7 @@ const Login: React.FC = () => {
                             <Link href={"/service/join_step1"}>회원가입</Link>
                         </div>
                         <div className={styles.login_bottom_detail}>
-                            <Link href={"views/findpassword"}>비밀번호 찾기</Link>
+                            <Link href={"/service/reset-password"}>비밀번호 변경</Link>
                         </div>
                     </div>
                 </div>
@@ -306,9 +308,9 @@ const Login: React.FC = () => {
                             lineHeight: '40px',
                             letterSpacing: '5%',
                             color: '#222',
-                            marginRight: '33px'
+                            marginRight: '33px',
                         }}>
-                            {`0${phoneNumber}`}
+                            {`0${visualPhoneNumber}`}
                         </label>
                         <button id={"recaptcha-container"} style={{
                             width: '160px',
