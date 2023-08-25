@@ -15,6 +15,13 @@ module.exports = {
         whitesmoke: "#f8f8f8",
         darkslategray: "#292f36",
         "back-select": "#fbfbfb",
+        backselect: "#fbfbfb",
+        _200: "#efefef",
+        _400: "#bfbfbf",
+        _500: "#a0a0a0",
+        _600: "#777777",
+        _800: "#444444",
+        _900: "#232527",
         color: "#efefef",
         "m3-sys-light-on-surface": "#1c1b1f",
         "line-color": "#cfd4e3",
@@ -24,6 +31,8 @@ module.exports = {
         primary1: "#695b4c",
         color2: "#232527",
         "border-color": "#bfbfbf",
+        infomation: "#008dfa",
+        "m-3-sys-light-on-surface": "#1c1b1f"
       },
       fontFamily: {
         "font-16": "'Noto Sans'",
