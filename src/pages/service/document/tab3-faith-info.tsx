@@ -18,7 +18,7 @@ interface AddressInfo {
     address: string;
 }
 
-const Tab2BasicInfo: NextPage<ActivedTab> = ({activedTab, setActivedTab}) => {
+const Tab3FaithInfo: NextPage<ActivedTab> = ({activedTab, setActivedTab}) => {
     const [showPopup, setShowPopup] = useState(false);
     const [address, setAddress] = useState<AddressInfo | null>(null);
 
@@ -42,7 +42,7 @@ const Tab2BasicInfo: NextPage<ActivedTab> = ({activedTab, setActivedTab}) => {
                 <div className={'w-[1200px] h-[1000px] bg-back-select'}>
                     <div id={'title'}
                          className="w-full h-11 text-center text-[35px] text-darkslategray font-noto-sans m-[46px]">
-                        <div className="">기본정보</div>
+                        <div className="">신앙정보</div>
                     </div>
                     <div id={'content'} className="w-full flex flex-col pl-[88px] pt-[33px] ">
                         <div className={'w-full flex justify-end pr-[35.85px]'}>
@@ -1118,4 +1118,4 @@ const Tab2BasicInfo: NextPage<ActivedTab> = ({activedTab, setActivedTab}) => {
 
 }
 
-export default Tab2BasicInfo;
+export default Tab3FaithInfo;

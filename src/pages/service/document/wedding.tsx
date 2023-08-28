@@ -2,6 +2,7 @@ import type {NextPage} from "next";
 import {useState} from "react";
 import Tab1Apply from "@/pages/service/document/tab1-apply";
 import Tab2BasicInfo from "@/pages/service/document/tab2-basic-info";
+import Tab3FaithInfo from "@/pages/service/document/tab3-faith-info";
 
 const WeddingDocument: NextPage = () => {
     const [activedTab, setActivedTab] = useState(0);
@@ -16,7 +17,7 @@ const WeddingDocument: NextPage = () => {
         },
         {
             title: "신앙정보",
-            content: "This is the content for Tab 3"
+            content: <Tab3FaithInfo setActivedTab={setActivedTab} activedTab={activedTab}/>
         },
         {
             title: "직장/재산정보",
