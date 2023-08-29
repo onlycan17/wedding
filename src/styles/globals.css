@@ -2236,3 +2236,7 @@ h3.sub_tit.icon_img {
     fill: #b0aa87;
     margin-right: 5px;
 }
+
+.bullet-list {
+    list-style-type: disc; /* 기본적으로 disc는 원형(가운데 점) */
+}

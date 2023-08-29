@@ -32,7 +32,8 @@ module.exports = {
         color2: "#232527",
         "border-color": "#bfbfbf",
         infomation: "#008dfa",
-        "m-3-sys-light-on-surface": "#1c1b1f"
+        "m-3-sys-light-on-surface": "#1c1b1f",
+        error: "#ff5a4a",
       },
       fontFamily: {
         "font-16": "'Noto Sans'",

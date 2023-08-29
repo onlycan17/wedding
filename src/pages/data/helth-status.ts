@@ -4,9 +4,9 @@ export type helthStatus = {
 }
 
 export const helthStatusList: helthStatus[] = [
-    {code: '1301', name: '건강'},
-    {code: '1302', name: '보통'},
-    {code: '1303', name: '약함'},
-    {code: '1304', name: '질병'},
+    {code: '1501', name: '건강'},
+    {code: '1502', name: '보통'},
+    {code: '1503', name: '약함'},
+    {code: '1504', name: '질병'},
 ];
 
