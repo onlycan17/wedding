@@ -14,7 +14,7 @@ type ActivedTab = {
 
 
 
-const Tab3FaithInfo: NextPage<ActivedTab> = ({activedTab, setActivedTab}) => {
+const Tab4KnowledgePropertyInfo: NextPage<ActivedTab> = ({activedTab, setActivedTab}) => {
 
     const [fields, setFields] = useState<number[]>([0]); // 초기 상태는 하나의 필드만 있도록 설정
 
@@ -40,7 +40,7 @@ const Tab3FaithInfo: NextPage<ActivedTab> = ({activedTab, setActivedTab}) => {
                 <div className={'w-[1200px] h-[860px] bg-back-select'}>
                     <div id={'title'}
                          className="w-full h-11 text-center text-[35px] text-darkslategray font-noto-sans m-[46px]">
-                        <div className="">신앙정보</div>
+                        <div className="">직장/재산정보</div>
                     </div>
                     <div id={'content'} className="w-full flex flex-col pl-[88px] pt-[33px] ">
                         <div className={'w-full flex justify-end pr-[35.85px]'}>
@@ -62,17 +62,7 @@ const Tab3FaithInfo: NextPage<ActivedTab> = ({activedTab, setActivedTab}) => {
                                 </div>
                             </div>
                         </div>
-                        <div className={'mb-[77px]'}></div>
-                        <div className={'w-full flex flex-row'}>
-                            <ul className={'bullet-list'}>
-                                <li className={'font-size-16 mb-[32px] text-primary1'}>
-                                    소속교회 <span className={'ml-[60px]'}>서울북부 / 사파이어 교회</span>
-                                </li>
-                                <li className={'font-size-16 text-primary1'}>
-                                    소속부서 <span className={'ml-[60px]'}>청년부</span>
-                                </li>
-                            </ul>
-                        </div>
+                        <div className={'w-full h-[111px]'}></div>
                         <div className={'w-full flex justify-start'}>
                             <div className={'mt-[88px]'}>
                                 <div className="flex flex-row items-start justify-start">
@@ -80,7 +70,7 @@ const Tab3FaithInfo: NextPage<ActivedTab> = ({activedTab, setActivedTab}) => {
                                         className="text-_900 text-left font-bold flex items-center justify-start"
                                         style={{font: "400 16px/150% 'Noto Sans', sans-serif"}}
                                     >
-                                        활동부서{" "}
+                                        직업/종{" "}
                                     </div>
                                     <div className=" flex flex-col items-center justify-center shrink-0 w-6 h-6">
                                         <div
@@ -651,4 +641,4 @@ const Tab3FaithInfo: NextPage<ActivedTab> = ({activedTab, setActivedTab}) => {
 
 }
 
-export default Tab3FaithInfo;
+export default Tab4KnowledgePropertyInfo;

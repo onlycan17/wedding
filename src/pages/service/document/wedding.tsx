@@ -3,6 +3,7 @@ import {useState} from "react";
 import Tab1Apply from "@/pages/service/document/tab1-apply";
 import Tab2BasicInfo from "@/pages/service/document/tab2-basic-info";
 import Tab3FaithInfo from "@/pages/service/document/tab3-faith-info";
+import Tab4KnowledgeProtertyInfo from "@/pages/service/document/tab4-knowledge-proterty-info";
 
 const WeddingDocument: NextPage = () => {
     const [activedTab, setActivedTab] = useState(0);
@@ -21,7 +22,7 @@ const WeddingDocument: NextPage = () => {
         },
         {
             title: "직장/재산정보",
-            content: "This is the content for Tab 4"
+            content: <Tab4KnowledgeProtertyInfo setActivedTab={setActivedTab} activedTab={activedTab} />
         },
         {
             title: "가족정보",
