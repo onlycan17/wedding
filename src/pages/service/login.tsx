@@ -34,10 +34,6 @@ const schema = yup.object().shape({
     username: yup.string().required('이름(본명)은 필수 입력 입니다.'),
     email: yup.string().email().required('이메일은 필수 입력 입니다.'),
     password: yup.string().min(8)
-        .matches(/[a-z]/, '최소 하나 이상의 소문자가 필요 합니다.')
-        .matches(/[A-Z]/, '최소 하나 이상의 대문자가 필요 합니다.')
-        .matches(/\d+/, '최소 하나 이상의 숫자가 필요 합니다.')
-        .matches(/[!@#$%^&*(),.?":{}|<>]/, '최소 하나 이상의 특수문자가 필요 합니다.')
         .min(8, '최소 8자리이상의 비밀번호를 입력해주세요.')
         .required('비밀번호는 필수 입력 입니다.'),
 });
