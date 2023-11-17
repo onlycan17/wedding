@@ -640,173 +640,261 @@ const Tab4KnowledgePropertyInfo: NextPage<ActivedTab> = ({ activedTab, setActive
                 ))}
               </div>
             </div>
+            <div className="ml-[88px] flex">
+              <div className="text-primary1 mt-[58px]" style={{ font: "600 16px/200% 'Noto Sans', sans-serif" }}>
+                소유재산
+              </div>
+              <div className={"mt-[63px]"}>
+                <div className=" flex flex-col items-center justify-center shrink-0 w-6 h-6 ">
+                  <div
+                    className="text-[#e82121] text-center flex items-center justify-center w-full h-full "
+                    style={{ font: "400 13px/14.95px 'Noto Sans', sans-serif" }}
+                  >
+                    *
+                  </div>
+                </div>
+              </div>
+              <div className="ml-[12px] mt-[61px]">
+                <div className={"w-full flex"}>
+                  <span className="bg-chk">
+                    <input type="checkbox" id="home" name="home" />
+                    <label htmlFor="home" className={"text-_600 text-[15px]"}>
+                      집{" "}
+                    </label>
+                  </span>
+                </div>
+              </div>
+              <div className="ml-[12px] mt-[61px]">
+                <div className={"w-full flex"}>
+                  <span className="bg-chk">
+                    <input type="checkbox" id="building" name="building" />
+                    <label htmlFor="building" className={"text-_600 text-[15px]"}>
+                      건물{" "}
+                    </label>
+                  </span>
+                </div>
+              </div>
+              <div className="ml-[12px] mt-[61px]">
+                <div className={"w-full flex"}>
+                  <span className="bg-chk">
+                    <input type="checkbox" id="car" name="car" />
+                    <label htmlFor="car" className={"text-_600 text-[15px]"}>
+                      차량{" "}
+                    </label>
+                  </span>
+                </div>
+              </div>
+              <div className="ml-[12px] mt-[61px]">
+                <div className={"w-full flex"}>
+                  <span className="bg-chk">
+                    <input type="checkbox" id="savingsAndDeposits" name="savingsAndDeposits" />
+                    <label htmlFor="savingsAndDeposits" className={"text-_600 text-[15px]"}>
+                      예.적금{" "}
+                    </label>
+                  </span>
+                </div>
+              </div>
+              <div className="ml-[12px] mt-[61px]">
+                <div className={"w-full flex"}>
+                  <span className="bg-chk">
+                    <input type="checkbox" id="stocks" name="stocks" />
+                    <label htmlFor="stocks" className={"text-_600 text-[15px]"}>
+                      주식{" "}
+                    </label>
+                  </span>
+                </div>
+              </div>
+              <div className="ml-[12px] mt-[61px]">
+                <div className={"w-full flex"}>
+                  <span className="bg-chk">
+                    <input type="checkbox" id="land" name="land" />
+                    <label htmlFor="land" className={"text-_600 text-[15px]"}>
+                      토지{" "}
+                    </label>
+                  </span>
+                </div>
+              </div>
+              <div className="ml-[12px] mt-[61px]">
+                <div className={"w-full flex"}>
+                  <span className="bg-chk">
+                    <input type="checkbox" id="other" name="other" />
+                    <label htmlFor="other" className={"text-_600 text-[15px]"}>
+                      기타{" "}
+                    </label>
+                  </span>
+                </div>
+              </div>
+              <div
+                className="text-primary1 text-left w-[20px] mt-[58px]"
+                style={{ font: "600 16px/200% 'Noto Sans', sans-serif" }}
+              >
+                총
+              </div>
+              <div className={"mt-[63px]"}>
+                <div className=" flex flex-col items-center justify-center shrink-0 w-6 h-6 ">
+                  <div
+                    className="text-[#e82121] text-center flex items-center justify-center w-full h-full "
+                    style={{ font: "400 13px/14.95px 'Noto Sans', sans-serif" }}
+                  >
+                    *
+                  </div>
+                </div>
+              </div>
+              <div className={"ml-[15px] mt-[45px]"}>
+                <input
+                  type={"text"}
+                  className={
+                    "rounded-[5px] border-solid border-_400 border pr-2.5 pl-2.5 flex flex-row gap-2.5 items-center justify-start text-_500 w-[232px] h-[60px] text-left"
+                  }
+                />
+              </div>
+              <div className="mt-[58px] pl-[10px] text-[#292f36] text-[18px]">만원</div>
+            </div>
+            <div className="ml-[88px] flex">
+              <div className="text-primary1 mt-[75px]" style={{ font: "600 16px/200% 'Noto Sans', sans-serif" }}>
+                부채(빚)
+              </div>
+              <div className="mt-[81px]  flex flex-col items-center justify-center shrink-0 w-6 h-6 ">
+                <div
+                  className="text-[#e82121] text-center flex items-center justify-center w-full h-full "
+                  style={{ font: "400 13px/14.95px 'Noto Sans', sans-serif" }}
+                >
+                  *
+                </div>
+              </div>
+              <div className="ml-[12px] mt-[77px]">
+                <div className={"w-full flex"}>
+                  <span className="bg-chk">
+                    <input type="checkbox" id="car" name="car" />
+                    <label htmlFor="car" className={"text-_600 text-[15px]"}>
+                      주택담보/전세대출{" "}
+                    </label>
+                  </span>
+                </div>
+              </div>
+              <div className="ml-[42px] mt-[60px]">
+                <div
+                  className="text-_900 text-left w-[320px] h-[60px] flex items-center justify-start"
+                  style={{ font: "500 16px/200% 'Noto Sans', sans-serif" }}
+                >
+                  <input
+                    type={"text"}
+                    className={
+                      "rounded-[5px] border-solid border-_400 border pr-2.5 pl-2.5 flex flex-row gap-2.5 items-center justify-start text-_500 w-[272px] h-[60px] text-left"
+                    }
+                  />
+                  <label className={"pl-[10px] text-[#292f36] text-[18px]"}>만원</label>
+                </div>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="ml-[176px] mt-[35px]">
+                <div className={"w-full flex"}>
+                  <span className="bg-chk">
+                    <input type="checkbox" id="car" name="car" />
+                    <label htmlFor="car" className={"text-_600 text-[15px]"}>
+                      신용대출{" "}
+                    </label>
+                  </span>
+                </div>
+              </div>
+              <div className="ml-[103px] mt-[19px]">
+                <div
+                  className="text-_900 text-left w-[320px] h-[60px] flex items-center justify-start"
+                  style={{ font: "500 16px/200% 'Noto Sans', sans-serif" }}
+                >
+                  <input
+                    type={"text"}
+                    className={
+                      "rounded-[5px] border-solid border-_400 border pr-2.5 pl-2.5 flex flex-row gap-2.5 items-center justify-start text-_500 w-[272px] h-[60px] text-left"
+                    }
+                  />
+                  <label className={"pl-[10px] text-[#292f36] text-[18px]"}>만원</label>
+                </div>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="ml-[176px] mt-[35px]">
+                <div className={"w-full flex"}>
+                  <span className="bg-chk">
+                    <input type="checkbox" id="car" name="car" />
+                    <label htmlFor="car" className={"text-_600 text-[15px]"}>
+                      학자금대출{" "}
+                    </label>
+                  </span>
+                </div>
+              </div>
+              <div className="ml-[90px] mt-[19px]">
+                <div
+                  className="text-_900 text-left w-[320px] h-[60px] flex items-center justify-start"
+                  style={{ font: "500 16px/200% 'Noto Sans', sans-serif" }}
+                >
+                  <input
+                    type={"text"}
+                    className={
+                      "rounded-[5px] border-solid border-_400 border pr-2.5 pl-2.5 flex flex-row gap-2.5 items-center justify-start text-_500 w-[272px] h-[60px] text-left"
+                    }
+                  />
+                  <label className={"pl-[10px] text-[#292f36] text-[18px]"}>만원</label>
+                </div>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="ml-[176px] mt-[35px]">
+                <div className={"w-full flex"}>
+                  <span className="bg-chk">
+                    <input type="checkbox" id="car" name="car" />
+                    <label htmlFor="car" className={"text-_600 text-[15px]"}>
+                      기타{" "}
+                    </label>
+                  </span>
+                </div>
+              </div>
+              <div className="ml-[131px] mt-[19px]">
+                <div
+                  className="text-_900 text-left w-[320px] h-[60px] flex items-center justify-start"
+                  style={{ font: "500 16px/200% 'Noto Sans', sans-serif" }}
+                >
+                  <input
+                    type={"text"}
+                    className={
+                      "rounded-[5px] border-solid border-_400 border pr-2.5 pl-2.5 flex flex-row gap-2.5 items-center justify-start text-_500 w-[272px] h-[60px] text-left"
+                    }
+                  />
+                  <label className={"pl-[10px] text-[#292f36] text-[18px]"}>만원</label>
+                </div>
+              </div>
+              <div
+                className="text-primary1 text-left w-[20px] ml-[130px] mt-[38px]"
+                style={{ font: "600 16px/200% 'Noto Sans', sans-serif" }}
+              >
+                총
+              </div>
+              <div className={"mt-[43px]"}>
+                <div className=" flex flex-col items-center justify-center shrink-0 w-6 h-6 ">
+                  <div
+                    className="text-[#e82121] text-center flex items-center justify-center w-full h-full "
+                    style={{ font: "400 13px/14.95px 'Noto Sans', sans-serif" }}
+                  >
+                    *
+                  </div>
+                </div>
+              </div>
+              <div className={"ml-[25px] mt-[25px]"}>
+                <input
+                  type={"text"}
+                  className={
+                    "rounded-[5px] border-solid border-_400 border pr-2.5 pl-2.5 flex flex-row gap-2.5 items-center justify-start text-_500 w-[232px] h-[60px] text-left"
+                  }
+                />
+              </div>
+              <div className="mt-[38px] pl-[10px] text-[#292f36] text-[18px]">만원</div>
+            </div>
             <div className={"mb-[40px]"}></div>
           </div>
         </div>
         <div className={"mb-[50px]"}></div>
-        <div className={"flex flex-col gap-[15px] items-start justify-start w-[1200px] h-[588px]"}>
-          <div className="flex flex-row gap-2.5 items-start justify-start shrink-0">
-            <div className="text-primary2 text-left" style={{ font: "700 22px/150% 'Noto Sans', sans-serif" }}>
-              신앙경력{" "}
-            </div>
-          </div>
-          <div className="bg-backselect flex-1 flex-col w-full">
-            <div className={"w-full flex flex-col ml-[88px]"}>
-              <div className="text-_700 text-left mt-[59px] " style={{ font: "500 14px/150% 'Noto Sans', sans-serif" }}>
-                최근을 중심으로 대표적인 사명 3개까지만 적어주세요.
-              </div>
-              <div className="flex flex-row items-start justify-start h-[60px] w-full">
-                <div
-                  className="text-_900 text-left flex items-center justify-center h-[60px] mt-[29px]"
-                  style={{ font: "400 16px/150% 'Noto Sans', sans-serif" }}
-                >
-                  사명{" "}
-                </div>
-                <div className="h-[60px] flex flex-col items-center justify-center shrink-0 ml-[10px] mt-[29px]">
-                  <div
-                    className="text-[#e82121] text-center flex items-center justify-center h-7"
-                    style={{ font: "400 13px/14.95px 'Noto Sans', sans-serif" }}
-                  >
-                    *{" "}
-                  </div>
-                </div>
-                <div className={"ml-[41px] mt-[29px]"}>
-                  <input
-                    type={"text"}
-                    className="bg-white rounded-[5px] border-solid border-_400 border pt-5 pr-2.5 pb-5 pl-2.5 flex flex-row gap-2.5 items-center justify-start w-[146px] h-[60px] text-_500 text-left "
-                    style={{ font: "400 15px/150% 'Noto Sans', sans-serif" }}
-                    placeholder={"기간 입력"}
-                  />
-                </div>
-                <div className={"mt-[45px] pl-[10px] pr-[10px]"}>
-                  <div
-                    className="text-[#292f36] text-left relative flex items-center justify-start"
-                    style={{ font: "400 16px/150% 'Noto Sans', sans-serif" }}
-                  >
-                    ~{" "}
-                  </div>
-                </div>
-                <div className={"mt-[29px]"}>
-                  <input
-                    type={"text"}
-                    className="bg-white rounded-[5px] border-solid border-_400 border pt-5 pr-2.5 pb-5 pl-2.5 flex flex-row gap-2.5 items-center justify-start w-[166px] h-[60px] text-_500 text-left "
-                    style={{ font: "400 15px/150% 'Noto Sans', sans-serif" }}
-                    placeholder={"기간 입력"}
-                  />
-                </div>
-                <div className={"ml-[30px]"}></div>
-                <div className={"mt-[29px]"}>
-                  <input
-                    type={"text"}
-                    className="bg-white rounded-[5px] border-solid border-_400 border pt-5 pr-2.5 pb-5 pl-2.5 flex flex-row gap-2.5 items-center justify-start w-[520px] h-[60px] text-_500 text-left "
-                    style={{ font: "400 15px/150% 'Noto Sans', sans-serif" }}
-                    placeholder={"사명"}
-                  />
-                </div>
-              </div>
-              <div className="flex flex-row items-start justify-start h-[60px] w-full">
-                <div className={"ml-[84px] mt-[49px]"}>
-                  <input
-                    type={"text"}
-                    className="bg-white rounded-[5px] border-solid border-_400 border pt-5 pr-2.5 pb-5 pl-2.5 flex flex-row gap-2.5 items-center justify-start w-[146px] h-[60px] text-_500 text-left "
-                    style={{ font: "400 15px/150% 'Noto Sans', sans-serif" }}
-                    placeholder={"기간 입력"}
-                  />
-                </div>
-                <div className={"mt-[65px] pl-[10px] pr-[10px]"}>
-                  <div
-                    className="text-[#292f36] text-left relative flex items-center justify-start"
-                    style={{ font: "400 16px/150% 'Noto Sans', sans-serif" }}
-                  >
-                    ~{" "}
-                  </div>
-                </div>
-                <div className={"mt-[49px]"}>
-                  <input
-                    type={"text"}
-                    className="bg-white rounded-[5px] border-solid border-_400 border pt-5 pr-2.5 pb-5 pl-2.5 flex flex-row gap-2.5 items-center justify-start w-[166px] h-[60px] text-_500 text-left "
-                    style={{ font: "400 15px/150% 'Noto Sans', sans-serif" }}
-                    placeholder={"기간 입력"}
-                  />
-                </div>
-                <div className={"ml-[30px]"}></div>
-                <div className={"mt-[49px]"}>
-                  <input
-                    type={"text"}
-                    className="bg-white rounded-[5px] border-solid border-_400 border pt-5 pr-2.5 pb-5 pl-2.5 flex flex-row gap-2.5 items-center justify-start w-[520px] h-[60px] text-_500 text-left "
-                    style={{ font: "400 15px/150% 'Noto Sans', sans-serif" }}
-                    placeholder={"사명"}
-                  />
-                </div>
-              </div>
-              <div className="flex flex-row items-start justify-start h-[60px] w-full">
-                <div className={"ml-[84px] mt-[69px]"}>
-                  <input
-                    type={"text"}
-                    className="bg-white rounded-[5px] border-solid border-_400 border pt-5 pr-2.5 pb-5 pl-2.5 flex flex-row gap-2.5 items-center justify-start w-[146px] h-[60px] text-_500 text-left "
-                    style={{ font: "400 15px/150% 'Noto Sans', sans-serif" }}
-                    placeholder={"기간 입력"}
-                  />
-                </div>
-                <div className={"mt-[85px] pl-[10px] pr-[10px]"}>
-                  <div
-                    className="text-[#292f36] text-left relative flex items-center justify-start"
-                    style={{ font: "400 16px/150% 'Noto Sans', sans-serif" }}
-                  >
-                    ~{" "}
-                  </div>
-                </div>
-                <div className={"mt-[69px]"}>
-                  <input
-                    type={"text"}
-                    className="bg-white rounded-[5px] border-solid border-_400 border pt-5 pr-2.5 pb-5 pl-2.5 flex flex-row gap-2.5 items-center justify-start w-[166px] h-[60px] text-_500 text-left "
-                    style={{ font: "400 15px/150% 'Noto Sans', sans-serif" }}
-                    placeholder={"기간 입력"}
-                  />
-                </div>
-                <div className={"ml-[30px]"}></div>
-                <div className={"mt-[69px]"}>
-                  <input
-                    type={"text"}
-                    className="bg-white rounded-[5px] border-solid border-_400 border pt-5 pr-2.5 pb-5 pl-2.5 flex flex-row gap-2.5 items-center justify-start w-[520px] h-[60px] text-_500 text-left "
-                    style={{ font: "400 15px/150% 'Noto Sans', sans-serif" }}
-                    placeholder={"사명"}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className={"mt-[100px] pl-[88px] flex w-full"}>
-              <div className="flex flex-row gap-[5px] items-start justify-start">
-                <div
-                  className="text-_900 text-left flex items-center justify-start w-[45px]"
-                  style={{ font: "400 16px/150% 'Noto Sans', sans-serif" }}
-                >
-                  신앙관{" "}
-                </div>
-                <div className="p-2.5 flex flex-col gap-2.5 items-center justify-center shrink-0 w-6 h-6 ">
-                  <div
-                    className="text-[#e82121] text-center flex items-center justify-center"
-                    style={{ font: "400 13px/14.95px 'Noto Sans', sans-serif" }}
-                  >
-                    *{" "}
-                  </div>
-                </div>
-              </div>
-              {/*<div className={'mb-[60px]'}></div>*/}
-              <div className={"w-full flex ml-[10px]"}>
-                <textarea
-                  className={
-                    "bg-white rounded-[5px] border-solid border-_400 border pt-5 pr-2.5 pb-5 pl-2.5 flex flex-row gap-2.5 items-center justify-start w-[892px] h-[192px]"
-                  }
-                />
-              </div>
-            </div>
 
-            <div className={"mb-[60px]"}></div>
-          </div>
-        </div>
-
-        <div className={"mb-[120px]"}></div>
         <div className={"w-full flex items-center justify-center "}>
           <button
             className="hover:bg-primary2 hover:text-white w-[180px] h-[40px] bg-_200 rounded-[20px] gap-0  text-gray-500 text-center top-[calc(50%_-_10px)] flex items-center justify-center"

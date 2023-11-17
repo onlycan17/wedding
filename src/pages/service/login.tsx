@@ -45,9 +45,9 @@ const Login: React.FC = () => {
     const [user, setUser] = useRecoilState(userState);
     const [isReadOnly, setIsReadOnly] = useState(true);
     const [verificationId, setVerificationId] = useState('');
-    const [userName, setUserName] = useState(Cookies.get('userName') ?? '');
-    const [uniqueNumber, setUniqueNumber] = useState(Cookies.get('uniqueNumber') ?? '');
-    const [getEmail, setEmail] = useState<string | null>(Cookies.get('email') ?? null);
+    const [userName, setUserName] = useState(Cookies.get('userName') ?? '홍길동');
+    const [uniqueNumber, setUniqueNumber] = useState(Cookies.get('uniqueNumber') ?? 'GM64652');
+    const [getEmail, setEmail] = useState<string | null>(Cookies.get('email') ?? 'test@test.com');
     const [visualPhoneNumber, setVisualPhoneNumber] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const router = useRouter();
