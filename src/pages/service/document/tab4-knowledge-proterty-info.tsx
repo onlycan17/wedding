@@ -11,6 +11,9 @@ import secondJobCategory, { Status } from "@/pages/data/second-job-category";
 import { location, locationDetail } from "@/pages/data/location";
 import { position } from "@/pages/data/position";
 import { employmentType } from "@/pages/data/employment-type";
+import { homeType } from "@/pages/data/home-type";
+import { homeOwner } from "@/pages/data/home-owner";
+import { FutureHousingPlans } from "@/pages/data/future-housing-plans";
 
 type ActivedTab = {
   activedTab: number;
@@ -865,12 +868,12 @@ const Tab4KnowledgePropertyInfo: NextPage<ActivedTab> = ({ activedTab, setActive
                 </div>
               </div>
               <div
-                className="text-primary1 text-left w-[20px] ml-[130px] mt-[38px]"
+                className="text-primary1 text-left w-[20px] ml-[130px] mt-[31px]"
                 style={{ font: "600 16px/200% 'Noto Sans', sans-serif" }}
               >
                 총
               </div>
-              <div className={"mt-[43px]"}>
+              <div className={"mt-[37px]"}>
                 <div className=" flex flex-col items-center justify-center shrink-0 w-6 h-6 ">
                   <div
                     className="text-[#e82121] text-center flex items-center justify-center w-full h-full "
@@ -880,7 +883,7 @@ const Tab4KnowledgePropertyInfo: NextPage<ActivedTab> = ({ activedTab, setActive
                   </div>
                 </div>
               </div>
-              <div className={"ml-[25px] mt-[25px]"}>
+              <div className={"ml-[25px] mt-[15px]"}>
                 <input
                   type={"text"}
                   className={
@@ -888,13 +891,231 @@ const Tab4KnowledgePropertyInfo: NextPage<ActivedTab> = ({ activedTab, setActive
                   }
                 />
               </div>
-              <div className="mt-[38px] pl-[10px] text-[#292f36] text-[18px]">만원</div>
+              <div className="mt-[32px] pl-[10px] text-[#292f36] text-[18px]">만원</div>
             </div>
             <div className={"mb-[40px]"}></div>
           </div>
         </div>
-        <div className={"mb-[50px]"}></div>
+        <div className={"mb-[70px]"}></div>
 
+        <div className="flex flex-col gap-[15px] items-start justify-start ">
+          <div className="flex flex-row gap-2.5 items-start justify-start shrink-0">
+            <div className="text-primary2 text-left" style={{ font: "700 22px/150% 'Noto Sans', sans-serif" }}>
+              주거정보{" "}
+            </div>
+          </div>
+          <div className="bg-backselect flex-1 w-[1200px]">
+            <div className={"pl-[88px] flex"}>
+              <div className={"flex-col"}>
+                <div className="flex">
+                  <div
+                    className="text-primary1 text-left w-[50px] mt-[35px]"
+                    style={{ font: "600 16px/200% 'Noto Sans', sans-serif" }}
+                  >
+                    거주지
+                  </div>
+                  <div className={"mt-[40px]"}>
+                    <div className=" flex flex-col items-center justify-center shrink-0 w-6 h-6 ">
+                      <div
+                        className="text-[#e82121] text-center flex items-center justify-center w-full h-full "
+                        style={{ font: "400 13px/14.95px 'Noto Sans', sans-serif" }}
+                      >
+                        *
+                      </div>
+                    </div>
+                  </div>
+                  <div className={"ml-[42px] mt-[29px] flex"}>
+                    <div className={"ml-[20px]"}></div>
+                    <div className={"w-[200px] h-[60px]"}>
+                      <select className={"h-[60px] text-_500"} onChange={onchangeLocation}>
+                        <option>1차 권역</option>
+                        {location.map((item, index) => (
+                          <option key={index} value={item}>
+                            {item}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className={"ml-[20px]"}></div>
+                    <div className={"w-[200px] h-[60px]"}>
+                      <select className={"h-[60px] text-_500"}>
+                        <option>2차 지역</option>
+                        {sigugun?.map((item, index) => (
+                          <option key={index} value={item}>
+                            {item}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex">
+                  <div
+                    className="text-primary1 text-left w-[60px] mt-[35px]"
+                    style={{ font: "600 16px/200% 'Noto Sans', sans-serif" }}
+                  >
+                    거주형태
+                  </div>
+                  <div className={"mt-[40px]"}>
+                    <div className=" flex flex-col items-center justify-center shrink-0 w-6 h-6 ">
+                      <div
+                        className="text-[#e82121] text-center flex items-center justify-center w-full h-full "
+                        style={{ font: "400 13px/14.95px 'Noto Sans', sans-serif" }}
+                      >
+                        *
+                      </div>
+                    </div>
+                  </div>
+                  <div className={"ml-[33px] mt-[29px] flex"}>
+                    <div className={"ml-[20px]"}></div>
+                    <div className={"w-[200px] h-[60px]"}>
+                      <select className={"h-[60px] text-_500"} onChange={onchangeLocation}>
+                        <option>선택</option>
+                        {homeType.map((item, index) => (
+                          <option key={index} value={item}>
+                            {item}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className={"ml-[20px]"}></div>
+                    <div>
+                      <input
+                        type={"text"}
+                        className={
+                          "rounded-[5px] border-solid border-_400 border pr-2.5 pl-2.5 flex flex-row gap-2.5 items-center justify-start text-_500 w-[360px] h-[60px] text-left"
+                        }
+                        placeholder="기타의 경우 입력"
+                      />
+                    </div>
+                    <div className={"ml-[48px]"}></div>
+                    <div
+                      className="text-primary1 text-left w-[60px] mt-[15px]"
+                      style={{ font: "600 16px/200% 'Noto Sans', sans-serif" }}
+                    >
+                      주거평수
+                    </div>
+                    <div className={"mt-[23px]"}>
+                      <div className=" flex flex-col items-center justify-center shrink-0 w-6 h-6 ">
+                        <div
+                          className="text-[#e82121] text-center flex items-center justify-center w-full h-full "
+                          style={{ font: "400 13px/14.95px 'Noto Sans', sans-serif" }}
+                        >
+                          *
+                        </div>
+                      </div>
+                    </div>
+                    <div className="ml-[10px]">
+                      <input
+                        type={"text"}
+                        className={
+                          "rounded-[5px] border-solid border-_400 border pr-2.5 pl-2.5 flex flex-row gap-2.5 items-center justify-start text-_500 w-[160px] h-[60px] text-left"
+                        }
+                        placeholder="입력"
+                      />
+                    </div>
+                  </div>
+                  <div className=" mt-[45px]">
+                    <label className={"pl-[10px] text-[#292f36] text-[18px]"}>평</label>
+                  </div>
+                </div>
+                <div className="flex">
+                  <div
+                    className="text-primary1 text-left w-[60px] mt-[35px]"
+                    style={{ font: "600 16px/200% 'Noto Sans', sans-serif" }}
+                  >
+                    소유여부
+                  </div>
+                  <div className={"mt-[40px]"}>
+                    <div className=" flex flex-col items-center justify-center shrink-0 w-6 h-6 ">
+                      <div
+                        className="text-[#e82121] text-center flex items-center justify-center w-full h-full "
+                        style={{ font: "400 13px/14.95px 'Noto Sans', sans-serif" }}
+                      >
+                        *
+                      </div>
+                    </div>
+                  </div>
+                  <div className={"ml-[33px] mt-[29px] flex"}>
+                    <div className={"ml-[20px]"}></div>
+                    <div className={"w-[200px] h-[60px]"}>
+                      <select className={"h-[60px] text-_500"} onChange={onchangeLocation}>
+                        <option>선택</option>
+                        {homeOwner.map((item, index) => (
+                          <option key={index} value={item}>
+                            {item}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className={"ml-[20px]"}></div>
+                    <div>
+                      <input
+                        type={"text"}
+                        className={
+                          "rounded-[5px] border-solid border-_400 border pr-2.5 pl-2.5 flex flex-row gap-2.5 items-center justify-start text-_500 w-[360px] h-[60px] text-left"
+                        }
+                        placeholder="기타의 경우 입력"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="flex">
+                  <div className="flex-col">
+                    <div
+                      className="text-primary1 text-left w-[30px] mt-[35px]"
+                      style={{ font: "600 16px/200% 'Noto Sans', sans-serif" }}
+                    >
+                      미래
+                    </div>
+                    <div
+                      className="text-primary1 text-left w-[60px] mt-[-15px]"
+                      style={{ font: "600 16px/200% 'Noto Sans', sans-serif" }}
+                    >
+                      주거계획
+                    </div>
+                  </div>
+                  <div className={"mt-[40px]"}>
+                    <div className=" flex flex-col items-center justify-center shrink-0 w-6 h-6 ">
+                      <div
+                        className="text-[#e82121] text-center flex items-center justify-center w-full h-full "
+                        style={{ font: "400 13px/14.95px 'Noto Sans', sans-serif" }}
+                      >
+                        *
+                      </div>
+                    </div>
+                  </div>
+                  <div className={"ml-[33px] mt-[29px] flex"}>
+                    <div className={"ml-[20px]"}></div>
+                    <div className={"w-[200px] h-[60px]"}>
+                      <select className={"h-[60px] text-_500"} onChange={onchangeLocation}>
+                        <option>선택</option>
+                        {FutureHousingPlans.map((item, index) => (
+                          <option key={index} value={item}>
+                            {item}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className={"ml-[20px]"}></div>
+                    <div>
+                      <input
+                        type={"text"}
+                        className={
+                          "rounded-[5px] border-solid border-_400 border pr-2.5 pl-2.5 flex flex-row gap-2.5 items-center justify-start text-_500 w-[360px] h-[60px] text-left"
+                        }
+                        placeholder="기타의 경우 입력"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="mb-[50px]"></div>
+          </div>
+        </div>
+
+        <div className={"mb-[50px]"}></div>
         <div className={"w-full flex items-center justify-center "}>
           <button
             className="hover:bg-primary2 hover:text-white w-[180px] h-[40px] bg-_200 rounded-[20px] gap-0  text-gray-500 text-center top-[calc(50%_-_10px)] flex items-center justify-center"

@@ -4,6 +4,7 @@ import Tab1Apply from "@/pages/service/document/tab1-apply";
 import Tab2BasicInfo from "@/pages/service/document/tab2-basic-info";
 import Tab3FaithInfo from "@/pages/service/document/tab3-faith-info";
 import Tab4KnowledgeProtertyInfo from "@/pages/service/document/tab4-knowledge-proterty-info";
+import Tab5FamilyInfo from "./tab5-family-info";
 
 const WeddingDocument: NextPage = () => {
     const [activedTab, setActivedTab] = useState(0);
@@ -26,7 +27,7 @@ const WeddingDocument: NextPage = () => {
         },
         {
             title: "가족정보",
-            content: "This is the content for Tab 4"
+            content: <Tab5FamilyInfo setActivedTab={setActivedTab} activedTab={activedTab} />
         },
         {
             title: "성격/성향",
