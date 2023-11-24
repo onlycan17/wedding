@@ -7,6 +7,8 @@ import {onAuthStateChanged} from "@firebase/auth";
 import {auth, db} from "@/pages/config/firbase-setting";
 import {useRouter} from "next/router";
 import {collection, getDocs, query, where} from "firebase/firestore";
+import { useRecoilState } from "recoil";
+import { loginUser } from "../common/state";
 
 
 const Header: React.FC = () => {
@@ -18,6 +20,12 @@ const Header: React.FC = () => {
     const [isLogin, setIsLogin] = useState<boolean>(false);
     const router = useRouter();
     const [userName, setUserName] = useState<string | undefined>('');
+    const [userState, setUserState] = useRecoilState(loginUser);
+
+
+    console.log('-----------header-----------');
+    console.log(userState);
+    console.log('-----------header end-----------');
 
     useEffect(() => {
         logDev(`typeof window: ${typeof window}`);
@@ -30,32 +38,32 @@ const Header: React.FC = () => {
                 }
             }
         }
-        onAuthStateChanged(auth, async (user) => {
-            if (user?.phoneNumber) {
-                setIsLogin(true);
-                console.log(`user: ${JSON.stringify(user)}`);
-                 const firstNum = user.phoneNumber?.slice(3, 5);
-                 const secondNum = user.phoneNumber?.slice(5, 9);
-                 const thirdNum = user.phoneNumber?.slice(9, 13);
-                 console.log(`firstNum: ${firstNum}`);
-                 console.log(`secondNum: ${secondNum}`);
-                 console.log(`thirdNum: ${thirdNum}`);
-                const queryDate = query(
-                    collection(db, "userInfo"),
-                    where("phoneNumFirst", "==", firstNum),
-                    where("phoneNumSecond", "==", secondNum),
-                    where("phoneNumThird", "==", thirdNum),
+        // onAuthStateChanged(auth, async (user) => {
+        //     if (user?.phoneNumber) {
+        //         setIsLogin(true);
+        //         console.log(`user: ${JSON.stringify(user)}`);
+        //          const firstNum = user.phoneNumber?.slice(3, 5);
+        //          const secondNum = user.phoneNumber?.slice(5, 9);
+        //          const thirdNum = user.phoneNumber?.slice(9, 13);
+        //          console.log(`firstNum: ${firstNum}`);
+        //          console.log(`secondNum: ${secondNum}`);
+        //          console.log(`thirdNum: ${thirdNum}`);
+        //         const queryDate = query(
+        //             collection(db, "userInfo"),
+        //             where("phoneNumFirst", "==", firstNum),
+        //             where("phoneNumSecond", "==", secondNum),
+        //             where("phoneNumThird", "==", thirdNum),
 
-                );
-                const querySnapshot = await getDocs(queryDate);
-                querySnapshot.forEach((doc) => {
-                    console.log(doc.id, " => ", doc.data());
-                   setUserName(doc.data().userName);
-                });
-            } else {
-                setIsLogin(false);
-            }
-        });
+        //         );
+        //         const querySnapshot = await getDocs(queryDate);
+        //         querySnapshot.forEach((doc) => {
+        //             console.log(doc.id, " => ", doc.data());
+        //            setUserName(doc.data().userName);
+        //         });
+        //     } else {
+        //         setIsLogin(false);
+        //     }
+        // });
     }, []);
 
     const handleMouseOver = (index: number) => (_event: MouseEvent) => {
@@ -76,6 +84,8 @@ const Header: React.FC = () => {
     const handleLogout = async () => {
         console.log('logout');
         await auth.signOut();
+        await setIsLogin(false);
+        setUserState(null);
         await router.push('/service/login');
     }
 

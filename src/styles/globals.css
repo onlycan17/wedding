@@ -1011,6 +1011,7 @@ table .help-text {font-size:13px;}
 [type='checkbox'],
 [type='radio'] {width:20px; height:20px; vertical-align:middle;}
 .bg-chk {display:inline-block; position:relative; margin-right:30px;}
+.bg-chk-square {display:inline-block; position:relative; margin-right:30px;}
 /* .bg-chk:first-child {margin:0;} */
 .bg-chk [type='checkbox'],
 .bg-chk [type='radio'] {
@@ -1022,6 +1023,17 @@ table .help-text {font-size:13px;}
     margin:-10px 0 0 0;
     opacity:0;
 }
+.bg-chk-square [type='checkbox']{
+    position:absolute;
+    left:0;
+    top:50%;
+    width:20px;
+    height:20px;
+    margin:-10px 0 0 0;
+    opacity:0;
+}
+
+
 
 .bg-chk label {position:relative;
     padding:3px 0 0 27px;
@@ -1032,6 +1044,17 @@ table .help-text {font-size:13px;}
     line-height: 150%;
     letter-spacing: 0.01em;
     color:#222;
+}
+
+.bg-chk-square label {position:relative;
+    padding:3px 0 0 27px;
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 150%;
+    letter-spacing: 0.01em;
+    color:#777;
 }
 
 .bg-chk label:before {
@@ -1051,20 +1074,50 @@ table .help-text {font-size:13px;}
       background:#fff url('../images/icon/bg-chk_off.png') no-repeat 50% 50%;
 }
 
+.bg-chk-square label:before {
+    content:'';
+    display:block;
+    position:absolute;
+    left:0;
+    top:50%;
+    width:20px;
+    height:20px;
+    margin:-10px 0 0 0;
+    border:1px solid #ccc;
+    cursor:pointer;
+    box-sizing:border-box;
+    border-radius:10%;
+    background:#fff ;
+      background:#fff url('../images/checkbox/unselect.png') no-repeat 50% 50%;
+}
+
 .bg-chk [type='checkbox'] + label:before {
     border:1px solid #ccc;
     background:#fff url('../images/icon/bg-chk_off.png') no-repeat 50% 50%;
 }
 
+.bg-chk-square [type='checkbox'] + label:before {
+    border:1px solid #ccc;
+    background:#fff url('../images/checkbox/unselect.png') no-repeat 50% 50%;
+}
+
 
 .bg-chk [type='checkbox'] {position:absolute; left:-99999px;}
+.bg-chk-square [type='checkbox'] {position:absolute; left:-99999px;}
 .bg-chk [type='checkbox']:focus + label:before {outline:1px solid #A2BB81;}
+.bg-chk-square [type='checkbox']:focus + label:before {outline:1px solid #A2BB81;}
 .bg-chk [type='checkbox']:checked + label:before {
     border:0;
     background:#A2BB81 url('../images/icon/bg-chk.png') no-repeat 50% 50%;
 }
 
+.bg-chk-square [type='checkbox']:checked + label:before {
+    border:0;
+    background:#A2BB81 url('../images/checkbox/select.png') no-repeat 50% 50%;
+}
+
 .bg-chk [type='checkbox'][disabled] + label:before {border:0; background-color:#dbdbdb;}
+.bg-chk-square [type='checkbox'][disabled] + label:before {border:0; background-color:#dbdbdb;}
 /*.bg-chk [type='checkbox'][disabled]:checked + label:before {background:#A2BB81 url('../images/icon/bg-chk-2.png') no-repeat 50% 50%;}*/
 .bg-chk [type='radio'] + label:before {border:1px solid #bec2c8; border-radius:50%;}
 .bg-chk [type='radio']:focus + label:before {outline:1px solid #A2BB81;}
@@ -1076,6 +1129,8 @@ table .help-text {font-size:13px;}
 .bg-chk [type='radio'][disabled]:checked + label:before {border:6px solid #dbdbdb; background:#44465c;}
 .bg-chk.hide {margin-right:0; display:inline-block !important;}
 .bg-chk.hide label {width:20px; height:20px; padding:0 0 0 20px; font-size:0; line-height:0;}
+.bg-chk-square.hide {margin-right:0; display:inline-block !important;}
+.bg-chk-square.hide label {width:20px; height:20px; padding:0 0 0 20px; font-size:0; line-height:0;}
 .bg-chk.long {width:100%; display:block;}
 .bg-chk.long label {width:100%; padding:0 0 0 0; font-weight:bold;}
 .bg-chk.long label:before {left:inherit; right:0;}

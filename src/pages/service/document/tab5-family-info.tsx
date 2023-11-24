@@ -969,7 +969,37 @@ const Tab5FamilyInfo: NextPage<ActivedTab> = ({ activedTab, setActivedTab }) => 
 
         <div className="mt-[30px] w-[1200px] flex justify-end">
           <div className="w-[155px]">
-            <button className="p-[10px] rounded-[5px] bg-_700 text-_200 text-[12px]" onClick={addSiblings}>형제자매 추가 +</button>
+            <button className="p-[10px] rounded-[5px] bg-_700 text-_200 text-[12px]" onClick={addSiblings}>
+              형제자매 추가 +
+            </button>
+          </div>
+        </div>
+
+        <div className="w-[1200px] flex-col">
+          <div className="flex">
+            <div className="text-primary2 text-left" style={{ font: "700 22px/150% 'Noto Sans', sans-serif" }}>
+              가족소개{" "}
+            </div>
+            <div className="ml-[10px] mt-[10px]">
+              <div
+                className="text-[#e82121] text-left w-3"
+                style={{ font: "400 13px/14.95px 'Noto Sans', sans-serif" }}
+              >
+                *
+              </div>
+            </div>
+          </div>
+          <div className="mb-[15px]"></div>
+          <div className="bg-backselect flex-1 w-[1200px]">
+            <div className="pl-[88px] pt-[78px]">
+              <div className="text-infomation text-[12px] font-[400] leading-[150%] tracking-[0.14px] ">
+                가족력(정신질환)을 비롯하여 특이사항등 구체적으로 작성해주세요.
+              </div>
+              <div className="mt-[20px]">
+                <textarea className="w-[1024px] h-[200px] rounded-[10px] border-solid border-[1px] border-[#dddddd] p-[10px] text-[12px] text-[#666666]"></textarea>
+              </div>
+            </div>
+            <div className="pb-[60px]"></div>
           </div>
         </div>
 

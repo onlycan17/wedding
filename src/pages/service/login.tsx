@@ -13,12 +13,13 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import React, {useEffect, useState} from "react";
 import logDev from "@/pages/config/log";
 import {useRecoilState} from "recoil";
-import {userState} from "@/pages/common/state";
+import {loginUser} from "@/pages/common/state";
 import {useRouter} from "next/router";
 import styles from '../../styles/css/login.module.css';
 import Cookies from "js-cookie";
 import Link from "next/link";
-import Modal from "@/pages/common/modal";
+import Modal from "@/pages/common/modal/modal";
+import { get } from "http";
 
 
 
@@ -42,12 +43,13 @@ const TIMEOUT_SECONDS = 60;
 
 const Login: React.FC = () => {
     const [timeRemaining, setTimeRemaining] = useState(TIMEOUT_SECONDS);
-    const [user, setUser] = useRecoilState(userState);
+    const [user, setUser] = useRecoilState(loginUser);
     const [isReadOnly, setIsReadOnly] = useState(true);
     const [verificationId, setVerificationId] = useState('');
-    const [userName, setUserName] = useState(Cookies.get('userName') ?? '홍길동');
-    const [uniqueNumber, setUniqueNumber] = useState(Cookies.get('uniqueNumber') ?? 'GM64652');
-    const [getEmail, setEmail] = useState<string | null>(Cookies.get('email') ?? 'test@test.com');
+    const [userName, setUserName] = useState(Cookies.get('userName') ?? '');
+    const [uniqueNumber, setUniqueNumber] = useState(Cookies.get('uniqueNumber') ?? '');
+    const [getEmail, setEmail] = useState<string | null>(Cookies.get('email') ?? '');
+    const [sex, setSex] = useState<string | null>('');
     const [visualPhoneNumber, setVisualPhoneNumber] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const router = useRouter();
@@ -70,7 +72,12 @@ const Login: React.FC = () => {
             return () => clearTimeout(timerId);
         }
         setTimeRemaining(TIMEOUT_SECONDS);
-    }, []);
+    }, [user]);
+
+    // useEffect(() => {
+    //     logDev(`Login useEffect user: ${user}`);
+    // },[user]);
+
     const onSubmit: SubmitHandler<FormFields> = async ({uniquenumber, username, email, password}) => {
         const queryDate = query(
             collection(db, "userInfo"),
@@ -104,6 +111,7 @@ const Login: React.FC = () => {
                         setUserName(doc.data().userName);
                         setUniqueNumber(doc.data().userNumber);
                         setEmail(result.user.email);
+                        setSex(doc.data().sex);
                         openModal();
                     });
                 }
@@ -133,6 +141,15 @@ const Login: React.FC = () => {
 
             setIsModalOpen(false);
             closeModal();
+            setUser({
+                uid: verificationId,
+                email: getEmail,
+                userNumber: uniqueNumber,
+                phoneNumber,
+                userName,
+                sex,
+            });
+            console.log('submit user: ' + user);
             await router.push('/service/main');
         } catch (error) {
             // Handle errors here.

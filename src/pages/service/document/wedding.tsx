@@ -1,13 +1,24 @@
 import type {NextPage} from "next";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Tab1Apply from "@/pages/service/document/tab1-apply";
 import Tab2BasicInfo from "@/pages/service/document/tab2-basic-info";
 import Tab3FaithInfo from "@/pages/service/document/tab3-faith-info";
 import Tab4KnowledgeProtertyInfo from "@/pages/service/document/tab4-knowledge-proterty-info";
 import Tab5FamilyInfo from "./tab5-family-info";
+import Tab6PersonalityInfo from "./tab6-personality-info";
+import { useRecoilValue } from "recoil";
+import { userState } from "@/pages/common/state";
+import WithAuth from "@/pages/common/with-auth";
 
 const WeddingDocument: NextPage = () => {
     const [activedTab, setActivedTab] = useState(0);
+    const getUser = useRecoilValue(userState);
+    useEffect(() => {
+        if (getUser) {
+            console.log(`getUser: ${JSON.stringify(getUser)}`);
+        }
+    }
+    , [getUser]);
     const TabContent = [
         {
             title: "약관동의",
@@ -31,7 +42,7 @@ const WeddingDocument: NextPage = () => {
         },
         {
             title: "성격/성향",
-            content: "This is the content for Tab 4"
+            content: <Tab6PersonalityInfo setActivedTab={setActivedTab} activedTab={activedTab} />
         },
         {
             title: "희망상대",
@@ -70,4 +81,4 @@ const WeddingDocument: NextPage = () => {
     );
 };
 
-export default WeddingDocument;
+export default WithAuth(WeddingDocument);
