@@ -45,7 +45,6 @@
 .fullSlide .hd ul li {
     cursor:pointer;
     display:inline-block;
-    *display:inline;
     zoom:1;
     width:42px;
     height:11px;
