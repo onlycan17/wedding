@@ -52,14 +52,14 @@ const Tab6PersonalityInfo: NextPage<ActivedTab> = ({ activedTab, setActivedTab }
     setActivedTab(5);
   };
 
-  const handleMbti = (e: React.MouseEvent<HTMLButtonElement>):void => {
+  const handleMbti = (e: React.MouseEvent<HTMLButtonElement>): void => {
     const mbti = e.currentTarget.innerText;
     setMbti(mbti.split(" ")[0]);
   };
 
   useEffect(() => {}, [mbti]);
 
-  const handleQ = (e: React.MouseEvent<HTMLImageElement,MouseEvent>):void => {
+  const handleQ = (e: React.MouseEvent<HTMLImageElement, MouseEvent>): void => {
     console.log(e.currentTarget.id);
     let id = e.currentTarget.id;
     let q = id.split("_")[0];
@@ -142,7 +142,7 @@ const Tab6PersonalityInfo: NextPage<ActivedTab> = ({ activedTab, setActivedTab }
         setHobbyLevel3(parseInt(level));
         break;
     }
-  }
+  };
 
   return (
     <div className={"bg-whitesmoke w-full"}>
@@ -1414,18 +1414,29 @@ const Tab6PersonalityInfo: NextPage<ActivedTab> = ({ activedTab, setActivedTab }
                       <option value="">선택</option>
                       {hobby1.map((value) => (
                         <option value={value}>{value}</option>
-                      ))
-                      }
+                      ))}
                     </select>
                   </td>
-                  <td>
-                     {hobbyLevel1 === 1 ? <img src="/radio_check.png" alt="" /> : <img id="h1_1" src="/radio_uncheck.png" alt="" onClick={handleHobby} /> } 
+                  <td className="pl-[20px]">
+                    {hobbyLevel1 === 1 ? (
+                      <img src="/radio_check.png" alt="" />
+                    ) : (
+                      <img id="h1_1" src="/radio_uncheck.png" alt="" onClick={handleHobby} />
+                    )}
                   </td>
-                  <td>
-                     {hobbyLevel1 === 2 ? <img src="/radio_check.png" alt="" /> : <img id="h1_2" src="/radio_uncheck.png" alt="" onClick={handleHobby} /> } 
+                  <td className="pl-[20px]">
+                    {hobbyLevel1 === 2 ? (
+                      <img src="/radio_check.png" alt="" />
+                    ) : (
+                      <img id="h1_2" src="/radio_uncheck.png" alt="" onClick={handleHobby} />
+                    )}
                   </td>
-                  <td>
-                     {hobbyLevel1 === 3 ? <img src="/radio_check.png" alt="" /> : <img id="h1_3" src="/radio_uncheck.png" alt="" onClick={handleHobby} /> } 
+                  <td className="pl-[20px]">
+                    {hobbyLevel1 === 3 ? (
+                      <img src="/radio_check.png" alt="" />
+                    ) : (
+                      <img id="h1_3" src="/radio_uncheck.png" alt="" onClick={handleHobby} />
+                    )}
                   </td>
                 </tr>
                 <tr className="h-[90px]">
@@ -1445,18 +1456,29 @@ const Tab6PersonalityInfo: NextPage<ActivedTab> = ({ activedTab, setActivedTab }
                       <option value="">선택</option>
                       {hobby2.map((value) => (
                         <option value={value}>{value}</option>
-                      ))
-                      }
+                      ))}
                     </select>
                   </td>
-                  <td>
-                     {hobbyLevel2 === 1 ? <img src="/radio_check.png" alt="" /> : <img id="h2_1" src="/radio_uncheck.png" alt="" onClick={handleHobby} /> } 
+                  <td className="pl-[20px]">
+                    {hobbyLevel2 === 1 ? (
+                      <img src="/radio_check.png" alt="" />
+                    ) : (
+                      <img id="h2_1" src="/radio_uncheck.png" alt="" onClick={handleHobby} />
+                    )}
                   </td>
-                  <td>
-                     {hobbyLevel2 === 2 ? <img src="/radio_check.png" alt="" /> : <img id="h2_2" src="/radio_uncheck.png" alt="" onClick={handleHobby} /> } 
+                  <td className="pl-[20px]">
+                    {hobbyLevel2 === 2 ? (
+                      <img src="/radio_check.png" alt="" />
+                    ) : (
+                      <img id="h2_2" src="/radio_uncheck.png" alt="" onClick={handleHobby} />
+                    )}
                   </td>
-                  <td>
-                     {hobbyLevel2 === 3 ? <img src="/radio_check.png" alt="" /> : <img id="h2_3" src="/radio_uncheck.png" alt="" onClick={handleHobby} /> } 
+                  <td className="pl-[20px]">
+                    {hobbyLevel2 === 3 ? (
+                      <img src="/radio_check.png" alt="" />
+                    ) : (
+                      <img id="h2_3" src="/radio_uncheck.png" alt="" onClick={handleHobby} />
+                    )}
                   </td>
                 </tr>
                 <tr className="h-[90px]">
@@ -1476,18 +1498,48 @@ const Tab6PersonalityInfo: NextPage<ActivedTab> = ({ activedTab, setActivedTab }
                       <option value="">선택</option>
                       {hobby3.map((value) => (
                         <option value={value}>{value}</option>
-                      ))
-                      }
+                      ))}
                     </select>
                   </td>
-                  <td>
-                     {hobbyLevel3 === 1 ? <img src="/radio_check.png" alt="" /> : <img id="h3_1" src="/radio_uncheck.png" alt="" onClick={handleHobby} /> } 
+                  <td className="pl-[20px]">
+                    {hobbyLevel3 === 1 ? (
+                      <img src="/radio_check.png" alt="" />
+                    ) : (
+                      <img id="h3_1" src="/radio_uncheck.png" alt="" onClick={handleHobby} />
+                    )}
                   </td>
-                  <td>
-                     {hobbyLevel3 === 2 ? <img src="/radio_check.png" alt="" /> : <img id="h3_2" src="/radio_uncheck.png" alt="" onClick={handleHobby} /> } 
+                  <td className="pl-[20px]">
+                    {hobbyLevel3 === 2 ? (
+                      <img src="/radio_check.png" alt="" />
+                    ) : (
+                      <img id="h3_2" src="/radio_uncheck.png" alt="" onClick={handleHobby} />
+                    )}
                   </td>
-                  <td>
-                     {hobbyLevel3 === 3 ? <img src="/radio_check.png" alt="" /> : <img id="h3_3" src="/radio_uncheck.png" alt="" onClick={handleHobby} /> } 
+                  <td className="pl-[20px]">
+                    {hobbyLevel3 === 3 ? (
+                      <img src="/radio_check.png" alt="" />
+                    ) : (
+                      <img id="h3_3" src="/radio_uncheck.png" alt="" onClick={handleHobby} />
+                    )}
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    <div className="flex">
+                      <div className="items-start gap-[5px]">자기소개</div>
+                      <div
+                        className="ml-[13px] text-[#e82121] flex items-center pt-[3px]"
+                        style={{ font: "400 13px/14.95px 'Noto Sans', sans-serif" }}
+                      >
+                        *
+                      </div>
+                    </div>
+                  </th>
+                  <td colSpan={4}>
+                    <textarea
+                      className="w-[950px] h-[200px] border border-[color:var(--400,#BFBFBF)] px-2.5 py-0 rounded-[5px] border-solid placeholder-[color:var(--400,#BFBFBF)] placeholder-sm placeholder-nomal pl-[20px] pt-[20px]"
+                      placeholder="기본적인 사항들은 각 항목에서 소개되고 있으니… 그 외 기본적인 소개 말고 자신을 어필할 수 있는 내용을 중심으로 적으세요"
+                    ></textarea>
                   </td>
                 </tr>
               </tbody>
