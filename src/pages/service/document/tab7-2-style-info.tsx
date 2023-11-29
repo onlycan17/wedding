@@ -5,7 +5,7 @@ type ActivedTab = {
   setActivedDetailTab: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const Tab71BasicInfo: NextPage<ActivedTab> = ({ activedDetailTab, setActivedDetailTab }) => {
+const Tab72StyleInfo: NextPage<ActivedTab> = ({ activedDetailTab, setActivedDetailTab }) => {
   const handleNextTab = () => {
     setActivedDetailTab(2);
   };
@@ -33,4 +33,4 @@ const Tab71BasicInfo: NextPage<ActivedTab> = ({ activedDetailTab, setActivedDeta
   );
 };
 
-export default Tab71BasicInfo;
+export default Tab72StyleInfo;

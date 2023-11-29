@@ -1,12 +1,8 @@
 import { NextPage } from "next";
 import React, { useRef, useState } from "react";
 
-import { religion } from "@/pages/data/religion";
-import { education } from "@/pages/data/education";
-import { jobSimple } from "@/pages/data/job-simple";
-import { residence } from "@/pages/data/residence";
-import { title } from "process";
 import Tab71BasicInfo from "./tab7-1-basic-info";
+import Tab72StyleInfo from "./tab7-2-style-info";
 
 type ActivedTab = {
   activedTab: number;
@@ -26,7 +22,7 @@ const Tab7WantPartner: NextPage<ActivedTab> = ({ activedTab, setActivedTab }) =>
     },
     {
       title: "스타일",
-      content: "스타일 내용",
+      content: <Tab72StyleInfo activedDetailTab={activedDetailTab} setActivedDetailTab={setActivedDetailTab} />,
     },
   ];
 
@@ -99,7 +95,7 @@ const Tab7WantPartner: NextPage<ActivedTab> = ({ activedTab, setActivedTab }) =>
           {tabContent[activedDetailTab].content}
         </div>
 
-        <div className={"mb-[120px]"}></div>
+        <div className={"mb-[60px]"}></div>
         <div className={"w-full flex items-center justify-center "}>
           <button
             className="hover:bg-primary2 hover:text-white w-[180px] h-[40px] bg-_200 rounded-[20px] gap-0  text-gray-500 text-center top-[calc(50%_-_10px)] flex items-center justify-center"
