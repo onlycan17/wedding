@@ -9,6 +9,7 @@ import Tab6PersonalityInfo from "./tab6-personality-info";
 import { useRecoilValue } from "recoil";
 import { userState } from "@/pages/common/state";
 import WithAuth from "@/pages/common/with-auth";
+import Tab7WantPartner from "./tab7-want-partner";
 
 const WeddingDocument: NextPage = () => {
     const [activedTab, setActivedTab] = useState(0);
@@ -46,7 +47,7 @@ const WeddingDocument: NextPage = () => {
         },
         {
             title: "희망상대",
-            content: "This is the content for Tab 4"
+            content: <Tab7WantPartner setActivedTab={setActivedTab} activedTab={activedTab} />
         },
 
     ];

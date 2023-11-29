@@ -1086,7 +1086,7 @@ table .help-text {font-size:13px;}
     border:1px solid #ccc;
     cursor:pointer;
     box-sizing:border-box;
-    border-radius:10%;
+    border-radius:20%;
     background:#fff ;
       background:#fff url('../images/checkbox/unselect.png') no-repeat 50% 50%;
 }
