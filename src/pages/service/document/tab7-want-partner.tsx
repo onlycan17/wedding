@@ -91,7 +91,7 @@ const Tab7WantPartner: NextPage<ActivedTab> = ({ activedTab, setActivedTab }) =>
             </div>
           ))}
         </div>
-        <div id={"content"} className="mt-[40px]">
+        <div id={"content"} >
           {tabContent[activedDetailTab].content}
         </div>
 
