@@ -234,6 +234,99 @@ const Tab72StyleInfo: NextPage<ActivedTab> = ({ activedDetailTab, setActivedDeta
           짝꿍과 나중에 같이 하고픈 취미활동 3가지만 적어주세요
         </h3>
       </div>
+
+      <div className="mt-[30px] ml-[175px]">
+        <input
+          type="text"
+          className="flex w-[500px] h-[60px] items-center gap-6 shrink-0 border border-[color:var(--400,#BFBFBF)] px-2.5 py-0 rounded-[5px] border-solid"
+          placeholder="정말 같이 하고픈 취미가 있는데 보기에 없다면 여기 적어주세요"
+        />
+      </div>
+
+      <div className="ml-[88px] mt-[30px] flex">
+        <div className="flex flex-col text-[color:var(--900,#232527)] text-base not-italic font-bold leading-[150%] tracking-[0.16px]">
+          <div className="flex flex-row">
+            <p>결혼</p>
+            <p className="ml-[13px] mt-[10px] text-[#E82121] text-center text-[13px] not-italic font-normal leading-[14.95px] tracking-[-0.26px] ">
+              *
+            </p>
+          </div>
+          <p>필수조건</p>
+        </div>
+        <div className="ml-[20px] flex">
+          <img src="/alram.png" alt="" width={24} height={24} />
+          <h2 className="ml-[10px] text-[color:var(--600,#777)] text-[20px] not-italic font-normal leading-6">
+            내가 생각하는 결혼의
+          </h2>
+          <p className="ml-[10px] text-[color:var(--infomation,#008DFA)] text-[20px] not-italic font-normal leading-6">
+            필수조건을 우선순위
+          </p>
+          <h2 className="ml-[10px] text-[color:var(--600,#777)] text-[20px] not-italic font-normal leading-6">
+            대로 나열해주세요
+          </h2>
+        </div>
+      </div>
+      <div className="w-[800px] ml-[175px] grid grid-cols-7 gap-[10px]">
+        <div className="w-[95px] h-[40px] rounded-[20px] border border-solid border-x-800">
+          <div className="h-[40px] pt-[10px] [font-family:'Noto_Sans-Medium',Helvetica] font-medium text-x-900 text-[14px] text-center tracking-[0.10px] leading-[20px] whitespace-nowrap ">
+            인성
+          </div>
+        </div>
+        <div className="w-[95px] h-[40px] rounded-[20px] border border-solid border-x-800">
+          <div className="h-[40px] pt-[10px] [font-family:'Noto_Sans-Medium',Helvetica] font-medium text-x-900 text-[14px] text-center tracking-[0.10px] leading-[20px] whitespace-nowrap ">
+            신앙
+          </div>
+        </div>
+        <div className="w-[95px] h-[40px] rounded-[20px] border border-solid border-x-800">
+          <div className="h-[40px] pt-[10px] [font-family:'Noto_Sans-Medium',Helvetica] font-medium text-x-900 text-[14px] text-center tracking-[0.10px] leading-[20px] whitespace-nowrap ">
+            성적
+          </div>
+        </div>
+        <div className="w-[95px] h-[40px] rounded-[20px] border border-solid border-x-800">
+          <div className="h-[40px] pt-[10px] [font-family:'Noto_Sans-Medium',Helvetica] font-medium text-x-900 text-[14px] text-center tracking-[0.10px] leading-[20px] whitespace-nowrap ">
+            경제
+          </div>
+        </div>
+        <div className="w-[95px] h-[40px] rounded-[20px] border border-solid border-x-800">
+          <div className="h-[40px] pt-[10px] [font-family:'Noto_Sans-Medium',Helvetica] font-medium text-x-900 text-[14px] text-center tracking-[0.10px] leading-[20px] whitespace-nowrap ">
+            능력
+          </div>
+        </div>
+        <div className="w-[95px] h-[40px] rounded-[20px] border border-solid border-x-800">
+          <div className="h-[40px] pt-[10px] [font-family:'Noto_Sans-Medium',Helvetica] font-medium text-x-900 text-[14px] text-center tracking-[0.10px] leading-[20px] whitespace-nowrap ">
+            건강
+          </div>
+        </div>
+        <div className="w-[95px] h-[40px] rounded-[20px] border border-solid border-x-800">
+          <div className="h-[40px] pt-[10px] [font-family:'Noto_Sans-Medium',Helvetica] font-medium text-x-900 text-[14px] text-center tracking-[0.10px] leading-[20px] whitespace-nowrap ">
+            외모
+          </div>
+        </div>
+      </div>
+      <div className="mt-[23px] ml-[175px]">
+        <input
+          type="text"
+          className="flex w-[912px] h-[60px] items-center gap-6 shrink-0 border border-[color:var(--400,#BFBFBF)] px-2.5 py-0 rounded-[5px] border-solid"
+          placeholder="여기에 위에 있는 보기 중 제일 중요한 것 부터 우선순위대로 적어주세요"
+        />
+      </div>
+      <div className="ml-[88px] mt-[30px] flex">
+        <div className="flex flex-col text-[color:var(--900,#232527)] text-base not-italic font-bold leading-[150%] tracking-[0.16px]">
+          <div className="flex flex-row">
+            <p>상대</p>
+            <p className="ml-[13px] mt-[10px] text-[#E82121] text-center text-[13px] not-italic font-normal leading-[14.95px] tracking-[-0.26px] ">
+              *
+            </p>
+          </div>
+          <p>스타일</p>
+        </div>
+        <div className="ml-[40px]">
+          <textarea
+            className="w-[912px] h-[200px] border border-[color:var(--400,#BFBFBF)] px-2.5 py-0 rounded-[5px] border-solid placeholder-[color:var(--400,#BFBFBF)] placeholder-sm placeholder-nomal pl-[20px] pt-[20px]"
+            placeholder="기본적인 사항들은 각 항목에서 소개되고 있으니… 그 외 기본적인 소개 말고 자신을 어필할 수 있는 내용을 중심으로 적으세요"
+          ></textarea>
+        </div>
+      </div>
     </div>
   );
 };
